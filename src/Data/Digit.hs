@@ -11,3 +11,5 @@ import Data.Digit.D7 as D
 import Data.Digit.D8 as D
 import Data.Digit.D9 as D
 import Data.Digit.Digit as D
+import Data.Digit.Digit1_8 as D
+import Data.Digit.Digit1_9 as D

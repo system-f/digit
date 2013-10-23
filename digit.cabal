@@ -52,6 +52,8 @@ library
                     Data.Digit.D8
                     Data.Digit.D9
                     Data.Digit.Digit
+                    Data.Digit.Digit1_8
+                    Data.Digit.Digit1_9
 
 test-suite doctests
   type:

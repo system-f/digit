@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
--- | A data type with ten nullary constructors and combinators.
+-- | A data type with ten nullary constructors [0-9] and combinators.
 module Data.Digit.Digit
 (
 -- * Data type
@@ -9,9 +9,10 @@ module Data.Digit.Digit
 , foldDigit
 -- * Prisms
 , digit
+, digitC
 ) where
 
-import Prelude(Show(..), Read(..), Eq, Enum(..), Maybe(..), Bounded, Ord, Int, (.))
+import Prelude(Show(..), Read(..), Eq, Enum(..), Maybe(..), Bounded, Ord, Int, Char, (.))
 import Data.Digit.D0
 import Data.Digit.D1
 import Data.Digit.D2
@@ -167,6 +168,39 @@ digit =
                      7 -> Just D7
                      8 -> Just D8
                      9 -> Just D9
+                     _ -> Nothing)
+
+-- | A prism for using @Char@ as @Digit@.
+--
+-- >>> '5' ^? digitC
+-- Just 5
+--
+-- >>> '0' ^? digitC
+-- Just 0
+--
+-- >>> '9' ^? digitC
+-- Just 9
+--
+-- >>> 'a' ^? digitC
+-- Nothing
+--
+-- >>> '@' ^? digitC
+-- Nothing
+digitC ::
+  Prism' Char Digit
+digitC =
+  prism'
+    (let f = f in f)
+    (\n -> case n of '0' -> Just D0
+                     '1' -> Just D1
+                     '2' -> Just D2
+                     '3' -> Just D3
+                     '4' -> Just D4
+                     '5' -> Just D5
+                     '6' -> Just D6
+                     '7' -> Just D7
+                     '8' -> Just D8
+                     '9' -> Just D9
                      _ -> Nothing)
 
 instance Show Digit where
