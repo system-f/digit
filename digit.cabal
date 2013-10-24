@@ -34,7 +34,6 @@ library
 
   ghc-options:
                     -Wall
-                    -O2
 
   hs-source-dirs:
                     src
