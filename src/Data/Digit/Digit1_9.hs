@@ -1,4 +1,4 @@
-{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE NoImplicitPrelude, DeriveDataTypeable #-}
 
 -- | A data type with nine nullary constructors [1-9] and combinators.
 module Data.Digit.Digit1_9
@@ -25,6 +25,8 @@ import Data.Digit.D7
 import Data.Digit.D8
 import Data.Digit.D9
 import Control.Lens
+import Data.Data (Data)
+import Data.Typeable (Typeable)
 
 -- $setup
 -- >>> import Prelude
@@ -41,7 +43,7 @@ data Digit1_9 =
   | D7
   | D8
   | D9
-  deriving (Eq, Ord, Bounded)
+  deriving (Eq, Ord, Enum, Bounded, Data, Typeable)
 
 -- | Catamorphism for @Digit1_9@.
 --

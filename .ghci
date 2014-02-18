@@ -2,4 +2,5 @@
 :set -optP-include -optPdist/build/autogen/cabal_macros.h
 :set prompt ">> "
 :set -Wall
-
+:set -XTemplateHaskell
+:set -XQuasiQuotes
