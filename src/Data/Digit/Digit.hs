@@ -1,4 +1,4 @@
-{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE NoImplicitPrelude, DeriveDataTypeable, TemplateHaskell, QuasiQuotes #-}
 
 -- | A data type with ten nullary constructors [0-9] and combinators.
 module Data.Digit.Digit
@@ -10,9 +10,10 @@ module Data.Digit.Digit
 -- * Prisms
 , digit
 , digitC
+, digitQ
 ) where
 
-import Prelude(Show(..), Read(..), Eq, Enum(..), Maybe(..), Bounded, Ord, Int, Char, (.))
+import Prelude(Show(..), Read(..), Eq, Enum(..), Maybe(..), Bounded, Ord, Int, Char, (.), const, maybe, error)
 import Data.Digit.D0
 import Data.Digit.D1
 import Data.Digit.D2
@@ -24,6 +25,10 @@ import Data.Digit.D7
 import Data.Digit.D8
 import Data.Digit.D9
 import Control.Lens
+import Data.Data (Data)
+import Data.Typeable (Typeable)
+import Language.Haskell.TH
+import Language.Haskell.TH.Quote
 
 -- $setup
 -- >>> import Prelude
@@ -40,7 +45,7 @@ data Digit =
   | D7
   | D8
   | D9
-  deriving (Eq, Ord, Enum, Bounded)
+  deriving (Eq, Ord, Enum, Bounded, Data, Typeable)
 
 -- | Catamorphism for @Digit@.
 --
@@ -229,3 +234,30 @@ instance Read Digit where
     [(D9, t)]
   readsPrec _ _       =
     []
+
+-- | A QuasiQuoter for any range of @Digit@.
+--
+-- [digitQ|4|] :: Digit
+-- 4
+--
+-- named [digitQ|4|]  = "four"
+-- named [digitQ|$x|] = "not four, " ++ show x ++ " instead"
+--
+-- mod10D x = let y = mod x 10 in [digitQ|$y|]
+digitQ :: QuasiQuoter
+digitQ = QuasiQuoter {
+    quoteExp = dexp
+  , quotePat = dpat
+  , quoteType = error "not quotable"
+  , quoteDec = error "not quotable"
+  }
+
+dexp :: [Char] -> ExpQ
+dexp ('$':vn) = varE (mkName vn)
+dexp (d:[])   = maybe (error "not a digit") (dataToExpQ (const Nothing)) (d ^? digitC)
+dexp _        = error "not a digit"
+
+dpat :: [Char] -> PatQ
+dpat ('$':vn) = varP (mkName vn)
+dpat (d:[])   = maybe (error "not a digit") (dataToPatQ (const Nothing)) (d ^? digitC)
+dpat _        = error "not a digit"
