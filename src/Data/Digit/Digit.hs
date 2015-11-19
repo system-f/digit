@@ -195,7 +195,16 @@ digitC ::
   Prism' Char Digit
 digitC =
   prism'
-    (let f = f in f)
+    (\d -> case d of D0 -> '0'
+                     D1 -> '1'
+                     D2 -> '2'
+                     D3 -> '3'
+                     D4 -> '4'
+                     D5 -> '5'
+                     D6 -> '6'
+                     D7 -> '7'
+                     D8 -> '8'
+                     D9 -> '9')
     (\n -> case n of '0' -> Just D0
                      '1' -> Just D1
                      '2' -> Just D2
