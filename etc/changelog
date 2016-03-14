@@ -1,3 +1,9 @@
+0.2.2
+
+* Modulus operations.
+* `digits` function.
+* Fix tests.
+
 0.2.1
 
 * Include digit parsers.

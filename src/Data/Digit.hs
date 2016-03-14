@@ -33,6 +33,10 @@ module Data.Digit
 , x9
 , digit
 , digitC
+, digits
+-- * mod operations
+, mod10
+, divMod10
 -- * Parsers
 , parseDigit
 -- * Quasi-Quoters
@@ -45,16 +49,17 @@ import Control.Lens(Prism', prism', (^?), ( # ))
 import Control.Monad(Monad(fail))
 import Data.Char(Char)
 import Data.Data (Data)
-import Data.Eq(Eq)
+import Data.Eq(Eq((==)))
+import Data.Foldable(foldl')
 import Data.Function(const)
 import Data.Int(Int)
-import Data.List((++))
-import Data.Maybe(Maybe(Nothing, Just), maybe)
-import Data.Ord(Ord)
+import Data.List((++), unfoldr, reverse)
+import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
+import Data.Ord(Ord((<)))
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
-import Prelude(Show(..), Read(..), Enum(..), Bounded, error)
+import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), error, divMod, mod)
 import Text.Parser.Char(CharParsing, anyChar)
 import Text.Parser.Combinators((<?>))
 
@@ -77,25 +82,25 @@ data Digit =
 
 -- | Catamorphism for @Digit@.
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d0 == x0
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D0 == q0
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d1 == x1
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D1 == q1
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d2 == x2
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D2 == q2
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d3 == x3
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D3 == q3
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d4 == x4
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D4 == q4
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d5 == x5
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D5 == q5
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d6 == x6
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D6 == q6
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d7 == x7
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D7 == q7
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d8 == x8
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D8 == q8
 --
--- prop> foldDigit x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 d9 == x9
+-- prop> foldDigit q0 q1 q2 q3 q4 q5 q6 q7 q8 q9 D9 == q9
 foldDigit ::
   a -- ^ Zero.
   -> a -- ^ One.
@@ -346,6 +351,15 @@ x9 =
 --
 -- >>> (-5) ^? digit
 -- Nothing
+--
+-- >>> digit # D5
+-- 5
+--
+-- >>> digit # D9
+-- 9
+--
+-- >>> digit # D0
+-- 0
 digit ::
   Prism' Int Digit
 digit =
@@ -379,6 +393,15 @@ digit =
 --
 -- >>> '@' ^? digitC
 -- Nothing
+--
+-- >>> digitC # D5
+-- '5'
+--
+-- >>> digitC # D9
+-- '9'
+--
+-- >>> digitC # D0
+-- '0'
 digitC ::
   Prism' Char Digit
 digitC =
@@ -404,6 +427,134 @@ digitC =
                      '8' -> Just D8
                      '9' -> Just D9
                      _ -> Nothing)
+
+-- | A prism for the list of digits in an integer
+--
+-- >>> 1234 ^? digits
+-- Just [1,2,3,4]
+-- 
+-- >>> 0 ^? digits
+-- Just []
+-- 
+-- >>> 1 ^? digits
+-- Just [1]
+-- 
+-- >>> 90 ^? digits
+-- Just [9,0]
+-- 
+-- >>> 05 ^? digits
+-- Just [5]
+-- 
+-- >>> 105 ^? digits
+-- Just [1,0,5]
+-- 
+-- >>> (-1) ^? digits
+-- Nothing
+--
+-- λ> digits # [D0]
+-- 0
+--
+-- >>> digits # [D0, D1]
+-- 1
+--
+-- >>> digits # [D1]
+-- 1
+--
+-- >>> digits # [D1, D2, D3]
+-- 123
+--
+-- >>> digits # [D1, D0, D3]
+-- 103
+--
+-- >>> digits # [D1, D0, D3, D0]
+-- 1030
+digits ::
+  Prism'
+    Int
+    [Digit]
+digits =
+  prism'
+    (foldl' (\a b -> a * 10 + digit # b) 0)
+    (\i ->  if  i < 0
+              then
+                Nothing
+              else 
+                Just (reverse (unfoldr (\n -> 
+                  let (x, r) = divMod10 n
+                  in  if x == 0
+                        then
+                          if r == D0
+                            then
+                              Nothing
+                            else
+                              Just (r, 0)
+                        else
+                              Just (r, x)) i))
+    )
+
+-- | Modulus with 10.
+--
+-- >>> mod10 0
+-- 0
+--
+-- >>> mod10 1
+-- 1
+--
+-- >>> mod10 8
+-- 8
+--
+-- >>> mod10 9
+-- 9
+--
+-- >>> mod10 10
+-- 0
+--
+-- >>> mod10 90
+-- 0
+--
+-- >>> mod10 91
+-- 1
+--
+-- >>> mod10 (-1)
+-- 9
+mod10 ::
+  Int
+  -> Digit
+mod10 n =
+  let r = n `mod` 10
+  in fromMaybe (mod10 r) (r ^? digit)
+
+-- | Division/modulus with 10.
+--
+-- λ> divMod10 0
+-- (0,0)
+--
+-- >>> divMod10 1
+-- (0,1)
+--
+-- >>> divMod10 8
+-- (0,8)
+--
+-- >>> divMod10 9
+-- (0,9)
+--
+-- >>> divMod10 10
+-- (1,0)
+--
+-- >>> divMod10 90
+-- (9,0)
+--
+-- >>> divMod10 91
+-- (9,1)
+--
+-- >>> divMod10 (-1)
+-- (-1,9)
+divMod10 ::
+  Int
+  -> (Int, Digit)
+divMod10 n =
+  let (x, r) = n `divMod` 10
+  in (x, mod10 r)
 
 parseDigit ::
   (Monad p, CharParsing p) =>
