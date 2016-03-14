@@ -1,5 +1,5 @@
 name:               digit
-version:            0.2.0
+version:            0.2.1
 license:            BSD3
 license-File:       etc/LICENCE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -11,7 +11,7 @@ homepage:           https://github.com/NICTA/digit
 bug-reports:        https://github.com/NICTA/digit/issues
 cabal-version:      >= 1.10
 build-type:         Custom
-extra-source-files: etc/CONTRIBUTORS
+extra-source-files: etc/CONTRIBUTORS, etc/changelog
 description:
   <<http://i.imgur.com/Ns5hntl.jpg>>
   .
@@ -31,7 +31,10 @@ library
   build-depends:
                     base < 5 && >= 4.8
                     , lens >= 4.3.3 && < 5.0
+                    , parsers >= 0.12.3 && < 0.13
                     , template-haskell >= 2.8
+
+                    , parsec
 
   ghc-options:
                     -Wall

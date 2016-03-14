@@ -33,22 +33,30 @@ module Data.Digit
 , x9
 , digit
 , digitC
+-- * Parsers
+, parseDigit
+-- * Quasi-Quoters
 , digitQ
 ) where
 
+import Control.Applicative(pure)
 import Control.Category((.))
 import Control.Lens(Prism', prism', (^?), ( # ))
+import Control.Monad(Monad(fail))
 import Data.Char(Char)
 import Data.Data (Data)
 import Data.Eq(Eq)
 import Data.Function(const)
 import Data.Int(Int)
+import Data.List((++))
 import Data.Maybe(Maybe(Nothing, Just), maybe)
 import Data.Ord(Ord)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
 import Prelude(Show(..), Read(..), Enum(..), Bounded, error)
+import Text.Parser.Char(CharParsing, anyChar)
+import Text.Parser.Combinators((<?>))
 
 -- $setup
 -- >>> import Prelude
@@ -396,6 +404,18 @@ digitC =
                      '8' -> Just D8
                      '9' -> Just D9
                      _ -> Nothing)
+
+parseDigit ::
+  (Monad p, CharParsing p) =>
+  p Digit
+parseDigit =
+  let p = do  c <- anyChar
+              case c ^? digitC of
+                Nothing ->
+                  fail ("not a digit: " ++ show c )
+                Just d -> 
+                  pure d
+  in p <?> "digit"
 
 instance Show Digit where
   show = show . fromEnum
