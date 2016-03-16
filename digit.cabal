@@ -1,5 +1,5 @@
 name:               digit
-version:            0.2.2
+version:            0.2.3
 license:            BSD3
 license-File:       etc/LICENCE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -34,6 +34,7 @@ library
                     , parsers >= 0.12.3 && < 0.13
                     , template-haskell >= 2.8
 
+                    , parsec
   ghc-options:
                     -Wall
 

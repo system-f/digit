@@ -38,29 +38,32 @@ module Data.Digit
 , mod10
 , divMod10
 -- * Parsers
-, parseDigit
+, parsedigit
+, parsedigits
+, parsedigits1
 -- * Quasi-Quoters
 , digitQ
 ) where
 
-import Control.Applicative(pure)
+import Control.Applicative(many, some)
 import Control.Category((.))
 import Control.Lens(Prism', prism', (^?), ( # ))
-import Control.Monad(Monad(fail))
+import Control.Monad(Monad)
 import Data.Char(Char)
 import Data.Data (Data)
 import Data.Eq(Eq((==)))
-import Data.Foldable(foldl')
+import Data.Foldable(foldl', asum)
 import Data.Function(const)
+import Data.Functor((<$), (<$>))
 import Data.Int(Int)
-import Data.List((++), unfoldr, reverse)
+import Data.List(unfoldr, reverse)
 import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
 import Data.Ord(Ord((<)))
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
 import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), error, divMod, mod)
-import Text.Parser.Char(CharParsing, anyChar)
+import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
@@ -556,17 +559,24 @@ divMod10 n =
   let (x, r) = n `divMod` 10
   in (x, mod10 r)
 
-parseDigit ::
+parsedigit ::
   (Monad p, CharParsing p) =>
   p Digit
-parseDigit =
-  let p = do  c <- anyChar
-              case c ^? digitC of
-                Nothing ->
-                  fail ("not a digit: " ++ show c )
-                Just d -> 
-                  pure d
+parsedigit =
+  let p = asum ((\d -> d <$ char (digitC # d)) <$> [D0 .. D9])
   in p <?> "digit"
+
+parsedigits ::
+  (Monad p, CharParsing p) =>
+  p [Digit]
+parsedigits =
+  many parsedigit
+
+parsedigits1 ::
+  (Monad p, CharParsing p) =>
+  p [Digit]
+parsedigits1 =
+  some parsedigit
 
 instance Show Digit where
   show = show . fromEnum
