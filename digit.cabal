@@ -1,5 +1,5 @@
 name:               digit
-version:            0.2.3
+version:            0.2.4
 license:            BSD3
 license-File:       etc/LICENCE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -11,7 +11,7 @@ homepage:           https://github.com/NICTA/digit
 bug-reports:        https://github.com/NICTA/digit/issues
 cabal-version:      >= 1.10
 build-type:         Custom
-extra-source-files: etc/CONTRIBUTORS, etc/changelog
+extra-source-files: etc/CONTRIBUTORS, changelog.md
 description:
   <<http://i.imgur.com/Ns5hntl.jpg>>
   .

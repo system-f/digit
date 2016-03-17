@@ -41,6 +41,13 @@ module Data.Digit
 , parsedigit
 , parsedigits
 , parsedigits1
+, skipdigits
+, skipdigits1
+, parsenotdigit
+, parsenotdigits
+, parsenotdigits1
+, skipnotdigits
+, skipnotdigits1
 -- * Quasi-Quoters
 , digitQ
 ) where
@@ -56,15 +63,16 @@ import Data.Foldable(foldl', asum)
 import Data.Function(const)
 import Data.Functor((<$), (<$>))
 import Data.Int(Int)
-import Data.List(unfoldr, reverse)
+import Data.List(unfoldr, reverse, notElem)
 import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
 import Data.Ord(Ord((<)))
+import Data.String(String)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
 import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), error, divMod, mod)
-import Text.Parser.Char(CharParsing, char)
-import Text.Parser.Combinators((<?>))
+import Text.Parser.Char(CharParsing, char, satisfy)
+import Text.Parser.Combinators(skipMany, skipSome, (<?>))
 
 -- $setup
 -- >>> import Prelude
@@ -577,6 +585,49 @@ parsedigits1 ::
   p [Digit]
 parsedigits1 =
   some parsedigit
+
+skipdigits ::
+  (Monad p, CharParsing p) =>
+  p ()
+skipdigits =
+  skipMany parsedigit
+
+skipdigits1 ::
+  (Monad p, CharParsing p) =>
+  p ()
+skipdigits1 =
+  skipSome parsedigit
+
+parsenotdigit ::
+  (Monad p, CharParsing p) =>
+  p Char
+parsenotdigit =
+  let p = satisfy (`notElem` ['0' .. '9'])
+  in p <?> "not digit"
+
+parsenotdigits ::
+  (Monad p, CharParsing p) =>
+  p String
+parsenotdigits =
+  many parsenotdigit
+
+parsenotdigits1 ::
+  (Monad p, CharParsing p) =>
+  p String
+parsenotdigits1 =
+  some parsenotdigit
+
+skipnotdigits ::
+  (Monad p, CharParsing p) =>
+  p ()
+skipnotdigits =
+  skipMany parsenotdigit
+
+skipnotdigits1 ::
+  (Monad p, CharParsing p) =>
+  p ()
+skipnotdigits1 =
+  skipSome parsenotdigit
 
 instance Show Digit where
   show = show . fromEnum

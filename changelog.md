@@ -1,3 +1,7 @@
+0.2.4
+
+* More Digit parsers.
+
 0.2.3
 
 * Digit parsers.
