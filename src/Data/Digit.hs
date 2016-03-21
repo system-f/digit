@@ -537,7 +537,7 @@ mod10 n =
 
 -- | Division/modulus with 10.
 --
--- λ> divMod10 0
+-- >>> divMod10 0
 -- (0,0)
 --
 -- >>> divMod10 1
