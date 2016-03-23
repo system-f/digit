@@ -64,6 +64,7 @@ import Data.Function(const)
 import Data.Functor((<$), (<$>))
 import Data.Int(Int)
 import Data.List(unfoldr, reverse, notElem)
+import Data.List.NonEmpty(NonEmpty, some1)
 import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
 import Data.Ord(Ord((<)))
 import Data.String(String)
@@ -582,9 +583,9 @@ parsedigits =
 
 parsedigits1 ::
   (Monad p, CharParsing p) =>
-  p [Digit]
+  p (NonEmpty Digit)
 parsedigits1 =
-  some parsedigit
+  some1 parsedigit
 
 skipdigits ::
   (Monad p, CharParsing p) =>

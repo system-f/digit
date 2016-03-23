@@ -1,5 +1,5 @@
 name:               digit
-version:            0.2.4
+version:            0.2.5
 license:            BSD3
 license-File:       etc/LICENCE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -32,6 +32,7 @@ library
                     base < 5 && >= 4.8
                     , lens >= 4.3.3 && < 5.0
                     , parsers >= 0.12.3 && < 0.13
+                    , semigroups >= 0.12 && < 1.0
                     , template-haskell >= 2.8
 
                     , parsec

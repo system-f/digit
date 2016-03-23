@@ -1,3 +1,7 @@
+0.2.5
+
+* Change parser to handle non-empty list.
+
 0.2.4
 
 * More Digit parsers.
