@@ -1,3 +1,7 @@
+0.2.6
+
+* Use `Integral` not `Int`.
+
 0.2.5
 
 * Change parser to handle non-empty list.
