@@ -62,7 +62,6 @@ import Data.Eq(Eq((==)))
 import Data.Foldable(foldl', asum)
 import Data.Function(const)
 import Data.Functor((<$), (<$>))
-import Data.Int(Int)
 import Data.List(unfoldr, reverse, notElem)
 import Data.List.NonEmpty(NonEmpty, some1)
 import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
@@ -71,7 +70,7 @@ import Data.String(String)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
-import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), error, divMod, mod)
+import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), Integral, error, divMod, mod)
 import Text.Parser.Char(CharParsing, char, satisfy)
 import Text.Parser.Combinators(skipMany, skipSome, (<?>))
 
@@ -373,10 +372,21 @@ x9 =
 -- >>> digit # D0
 -- 0
 digit ::
-  Prism' Int Digit
+  Integral a =>
+  Prism' a Digit
 digit =
   prism'
-    fromEnum
+    (\n -> case n of D0 -> 0
+                     D1 -> 1
+                     D2 -> 2
+                     D3 -> 3
+                     D4 -> 4
+                     D5 -> 5
+                     D6 -> 6
+                     D7 -> 7
+                     D8 -> 8
+                     D9 -> 9)
+
     (\n -> case n of 0 -> Just D0
                      1 -> Just D1
                      2 -> Just D2
@@ -481,8 +491,9 @@ digitC =
 -- >>> digits # [D1, D0, D3, D0]
 -- 1030
 digits ::
+  Integral a =>
   Prism'
-    Int
+    a
     [Digit]
 digits =
   prism'
@@ -530,7 +541,8 @@ digits =
 -- >>> mod10 (-1)
 -- 9
 mod10 ::
-  Int
+  Integral a =>
+  a
   -> Digit
 mod10 n =
   let r = n `mod` 10
@@ -562,8 +574,9 @@ mod10 n =
 -- >>> divMod10 (-1)
 -- (-1,9)
 divMod10 ::
-  Int
-  -> (Int, Digit)
+  Integral a =>
+  a
+  -> (a, Digit)
 divMod10 n =
   let (x, r) = n `divMod` 10
   in (x, mod10 r)
