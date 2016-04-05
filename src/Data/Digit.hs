@@ -1,4 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE QuasiQuotes #-}
@@ -33,16 +35,17 @@ module Data.Digit
 , x9
 , digit
 , digitC
-, digits
+, digitlist
 -- * mod operations
 , mod10
 , divMod10
 -- * Parsers
 , parsedigit
+, parsedigitlist
 , parsedigits
-, parsedigits1
-, skipdigits
-, skipdigits1
+, parsedigitlist1
+, skipdigitlist
+, skipdigitlist1
 , parsenotdigit
 , parsenotdigits
 , parsenotdigits1
@@ -50,11 +53,18 @@ module Data.Digit
 , skipnotdigits1
 -- * Quasi-Quoters
 , digitQ
+-- * Digits
+, Digits
+, digits
+, digitsI
+, digitsS
+, (.+.)
+, (.*.)
 ) where
 
 import Control.Applicative(many, some)
 import Control.Category((.))
-import Control.Lens(Prism', prism', (^?), ( # ))
+import Control.Lens(Prism', prism', Iso', iso, Cons(_Cons), Snoc(_Snoc), AsEmpty(_Empty), Each(each), Ixed(ix), Index, IxValue, Plated(plate), Reversing(reversing), (^?), ( # ))
 import Control.Monad(Monad)
 import Data.Char(Char)
 import Data.Data (Data)
@@ -62,15 +72,19 @@ import Data.Eq(Eq((==)))
 import Data.Foldable(foldl', asum)
 import Data.Function(const)
 import Data.Functor((<$), (<$>))
-import Data.List(unfoldr, reverse, notElem)
+import Data.Int(Int)
+import Data.List(unfoldr, reverse, notElem, (++))
 import Data.List.NonEmpty(NonEmpty, some1)
 import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
+import Data.Monoid(Monoid(mempty, mappend))
 import Data.Ord(Ord((<)))
+import Data.Semigroup(Semigroup((<>)))
 import Data.String(String)
+import Data.Traversable(traverse)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
-import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), Integral, error, divMod, mod)
+import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), Integral, Integer, error, divMod, mod)
 import Text.Parser.Char(CharParsing, char, satisfy)
 import Text.Parser.Combinators(skipMany, skipSome, (<?>))
 
@@ -452,50 +466,50 @@ digitC =
 
 -- | A prism for the list of digits in an integer
 --
--- >>> 1234 ^? digits
+-- >>> 1234 ^? digitlist
 -- Just [1,2,3,4]
 -- 
--- >>> 0 ^? digits
+-- >>> 0 ^? digitlist
 -- Just []
 -- 
--- >>> 1 ^? digits
+-- >>> 1 ^? digitlist
 -- Just [1]
 -- 
--- >>> 90 ^? digits
+-- >>> 90 ^? digitlist
 -- Just [9,0]
 -- 
--- >>> 05 ^? digits
+-- >>> 05 ^? digitlist
 -- Just [5]
 -- 
--- >>> 105 ^? digits
+-- >>> 105 ^? digitlist
 -- Just [1,0,5]
 -- 
--- >>> (-1) ^? digits
+-- >>> (-1) ^? digitlist
 -- Nothing
 --
--- λ> digits # [D0]
+-- λ> digitlist # [D0]
 -- 0
 --
--- >>> digits # [D0, D1]
+-- >>> digitlist # [D0, D1]
 -- 1
 --
--- >>> digits # [D1]
+-- >>> digitlist # [D1]
 -- 1
 --
--- >>> digits # [D1, D2, D3]
+-- >>> digitlist # [D1, D2, D3]
 -- 123
 --
--- >>> digits # [D1, D0, D3]
+-- >>> digitlist # [D1, D0, D3]
 -- 103
 --
--- >>> digits # [D1, D0, D3, D0]
+-- >>> digitlist # [D1, D0, D3, D0]
 -- 1030
-digits ::
+digitlist ::
   Integral a =>
   Prism'
     a
     [Digit]
-digits =
+digitlist =
   prism'
     (foldl' (\a b -> a * 10 + digit # b) 0)
     (\i ->  if  i < 0
@@ -514,6 +528,14 @@ digits =
                         else
                               Just (r, x)) i))
     )
+
+digits ::
+  Integral a =>
+  Prism'
+    a
+    Digits
+digits =
+  digitlist . digitsI
 
 -- | Modulus with 10.
 --
@@ -588,28 +610,34 @@ parsedigit =
   let p = asum ((\d -> d <$ char (digitC # d)) <$> [D0 .. D9])
   in p <?> "digit"
 
-parsedigits ::
+parsedigitlist ::
   (Monad p, CharParsing p) =>
   p [Digit]
-parsedigits =
+parsedigitlist =
   many parsedigit
 
-parsedigits1 ::
+parsedigits ::
+  (Monad p, CharParsing p) =>
+  p Digits
+parsedigits = 
+  Digits <$> parsedigitlist
+
+parsedigitlist1 ::
   (Monad p, CharParsing p) =>
   p (NonEmpty Digit)
-parsedigits1 =
+parsedigitlist1 =
   some1 parsedigit
 
-skipdigits ::
+skipdigitlist ::
   (Monad p, CharParsing p) =>
   p ()
-skipdigits =
+skipdigitlist =
   skipMany parsedigit
 
-skipdigits1 ::
+skipdigitlist1 ::
   (Monad p, CharParsing p) =>
   p ()
-skipdigits1 =
+skipdigitlist1 =
   skipSome parsedigit
 
 parsenotdigit ::
@@ -696,3 +724,94 @@ dpat :: [Char] -> PatQ
 dpat ('$':vn) = varP (mkName vn)
 dpat (d:[])   = maybe (error "not a digit") (dataToPatQ (const Nothing)) (d ^? digitC)
 dpat _        = error "not a digit"
+
+data Digits =
+  Digits [Digit]
+  deriving (Eq, Ord, Show, Data, Typeable)
+
+digitsI ::
+  Iso'
+    [Digit]
+    Digits
+digitsI =
+  iso
+    Digits
+    (\(Digits x) -> x)
+
+digitsS ::
+  Prism'
+    String
+    Digits
+digitsS =
+  prism'
+    (\(Digits d) -> (digitC #) <$> d)
+    (\s -> Digits <$> traverse (^? digitC) s)
+
+instance Cons Digits Digits Digit Digit where
+  _Cons =
+    prism'
+      (\(h, Digits t) -> Digits (h:t))
+      (\(Digits d) -> case d of 
+                        [] ->
+                          Nothing
+                        (h:t) ->
+                          Just (h, Digits t))
+
+
+instance Snoc Digits Digits Digit Digit where
+  _Snoc =
+    prism'
+      (\(Digits t, z) -> Digits (t ++ [z]))
+      (\(Digits d) -> (\(a, b) -> (Digits a, b)) <$> d ^? _Snoc)
+
+instance AsEmpty Digits where
+  _Empty =
+    prism'
+      (\() -> Digits [])
+      (\(Digits d) -> case d of
+                        [] ->
+                          Just ()
+                        (_:_) ->
+                          Nothing)
+
+instance Each Digits Digits Digit Digit where
+  each f (Digits d) =
+    Digits <$> each f d
+
+type instance IxValue Digits = Digit
+type instance Index Digits = Int
+instance Ixed Digits where
+  ix i f (Digits d) =
+    Digits <$> ix i f d
+
+instance Plated Digits where
+  plate f (Digits d) =
+    Digits <$> plate (\x -> (\(Digits e) -> e) <$> f (Digits x)) d
+
+instance Reversing Digits where
+  reversing (Digits d) =
+    Digits (reversing d)
+
+instance Semigroup Digits where
+  Digits d <> Digits e =
+    Digits (d <> e)
+
+instance Monoid Digits where
+  mempty =
+    Digits mempty
+  mappend =
+    (<>)
+
+(.+.) ::
+  Digits
+  -> Digits
+  -> Digits
+Digits d .+. Digits e =
+  Digits (fromMaybe [] ((digitlist # d + (digitlist # e :: Integer)) ^? digitlist))
+
+(.*.) ::
+  Digits
+  -> Digits
+  -> Digits
+Digits d .*. Digits e =
+  Digits (fromMaybe [] ((digitlist # d * (digitlist # e :: Integer)) ^? digitlist))
