@@ -1,6 +1,7 @@
 0.2.6
 
 * Use `Integral` not `Int`.
+* `Digits` data type (zero or many digits) and associated functions.
 
 0.2.5
 
