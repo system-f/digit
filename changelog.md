@@ -1,3 +1,7 @@
+0.2.7
+
+* Add `mantissa` function for digits.
+
 0.2.6
 
 * Use `Integral` not `Int`.

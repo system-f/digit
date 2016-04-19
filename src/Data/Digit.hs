@@ -60,6 +60,7 @@ module Data.Digit
 , digitsS
 , (.+.)
 , (.*.)
+, mantissa
 ) where
 
 import Control.Applicative(many, some)
@@ -73,7 +74,7 @@ import Data.Foldable(foldl', asum)
 import Data.Function(const)
 import Data.Functor((<$), (<$>))
 import Data.Int(Int)
-import Data.List(unfoldr, reverse, notElem, (++))
+import Data.List(unfoldr, reverse, notElem, zip, (++))
 import Data.List.NonEmpty(NonEmpty, some1)
 import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
 import Data.Monoid(Monoid(mempty, mappend))
@@ -84,7 +85,7 @@ import Data.Traversable(traverse)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
-import Prelude(Show(..), Read(..), Enum(..), Bounded, Num(..), Integral, Integer, error, divMod, mod)
+import Prelude(Show(..), Read(..), Enum(..), Floating((**)), Bounded, Num(..), Integral, Integer, fromIntegral, error, divMod, mod)
 import Text.Parser.Char(CharParsing, char, satisfy)
 import Text.Parser.Combinators(skipMany, skipSome, (<?>))
 
@@ -815,3 +816,12 @@ Digits d .+. Digits e =
   -> Digits
 Digits d .*. Digits e =
   Digits (fromMaybe [] ((digitlist # d * (digitlist # e :: Integer)) ^? digitlist))
+
+mantissa ::
+  Floating a =>
+  Digits
+  -> a
+mantissa d =
+  let acc a (e, x) = 
+        a + fromIntegral (digit # x :: Int) * 10 ** fromIntegral (negate e :: Int)
+  in foldl' acc 0 (zip [1..] (digitsI # d))
