@@ -726,7 +726,7 @@ dpat ('$':vn) = varP (mkName vn)
 dpat (d:[])   = maybe (error "not a digit") (dataToPatQ (const Nothing)) (d ^? digitC)
 dpat _        = error "not a digit"
 
-data Digits =
+newtype Digits =
   Digits [Digit]
   deriving (Eq, Ord, Show, Data, Typeable)
 
