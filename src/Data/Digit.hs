@@ -58,6 +58,7 @@ module Data.Digit
 , digits
 , digitsI
 , digitsS
+, (/+/)
 , (.+.)
 , (.*.)
 , mantissa
@@ -802,6 +803,14 @@ instance Monoid Digits where
     Digits mempty
   mappend =
     (<>)
+
+(/+/) ::
+  Digit
+  -> Digit
+  -> (Digit, Digit)
+a /+/ b =
+  let (x, r) = divMod10 (digit # a + digit # b)
+  in (mod10 (x :: Integer), r) 
 
 (.+.) ::
   Digits

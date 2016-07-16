@@ -1,3 +1,7 @@
+0.2.8
+
+* Add `(/+/)` function.
+
 0.2.7
 
 * Add `mantissa` function for digits.
