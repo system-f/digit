@@ -12,6 +12,8 @@ module Data.Digit
   Digit
 -- * Destructors
 , foldDigit
+-- * Lenses
+, HasDigit(..)
 -- * Prisms
 , D0(..)
 , x0
@@ -152,6 +154,14 @@ foldDigit _  _  _  _  _  _  _  _  q8 _  D8 =
   q8
 foldDigit _  _  _  _  _  _  _  _  _  q9 D9 =
   q9
+
+class HasDigit a where
+  hasdigit ::
+    Lens' a Digit
+
+instance HasDigit Digit where
+  hasdigit =
+    id
 
 class D0 d where
   d0 ::
