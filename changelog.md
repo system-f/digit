@@ -1,3 +1,10 @@
+0.2.9
+
+* Remove redundant type-class constraints.
+* Add tests.
+* Add `HasDigit` lens.
+* Add `papa` dependency.
+
 0.2.8
 
 * Add `(/+/)` function.
