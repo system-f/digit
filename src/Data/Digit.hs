@@ -65,30 +65,21 @@ module Data.Digit
 ) where
 
 import Control.Applicative(many, some)
-import Control.Category((.))
-import Control.Lens(Prism', prism', Iso', iso, Cons(_Cons), Snoc(_Snoc), AsEmpty(_Empty), Each(each), Ixed(ix), Index, IxValue, Plated(plate), Reversing(reversing), (^?), ( # ))
-import Control.Monad(Monad)
-import Data.Char(Char)
 import Data.Data (Data)
-import Data.Eq(Eq((==)))
 import Data.Foldable(foldl', asum)
-import Data.Function(const)
-import Data.Functor((<$), (<$>))
-import Data.Int(Int)
-import Data.List(unfoldr, reverse, notElem, zip, (++))
-import Data.List.NonEmpty(NonEmpty, some1)
-import Data.Maybe(Maybe(Nothing, Just), maybe, fromMaybe)
-import Data.Monoid(Monoid(mempty, mappend))
-import Data.Ord(Ord((<)))
-import Data.Semigroup(Semigroup((<>)))
+import Data.List(unfoldr)
+import Data.List.NonEmpty(some1)
+import Data.Maybe(fromMaybe)
+import Data.Monoid(mappend)
+import Data.Semigroup((<>))
 import Data.String(String)
-import Data.Traversable(traverse)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
-import Prelude(Show(..), Read(..), Enum(..), Floating((**)), Bounded, Num(..), Integral, Integer, fromIntegral, error, divMod, mod)
+import Prelude(fromEnum, Bounded, error) -- livin on the edge
 import Text.Parser.Char(CharParsing, char, satisfy)
 import Text.Parser.Combinators(skipMany, skipSome, (<?>))
+import Papa
 
 -- $setup
 -- >>> import Prelude
@@ -675,30 +666,6 @@ skipnotdigits1 =
 
 instance Show Digit where
   show = show . fromEnum
-
-instance Read Digit where
-  readsPrec _ ('0':t) =
-    [(D0, t)]
-  readsPrec _ ('1':t) =
-    [(D1, t)]
-  readsPrec _ ('2':t) =
-    [(D2, t)]
-  readsPrec _ ('3':t) =
-    [(D3, t)]
-  readsPrec _ ('4':t) =
-    [(D4, t)]
-  readsPrec _ ('5':t) =
-    [(D5, t)]
-  readsPrec _ ('6':t) =
-    [(D6, t)]
-  readsPrec _ ('7':t) =
-    [(D7, t)]
-  readsPrec _ ('8':t) =
-    [(D8, t)]
-  readsPrec _ ('9':t) =
-    [(D9, t)]
-  readsPrec _ _       =
-    []
 
 -- | A QuasiQuoter for any range of @Digit@.
 --

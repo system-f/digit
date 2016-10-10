@@ -34,8 +34,8 @@ library
                     , parsers >= 0.12.3 && < 0.13
                     , semigroups >= 0.12 && < 1.0
                     , template-haskell >= 2.8
-
-                    , parsec
+                    , papa
+                    
   ghc-options:
                     -Wall
 
@@ -62,7 +62,7 @@ test-suite doctests
                     , directory >= 1.1
                     , QuickCheck >= 2.0
                     , template-haskell >= 2.8
-
+                    , parsec >= 3.1
   ghc-options:
                     -Wall
                     -threaded
