@@ -643,32 +643,32 @@ skipdigitlist1 =
   skipSome parsedigit
 
 parsenotdigit ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p Char
 parsenotdigit =
   let p = satisfy (`notElem` ['0' .. '9'])
   in p <?> "not digit"
 
 parsenotdigits ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p String
 parsenotdigits =
   many parsenotdigit
 
 parsenotdigits1 ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p String
 parsenotdigits1 =
   some parsenotdigit
 
 skipnotdigits ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p ()
 skipnotdigits =
   skipMany parsenotdigit
 
 skipnotdigits1 ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p ()
 skipnotdigits1 =
   skipSome parsenotdigit
