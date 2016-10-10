@@ -837,20 +837,49 @@ a /+/ b =
   let (x, r) = divMod10 (digit # a + digit # b)
   in (mod10 (x :: Integer), r) 
 
+-- |
+--
+--
+-- >>> Digits [x2] .+. Digits [x1, x0]
+-- Digits [1,2]
+--
+-- >>> Digits [x1, x2, x3] .+. Digits [x4, x5, x6]
+-- Digits [5,7,9]
 (.+.) ::
   Digits
   -> Digits
   -> Digits
-Digits d .+. Digits e =
-  Digits (fromMaybe [] ((digitlist # d + (digitlist # e :: Integer)) ^? digitlist))
+d .+. e =
+  fromMaybe mempty ((digits # d + digits # e :: Integer) ^? digits)
 
+-- |
+--
+--
+-- >>> Digits [x2] .*. Digits [x1, x0]
+-- Digits [2,0]
+--
+-- >>> Digits [x1, x2, x3] .*. Digits [x4, x5, x6]
+-- Digits [5,6,0,8,8]
 (.*.) ::
   Digits
   -> Digits
   -> Digits
-Digits d .*. Digits e =
-  Digits (fromMaybe [] ((digitlist # d * (digitlist # e :: Integer)) ^? digitlist))
+d .*. e =
+  fromMaybe mempty ((digits # d * digits # e :: Integer) ^? digits)
 
+-- |
+--
+-- >>> mantissa (Digits []) :: Double
+-- 0.0
+--
+-- > mantissa (Digits [x0]) :: Double
+-- 0.0
+--
+-- >>> mantissa (Digits [x1]) :: Double
+-- 0.1
+--
+-- >>> mantissa (Digits [x1, x9]) :: Double
+-- 0.19
 mantissa ::
   Floating a =>
   Digits
