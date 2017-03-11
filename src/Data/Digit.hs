@@ -607,38 +607,38 @@ divMod10 n =
   in (x, mod10 r)
 
 parsedigit ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p Digit
 parsedigit =
   let p = asum ((\d -> d <$ char (digitC # d)) <$> [D0 .. D9])
   in p <?> "digit"
 
 parsedigitlist ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p [Digit]
 parsedigitlist =
   many parsedigit
 
 parsedigits ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p Digits
 parsedigits = 
   Digits <$> parsedigitlist
 
 parsedigitlist1 ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p (NonEmpty Digit)
 parsedigitlist1 =
   some1 parsedigit
 
 skipdigitlist ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p ()
 skipdigitlist =
   skipMany parsedigit
 
 skipdigitlist1 ::
-  (Monad p, CharParsing p) =>
+  CharParsing p =>
   p ()
 skipdigitlist1 =
   skipSome parsedigit
