@@ -3,7 +3,9 @@
 
 # CABAL
 /dist
+/dist-newstyle
 /.cabal-sandbox
+/cabal.project.local
 /cabal.sandbox.config
 
 # Haskell Program Coverage
