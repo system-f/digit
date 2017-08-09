@@ -849,7 +849,7 @@ d .*. e =
 -- >>> mantissa (Digits []) :: Double
 -- 0.0
 --
--- > mantissa (Digits [x0]) :: Double
+-- >>> mantissa (Digits [x0]) :: Double
 -- 0.0
 --
 -- >>> mantissa (Digits [x1]) :: Double
