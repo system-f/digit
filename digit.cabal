@@ -1,25 +1,26 @@
 name:               digit
 version:            0.2.9
 license:            BSD3
-license-File:       etc/LICENCE
-author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
-maintainer:         Tony Morris
+license-file:       etc/LICENCE
+author:             Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
+maintainer:         Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
 copyright:          Copyright (C) 2010-2016 NICTA Limited
+copyright:          Copyright (c) 2017, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
 synopsis:           A data-type representing digits 0-9 and other combinations
 category:           Data
-homepage:           https://github.com/NICTA/digit
-bug-reports:        https://github.com/NICTA/digit/issues
+homepage:           https://github.com/qfpl/digit
+bug-reports:        https://github.com/qfpl/digit/issues
 cabal-version:      >= 1.10
 build-type:         Custom
 extra-source-files: etc/CONTRIBUTORS, changelog.md
 description:
-  <<http://i.imgur.com/Ns5hntl.jpg>>
+  <<http://i.imgur.com/uZnp9ke.png>>
   .
   @Digit@ is a data-type that represents the digits 0-9 and other combinations.
 
 source-repository   head
   type:             git
-  location:         git@github.com:NICTA/digit.git
+  location:         git@github.com:qfpl/digit.git
 
 flag                small_base
   description:      Choose the new, split-up base package.
@@ -29,10 +30,10 @@ library
                     Haskell2010
 
   build-depends:
-                    base < 5 && >= 4.8
-                    , lens >= 4.3.3 && < 5.0
-                    , parsers >= 0.12.3 && < 0.13
-                    , semigroups >= 0.12 && < 1.0
+                    base               >= 4.7 && < 5
+                    , lens             >= 4.0 && < 5
+                    , parsers          >= 0.12.3 && < 0.13
+                    , semigroups       >= 0.12 && < 1.0
                     , template-haskell >= 2.8
                     , papa
                     
