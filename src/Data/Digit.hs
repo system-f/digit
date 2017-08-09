@@ -490,7 +490,7 @@ digitC =
 -- >>> (-1) ^? digitlist
 -- Nothing
 --
--- λ> digitlist # [D0]
+-- >>> digitlist # [D0]
 -- 0
 --
 -- >>> digitlist # [D0, D1]
