@@ -11,7 +11,7 @@ mkDerivation {
   testHaskellDepends = [
     base directory doctest filepath parsec QuickCheck template-haskell
   ];
-  homepage = "https://github.com/NICTA/digit";
+  homepage = "https://github.com/qfpl/digit";
   description = "A data-type representing digits 0-9 and other combinations";
   license = stdenv.lib.licenses.bsd3;
 }
