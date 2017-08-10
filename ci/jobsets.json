@@ -2,7 +2,7 @@
     "enabled": 1,
     "hidden": false,
     "description": "jobsets",
-    "nixexprinput": "separated",
+    "nixexprinput": "digit",
     "nixexprpath": "ci/jobsets.nix",
     "checkinterval": 300,
     "schedulingshares": 1,
