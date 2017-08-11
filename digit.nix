@@ -3,7 +3,7 @@
 }:
 mkDerivation {
   pname = "digit";
-  version = "0.2.9";
+  version = "0.3.0";
   src = ./.;
   libraryHaskellDepends = [
     base lens papa parsers semigroups template-haskell
