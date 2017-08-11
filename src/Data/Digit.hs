@@ -16,28 +16,17 @@ module Data.Digit
 , HasDigit(..)
 -- * Prisms
 , D0(..)
-, x0
 , D1(..)
-, x1
 , D2(..)
-, x2
 , D3(..)
-, x3
 , D4(..)
-, x4
 , D5(..)
-, x5
 , D6(..)
-, x6
 , D7(..)
-, x7
 , D8(..)
-, x8
 , D9(..)
-, x9
-, digit
-, digitC
 , digitlist
+, AsDigit(..)
 -- * mod operations
 , mod10
 , divMod10
@@ -168,6 +157,11 @@ class D0 d where
     Prism'
       d
       ()
+  x0 ::
+    D0 d =>
+    d
+  x0 =
+    d0 # ()
 
 instance D0 Digit where
   d0 =
@@ -177,17 +171,16 @@ instance D0 Digit where
                D0 -> Just ()
                _ -> Nothing)
 
-x0 ::
-  D0 d =>
-  d
-x0 =
-  d0 # ()
-
 class D1 d where
   d1 ::
     Prism'
       d
       ()
+  x1 ::
+    D1 d =>
+    d
+  x1 =
+    d1 # ()
 
 instance D1 Digit where
   d1 =
@@ -197,17 +190,16 @@ instance D1 Digit where
                D1 -> Just ()
                _ -> Nothing)
 
-x1 ::
-  D1 d =>
-  d
-x1 =
-  d1 # ()
-
 class D2 d where
   d2 ::
     Prism'
       d
       ()
+  x2 ::
+    D2 d =>
+    d
+  x2 =
+    d2 # ()
 
 instance D2 Digit where
   d2 =
@@ -217,17 +209,16 @@ instance D2 Digit where
                D2 -> Just ()
                _ -> Nothing)
 
-x2 ::
-  D2 d =>
-  d
-x2 =
-  d2 # ()
-
 class D3 d where
   d3 ::
     Prism'
       d
       ()
+  x3 ::
+    D3 d =>
+    d
+  x3 =
+    d3 # ()
 
 instance D3 Digit where
   d3 =
@@ -237,17 +228,16 @@ instance D3 Digit where
                D3 -> Just ()
                _ -> Nothing)
 
-x3 ::
-  D3 d =>
-  d
-x3 =
-  d3 # ()
-
 class D4 d where
   d4 ::
     Prism'
       d
       ()
+  x4 ::
+    D4 d =>
+    d
+  x4 =
+    d4 # ()
 
 instance D4 Digit where
   d4 =
@@ -257,17 +247,16 @@ instance D4 Digit where
                D4 -> Just ()
                _ -> Nothing)
 
-x4 ::
-  D4 d =>
-  d
-x4 =
-  d4 # ()
-
 class D5 d where
   d5 ::
     Prism'
       d
       ()
+  x5 ::
+    D5 d =>
+    d
+  x5 =
+    d5 # ()
 
 instance D5 Digit where
   d5 =
@@ -277,17 +266,16 @@ instance D5 Digit where
                D5 -> Just ()
                _ -> Nothing)
 
-x5 ::
-  D5 d =>
-  d
-x5 =
-  d5 # ()
-
 class D6 d where
   d6 ::
     Prism'
       d
       ()
+  x6 ::
+    D6 d =>
+    d
+  x6 =
+    d6 # ()
 
 instance D6 Digit where
   d6 =
@@ -297,17 +285,16 @@ instance D6 Digit where
                D6 -> Just ()
                _ -> Nothing)
 
-x6 ::
-  D6 d =>
-  d
-x6 =
-  d6 # ()
-
 class D7 d where
   d7 ::
     Prism'
       d
       ()
+  x7 ::
+    D7 d =>
+    d
+  x7 =
+    d7 # ()
 
 instance D7 Digit where
   d7 =
@@ -317,17 +304,16 @@ instance D7 Digit where
                D7 -> Just ()
                _ -> Nothing)
 
-x7 ::
-  D7 d =>
-  d
-x7 =
-  d7 # ()
-
 class D8 d where
   d8 ::
     Prism'
       d
       ()
+  x8 ::
+    D8 d =>
+    d
+  x8 =
+    d8 # ()
 
 instance D8 Digit where
   d8 =
@@ -337,17 +323,16 @@ instance D8 Digit where
                D8 -> Just ()
                _ -> Nothing)
 
-x8 ::
-  D8 d =>
-  d
-x8 =
-  d8 # ()
-
 class D9 d where
   d9 ::
     Prism'
       d
       ()
+  x9 ::
+    D9 d =>
+    d
+  x9 =
+    d9 # ()
 
 instance D9 Digit where
   d9 =
@@ -357,41 +342,332 @@ instance D9 Digit where
                D9 -> Just ()
                _ -> Nothing)
 
-x9 ::
-  D9 d =>
-  d
-x9 =
-  d9 # ()
+class AsDigit a where
+  digit ::
+    Prism'
+      a
+      Digit
 
--- | A prism for using @Int@ as @Digit@.
+instance AsDigit Digit where
+  digit =
+    id      
+
+-- | 
 --
--- >>> 5 ^? digit
+-- >>> (5 :: Int) ^? digitIntegral
 -- Just 5
 --
--- >>> 0 ^? digit
+-- >>> (0 :: Int) ^? digitIntegral
 -- Just 0
 --
--- >>> 9 ^? digit
+-- >>> (9 :: Int) ^? digitIntegral
 -- Just 9
 --
--- >>> 10 ^? digit
+-- >>> (10 :: Int) ^? digitIntegral
 -- Nothing
 --
--- >>> (-5) ^? digit
+-- >>> ((-5) :: Int) ^? digitIntegral
 -- Nothing
 --
--- >>> digit # D5
+-- >>> digitIntegral # D5 :: Int
 -- 5
 --
--- >>> digit # D9
+-- >>> digitIntegral # D9 :: Int
 -- 9
 --
--- >>> digit # D0
+-- >>> digitIntegral # D0 :: Int
 -- 0
-digit ::
+instance AsDigit Int where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Int8) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Int8) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Int8) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Int8) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Int8) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Int8
+-- 5
+--
+-- >>> digitIntegral # D9 :: Int8
+-- 9
+--
+-- >>> digitIntegral # D0 :: Int8
+-- 0
+instance AsDigit Int8 where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Int16) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Int16) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Int16) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Int16) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Int16) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Int16
+-- 5
+--
+-- >>> digitIntegral # D9 :: Int16
+-- 9
+--
+-- >>> digitIntegral # D0 :: Int16
+-- 0   
+instance AsDigit Int16 where
+  digit =
+    digitIntegral
+    
+-- | 
+--
+-- >>> (5 :: Int32) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Int32) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Int32) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Int32) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Int32) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Int32
+-- 5
+--
+-- >>> digitIntegral # D9 :: Int32
+-- 9
+--
+-- >>> digitIntegral # D0 :: Int32
+-- 0
+instance AsDigit Int32 where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Int64) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Int64) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Int64) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Int64) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Int64) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Int64
+-- 5
+--
+-- >>> digitIntegral # D9 :: Int64
+-- 9
+--
+-- >>> digitIntegral # D0 :: Int64
+-- 0
+instance AsDigit Int64 where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Integer) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Integer) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Integer) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Integer) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Integer) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Integer
+-- 5
+--
+-- >>> digitIntegral # D9 :: Integer
+-- 9
+--
+-- >>> digitIntegral # D0 :: Integer
+-- 0
+instance AsDigit Integer where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Identity Int) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Identity Int) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Identity Int) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Identity Int) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Identity Int) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Identity Int
+-- Identity 5
+--
+-- >>> digitIntegral # D9 :: Identity Int
+-- Identity 9
+--
+-- >>> digitIntegral # D0 :: Identity Int
+-- Identity 0
+instance Integral a => AsDigit (Identity a) where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Const Int String) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Const Int String) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Const Int String) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Const Int String) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Const Int String) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Const Int String
+-- Const 5
+--
+-- >>> digitIntegral # D9 :: Const Int String
+-- Const 9
+--
+-- >>> digitIntegral # D0 :: Const Int String
+-- Const 0
+instance Integral a => AsDigit (Const a b) where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> (5 :: Word) ^? digitIntegral
+-- Just 5
+--
+-- >>> (0 :: Word) ^? digitIntegral
+-- Just 0
+--
+-- >>> (9 :: Word) ^? digitIntegral
+-- Just 9
+--
+-- >>> (10 :: Word) ^? digitIntegral
+-- Nothing
+--
+-- >>> ((-5) :: Word) ^? digitIntegral
+-- Nothing
+--
+-- >>> digitIntegral # D5 :: Word
+-- 5
+--
+-- >>> digitIntegral # D9 :: Word
+-- 9
+--
+-- >>> digitIntegral # D0 :: Word
+-- 0
+instance AsDigit Word where
+  digit =
+    digitIntegral
+
+-- | 
+--
+-- >>> '5' ^? digit
+-- Just 5
+--
+-- >>> '0' ^? digit
+-- Just 0
+--
+-- >>> '9' ^? digit
+-- Just 9
+--
+-- >>> 'a' ^? digit
+-- Nothing
+--
+-- >>> '@' ^? digit
+-- Nothing
+--
+-- >>> digit # D5 :: Char
+-- '5'
+--
+-- >>> digit # D9 :: Char
+-- '9'
+--
+-- >>> digit # D0 :: Char
+-- '0'
+instance AsDigit Char where
+  digit =
+    prism'
+      (\d -> case d of D0 -> '0'
+                       D1 -> '1'
+                       D2 -> '2'
+                       D3 -> '3'
+                       D4 -> '4'
+                       D5 -> '5'
+                       D6 -> '6'
+                       D7 -> '7'
+                       D8 -> '8'
+                       D9 -> '9')
+      (\n -> case n of '0' -> Just D0
+                       '1' -> Just D1
+                       '2' -> Just D2
+                       '3' -> Just D3
+                       '4' -> Just D4
+                       '5' -> Just D5
+                       '6' -> Just D6
+                       '7' -> Just D7
+                       '8' -> Just D8
+                       '9' -> Just D9
+                       _ -> Nothing)
+
+-- not exported
+digitIntegral ::
   Integral a =>
   Prism' a Digit
-digit =
+digitIntegral =
   prism'
     (\n -> case n of D0 -> 0
                      D1 -> 1
@@ -403,7 +679,6 @@ digit =
                      D7 -> 7
                      D8 -> 8
                      D9 -> 9)
-
     (\n -> case n of 0 -> Just D0
                      1 -> Just D1
                      2 -> Just D2
@@ -414,57 +689,6 @@ digit =
                      7 -> Just D7
                      8 -> Just D8
                      9 -> Just D9
-                     _ -> Nothing)
-
--- | A prism for using @Char@ as @Digit@.
---
--- >>> '5' ^? digitC
--- Just 5
---
--- >>> '0' ^? digitC
--- Just 0
---
--- >>> '9' ^? digitC
--- Just 9
---
--- >>> 'a' ^? digitC
--- Nothing
---
--- >>> '@' ^? digitC
--- Nothing
---
--- >>> digitC # D5
--- '5'
---
--- >>> digitC # D9
--- '9'
---
--- >>> digitC # D0
--- '0'
-digitC ::
-  Prism' Char Digit
-digitC =
-  prism'
-    (\d -> case d of D0 -> '0'
-                     D1 -> '1'
-                     D2 -> '2'
-                     D3 -> '3'
-                     D4 -> '4'
-                     D5 -> '5'
-                     D6 -> '6'
-                     D7 -> '7'
-                     D8 -> '8'
-                     D9 -> '9')
-    (\n -> case n of '0' -> Just D0
-                     '1' -> Just D1
-                     '2' -> Just D2
-                     '3' -> Just D3
-                     '4' -> Just D4
-                     '5' -> Just D5
-                     '6' -> Just D6
-                     '7' -> Just D7
-                     '8' -> Just D8
-                     '9' -> Just D9
                      _ -> Nothing)
 
 -- | A prism for the list of digits in an integer
@@ -512,9 +736,10 @@ digitlist ::
   Prism'
     a
     [Digit]
+-- THIS IS NOT A PRISM
 digitlist =
   prism'
-    (foldl' (\a b -> a * 10 + digit # b) 0)
+    (foldl' (\a b -> a * 10 + digitIntegral # b) 0)
     (\i ->  if  i < 0
               then
                 Nothing
@@ -571,7 +796,7 @@ mod10 ::
   -> Digit
 mod10 n =
   let r = n `mod` 10
-  in fromMaybe (mod10 r) (r ^? digit)
+  in fromMaybe (mod10 r) (r ^? digitIntegral)
 
 -- | Division/modulus with 10.
 --
@@ -610,7 +835,7 @@ parsedigit ::
   CharParsing p =>
   p Digit
 parsedigit =
-  let p = asum ((\d -> d <$ char (digitC # d)) <$> [D0 .. D9])
+  let p = asum ((\d -> d <$ char (digit # d)) <$> [D0 .. D9])
   in p <?> "digit"
 
 parsedigitlist ::
@@ -688,21 +913,31 @@ instance Show Digit where
 -- mod10D x = let y = mod x 10 in [digitQ|$y|]
 digitQ :: QuasiQuoter
 digitQ = QuasiQuoter {
-    quoteExp = dexp
-  , quotePat = dpat
-  , quoteType = error "not quotable"
-  , quoteDec = error "not quotable"
+    quoteExp =  let dexp ::
+                      [Char]
+                      -> ExpQ
+                    dexp ('$':vn) =
+                      varE (mkName vn)
+                    dexp (d:[]) =
+                      maybe (error "not a digit") (dataToExpQ (const Nothing)) (d ^? digit)
+                    dexp _ =
+                      error "not a digit"
+                in  dexp
+  , quotePat =  let dpat ::
+                      [Char]
+                      -> PatQ
+                    dpat ('$':vn) =
+                      varP (mkName vn)
+                    dpat (d:[]) =
+                      maybe (error "not a digit") (dataToPatQ (const Nothing)) (d ^? digit)
+                    dpat _ =
+                      error "not a digit"
+                in  dpat
+  , quoteType =
+      error "not quotable"
+  , quoteDec =
+      error "not quotable"
   }
-
-dexp :: [Char] -> ExpQ
-dexp ('$':vn) = varE (mkName vn)
-dexp (d:[])   = maybe (error "not a digit") (dataToExpQ (const Nothing)) (d ^? digitC)
-dexp _        = error "not a digit"
-
-dpat :: [Char] -> PatQ
-dpat ('$':vn) = varP (mkName vn)
-dpat (d:[])   = maybe (error "not a digit") (dataToPatQ (const Nothing)) (d ^? digitC)
-dpat _        = error "not a digit"
 
 newtype Digits =
   Digits [Digit]
@@ -723,8 +958,8 @@ digitsS ::
     Digits
 digitsS =
   prism'
-    (\(Digits d) -> (digitC #) <$> d)
-    (\s -> Digits <$> traverse (^? digitC) s)
+    (\(Digits d) -> (digit #) <$> d)
+    (\s -> Digits <$> traverse (^? digit) s)
 
 instance Cons Digits Digits Digit Digit where
   _Cons =
@@ -811,7 +1046,7 @@ instance Monoid Digits where
   -> Digit
   -> (Digit, Digit)
 a /+/ b =
-  let (x, r) = divMod10 (digit # a + digit # b)
+  let (x, r) = divMod10 (digitIntegral # a + digitIntegral # b)
   in (mod10 (x :: Integer), r) 
 
 -- |
@@ -863,5 +1098,5 @@ mantissa ::
   -> a
 mantissa d =
   let acc a (e, x) = 
-        a + fromIntegral (digit # x :: Int) * 10 ** fromIntegral (negate e :: Int)
+        a + fromIntegral (digitIntegral # x :: Int) * 10 ** fromIntegral (negate e :: Int)
   in foldl' acc 0 (zip [1..] (digitsI # d))
