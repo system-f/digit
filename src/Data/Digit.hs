@@ -663,34 +663,6 @@ instance AsDigit Char where
                        '9' -> Just D9
                        _ -> Nothing)
 
--- not exported
-digitIntegral ::
-  Integral a =>
-  Prism' a Digit
-digitIntegral =
-  prism'
-    (\n -> case n of D0 -> 0
-                     D1 -> 1
-                     D2 -> 2
-                     D3 -> 3
-                     D4 -> 4
-                     D5 -> 5
-                     D6 -> 6
-                     D7 -> 7
-                     D8 -> 8
-                     D9 -> 9)
-    (\n -> case n of 0 -> Just D0
-                     1 -> Just D1
-                     2 -> Just D2
-                     3 -> Just D3
-                     4 -> Just D4
-                     5 -> Just D5
-                     6 -> Just D6
-                     7 -> Just D7
-                     8 -> Just D8
-                     9 -> Just D9
-                     _ -> Nothing)
-
 -- | A prism for the list of digits in an integer
 --
 -- >>> 1234 ^? digitlist
@@ -1100,3 +1072,31 @@ mantissa d =
   let acc a (e, x) = 
         a + fromIntegral (digitIntegral # x :: Int) * 10 ** fromIntegral (negate e :: Int)
   in foldl' acc 0 (zip [1..] (digitsI # d))
+
+---- not exported
+digitIntegral ::
+  Integral a =>
+  Prism' a Digit
+digitIntegral =
+  prism'
+    (\n -> case n of D0 -> 0
+                     D1 -> 1
+                     D2 -> 2
+                     D3 -> 3
+                     D4 -> 4
+                     D5 -> 5
+                     D6 -> 6
+                     D7 -> 7
+                     D8 -> 8
+                     D9 -> 9)
+    (\n -> case n of 0 -> Just D0
+                     1 -> Just D1
+                     2 -> Just D2
+                     3 -> Just D3
+                     4 -> Just D4
+                     5 -> Just D5
+                     6 -> Just D6
+                     7 -> Just D7
+                     8 -> Just D8
+                     9 -> Just D9
+                     _ -> Nothing)
