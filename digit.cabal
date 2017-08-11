@@ -45,6 +45,8 @@ library
 
   exposed-modules:
                     Data.Digit
+                    Data.Digits
+                    Data.Digits1
 
 test-suite doctests
   type:
