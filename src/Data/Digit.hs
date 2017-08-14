@@ -8,13 +8,10 @@
 -- | A data type with ten nullary constructors [0-9] and combinators.
 module Data.Digit
 (
--- * Data type
   Digit
--- * Destructors
 , foldDigit
--- * Lenses
 , HasDigit(..)
--- * Prisms
+, AsDigit(..)
 , D0(..)
 , D1(..)
 , D2(..)
@@ -25,51 +22,22 @@ module Data.Digit
 , D7(..)
 , D8(..)
 , D9(..)
-, digitlist
-, AsDigit(..)
--- * mod operations
 , mod10
+, absrem10
 , divMod10
--- * Parsers
 , parsedigit
-, parsedigitlist
-, parsedigits
-, parsedigitlist1
-, skipdigitlist
-, skipdigitlist1
-, parsenotdigit
-, parsenotdigits
-, parsenotdigits1
-, skipnotdigits
-, skipnotdigits1
--- * Quasi-Quoters
 , digitQ
--- * Digits
-, Digits
-, digits
-, digitsI
-, digitsS
 , (/+/)
-, (.+.)
-, (.*.)
-, mantissa
 ) where
 
-import Control.Applicative(many, some)
 import Data.Data (Data)
-import Data.Foldable(foldl', asum)
-import Data.List(unfoldr)
-import Data.List.NonEmpty(some1)
 import Data.Maybe(fromMaybe)
-import Data.Monoid(mappend)
-import Data.Semigroup((<>))
-import Data.String(String)
 import Data.Typeable (Typeable)
 import Language.Haskell.TH(ExpQ, PatQ, varE, varP, mkName)
 import Language.Haskell.TH.Quote(QuasiQuoter(QuasiQuoter), quotePat, quoteExp, quoteDec, dataToExpQ, dataToPatQ, quoteType)
 import Prelude(fromEnum, Bounded, error) -- livin on the edge
-import Text.Parser.Char(CharParsing, char, satisfy)
-import Text.Parser.Combinators(skipMany, skipSome, (<?>))
+import Text.Parser.Char(CharParsing, char)
+import Text.Parser.Combinators((<?>))
 import Papa
 
 -- $setup
@@ -88,6 +56,10 @@ data Digit =
   | D8
   | D9
   deriving (Eq, Ord, Enum, Bounded, Data, Typeable)
+
+instance Show Digit where
+  show =
+    show . fromEnum
 
 -- | Catamorphism for @Digit@.
 --
@@ -663,80 +635,6 @@ instance AsDigit Char where
                        '9' -> Just D9
                        _ -> Nothing)
 
--- | A prism for the list of digits in an integer
---
--- >>> 1234 ^? digitlist
--- Just [1,2,3,4]
--- 
--- >>> 0 ^? digitlist
--- Just []
--- 
--- >>> 1 ^? digitlist
--- Just [1]
--- 
--- >>> 90 ^? digitlist
--- Just [9,0]
--- 
--- >>> 05 ^? digitlist
--- Just [5]
--- 
--- >>> 105 ^? digitlist
--- Just [1,0,5]
--- 
--- >>> (-1) ^? digitlist
--- Nothing
---
--- >>> digitlist # [D0]
--- 0
---
--- >>> digitlist # [D0, D1]
--- 1
---
--- >>> digitlist # [D1]
--- 1
---
--- >>> digitlist # [D1, D2, D3]
--- 123
---
--- >>> digitlist # [D1, D0, D3]
--- 103
---
--- >>> digitlist # [D1, D0, D3, D0]
--- 1030
-digitlist ::
-  Integral a =>
-  Prism'
-    a
-    [Digit]
--- THIS IS NOT A PRISM
-digitlist =
-  prism'
-    (foldl' (\a b -> a * 10 + digitIntegral # b) 0)
-    (\i ->  if  i < 0
-              then
-                Nothing
-              else 
-                Just (reverse (unfoldr (\n -> 
-                  let (x, r) = divMod10 n
-                  in  if x == 0
-                        then
-                          if r == D0
-                            then
-                              Nothing
-                            else
-                              Just (r, 0)
-                        else
-                              Just (r, x)) i))
-    )
-
-digits ::
-  Integral a =>
-  Prism'
-    a
-    Digits
-digits =
-  digitlist . digitsI
-
 -- | Modulus with 10.
 --
 -- >>> mod10 0
@@ -762,6 +660,9 @@ digits =
 --
 -- >>> mod10 (-1)
 -- 9
+--
+-- >>> mod10 (-12)
+-- 8
 mod10 ::
   Integral a =>
   a
@@ -769,6 +670,42 @@ mod10 ::
 mod10 n =
   let r = n `mod` 10
   in fromMaybe (mod10 r) (r ^? digitIntegral)
+
+-- | Absolute value of remainder 10.
+--
+-- >>> absrem10 0
+-- 0
+--
+-- >>> absrem10 1
+-- 1
+--
+-- >>> absrem10 8
+-- 8
+--
+-- >>> absrem10 9
+-- 9
+--
+-- >>> absrem10 10
+-- 0
+--
+-- >>> absrem10 90
+-- 0
+--
+-- >>> absrem10 91
+-- 1
+--
+-- >>> absrem10 (-1)
+-- 1
+--
+-- >>> absrem10 (-12)
+-- 2
+absrem10 ::
+  Integral a =>
+  a
+  -> Digit
+absrem10 n =
+  let r = abs n `rem` 10
+  in fromMaybe (absrem10 r) (r ^? digitIntegral)
 
 -- | Division/modulus with 10.
 --
@@ -808,71 +745,7 @@ parsedigit ::
   p Digit
 parsedigit =
   let p = asum ((\d -> d <$ char (digit # d)) <$> [D0 .. D9])
-  in p <?> "digit"
-
-parsedigitlist ::
-  CharParsing p =>
-  p [Digit]
-parsedigitlist =
-  many parsedigit
-
-parsedigits ::
-  CharParsing p =>
-  p Digits
-parsedigits = 
-  Digits <$> parsedigitlist
-
-parsedigitlist1 ::
-  CharParsing p =>
-  p (NonEmpty Digit)
-parsedigitlist1 =
-  some1 parsedigit
-
-skipdigitlist ::
-  CharParsing p =>
-  p ()
-skipdigitlist =
-  skipMany parsedigit
-
-skipdigitlist1 ::
-  CharParsing p =>
-  p ()
-skipdigitlist1 =
-  skipSome parsedigit
-
-parsenotdigit ::
-  CharParsing p =>
-  p Char
-parsenotdigit =
-  let p = satisfy (`notElem` ['0' .. '9'])
-  in p <?> "not digit"
-
-parsenotdigits ::
-  CharParsing p =>
-  p String
-parsenotdigits =
-  many parsenotdigit
-
-parsenotdigits1 ::
-  CharParsing p =>
-  p String
-parsenotdigits1 =
-  some parsenotdigit
-
-skipnotdigits ::
-  CharParsing p =>
-  p ()
-skipnotdigits =
-  skipMany parsenotdigit
-
-skipnotdigits1 ::
-  CharParsing p =>
-  p ()
-skipnotdigits1 =
-  skipSome parsenotdigit
-
-instance Show Digit where
-  show = show . fromEnum
+  in p <?> "Digit"
 
 -- | A QuasiQuoter for any range of @Digit@.
 --
@@ -911,83 +784,6 @@ digitQ = QuasiQuoter {
       error "not quotable"
   }
 
-newtype Digits =
-  Digits [Digit]
-  deriving (Eq, Ord, Show, Data, Typeable)
-
-digitsI ::
-  Iso'
-    [Digit]
-    Digits
-digitsI =
-  iso
-    Digits
-    (\(Digits x) -> x)
-
-digitsS ::
-  Prism'
-    String
-    Digits
-digitsS =
-  prism'
-    (\(Digits d) -> (digit #) <$> d)
-    (\s -> Digits <$> traverse (^? digit) s)
-
-instance Cons Digits Digits Digit Digit where
-  _Cons =
-    prism'
-      (\(h, Digits t) -> Digits (h:t))
-      (\(Digits d) -> case d of 
-                        [] ->
-                          Nothing
-                        (h:t) ->
-                          Just (h, Digits t))
-
-
-instance Snoc Digits Digits Digit Digit where
-  _Snoc =
-    prism'
-      (\(Digits t, z) -> Digits (t ++ [z]))
-      (\(Digits d) -> (\(a, b) -> (Digits a, b)) <$> d ^? _Snoc)
-
-instance AsEmpty Digits where
-  _Empty =
-    prism'
-      (\() -> Digits [])
-      (\(Digits d) -> case d of
-                        [] ->
-                          Just ()
-                        (_:_) ->
-                          Nothing)
-
-instance Each Digits Digits Digit Digit where
-  each f (Digits d) =
-    Digits <$> each f d
-
-type instance IxValue Digits = Digit
-type instance Index Digits = Int
-instance Ixed Digits where
-  ix i f (Digits d) =
-    Digits <$> ix i f d
-
-instance Plated Digits where
-  plate f (Digits d) =
-    Digits <$> plate (\x -> (\(Digits e) -> e) <$> f (Digits x)) d
-
-instance Reversing Digits where
-  reversing (Digits d) =
-    Digits (reversing d)
-
-instance Semigroup Digits where
-  Digits d <> Digits e =
-    Digits (d <> e)
-
-instance Monoid Digits where
-  mempty =
-    Digits mempty
-  mappend =
-    (<>)
-
 -- |
 --
 -- >>> D0 /+/ D0
@@ -1020,58 +816,6 @@ instance Monoid Digits where
 a /+/ b =
   let (x, r) = divMod10 (digitIntegral # a + digitIntegral # b)
   in (mod10 (x :: Integer), r) 
-
--- |
---
---
--- >>> Digits [x2] .+. Digits [x1, x0]
--- Digits [1,2]
---
--- >>> Digits [x1, x2, x3] .+. Digits [x4, x5, x6]
--- Digits [5,7,9]
-(.+.) ::
-  Digits
-  -> Digits
-  -> Digits
-d .+. e =
-  fromMaybe mempty ((digits # d + digits # e :: Integer) ^? digits)
-
--- |
---
---
--- >>> Digits [x2] .*. Digits [x1, x0]
--- Digits [2,0]
---
--- >>> Digits [x1, x2, x3] .*. Digits [x4, x5, x6]
--- Digits [5,6,0,8,8]
-(.*.) ::
-  Digits
-  -> Digits
-  -> Digits
-d .*. e =
-  fromMaybe mempty ((digits # d * digits # e :: Integer) ^? digits)
-
--- |
---
--- >>> mantissa (Digits []) :: Double
--- 0.0
---
--- >>> mantissa (Digits [x0]) :: Double
--- 0.0
---
--- >>> mantissa (Digits [x1]) :: Double
--- 0.1
---
--- >>> mantissa (Digits [x1, x9]) :: Double
--- 0.19
-mantissa ::
-  Floating a =>
-  Digits
-  -> a
-mantissa d =
-  let acc a (e, x) = 
-        a + fromIntegral (digitIntegral # x :: Int) * 10 ** fromIntegral (negate e :: Int)
-  in foldl' acc 0 (zip [1..] (digitsI # d))
 
 ---- not exported
 digitIntegral ::
