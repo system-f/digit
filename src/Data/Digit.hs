@@ -4,6 +4,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 -- | A data type with ten nullary constructors [0-9] and combinators.
 module Data.Digit
