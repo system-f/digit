@@ -607,7 +607,7 @@ parseHEXADECIMAL =
     , parseD
     , parseE
     , parseF
-    ] <?> "parseHEXADECIMAL"
+    ] <?> "HEXADECIMAL"
 
 parseHexadecimal ::
   (Hexadecimal d, CharParsing p) =>
@@ -622,7 +622,7 @@ parseHexadecimal =
     , parsed
     , parsee
     , parsef
-    ] <?> "parseHexadecimal"
+    ] <?> "Hexadecimal"
 
 parseHEXadecimal ::
   (HEXadecimal d, CharParsing p) =>
