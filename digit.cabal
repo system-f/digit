@@ -44,6 +44,7 @@ library
                     src
 
   exposed-modules:
+                    Data.Digit2
                     Data.Digit
                     Data.Digits
                     Data.Digits1
