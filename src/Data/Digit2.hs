@@ -5,6 +5,10 @@ module Data.Digit2(
 , Decimal
 , OctalNoZero
 , Octal
+, HEXadecimalNoZero
+, HEXadecimal
+, HEXADECIMALNoZero
+, HEXADECIMAL
 , HexadecimalNoZero
 , Hexadecimal
 , D0(..)
@@ -23,6 +27,12 @@ module Data.Digit2(
 , DD(..)
 , DE(..)
 , DF(..)
+, Da(..)
+, Db(..)
+, Dc(..)
+, Dd(..)
+, De(..)
+, Df(..)
 , parse0
 , parse1
 , parse2
@@ -39,6 +49,18 @@ module Data.Digit2(
 , parseD
 , parseE
 , parseF
+, parsea
+, parseb
+, parsec
+, parsed
+, parsee
+, parsef
+, parseAa
+, parseBb
+, parseCc
+, parseDd
+, parseEe
+, parseFf
 ) where
 
 import Control.Lens
@@ -57,8 +79,20 @@ type OctalNoZero d =
 type Octal d =
   (D0 d, OctalNoZero d)
 
-type HexadecimalNoZero d =
+type HEXadecimalNoZero d =
+  (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, DA d, DB d, DC d, DD d, DE d, DF d, Da d, Db d, Dc d, Dd d, De d, De d, Df d)
+
+type HEXadecimal d =
+  (D0 d, HEXadecimalNoZero d)
+
+type HEXADECIMALNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, DA d, DB d, DC d, DD d, DE d, DF d)
+
+type HEXADECIMAL d =
+  (D0 d, HEXADECIMALNoZero d)
+
+type HexadecimalNoZero d =
+  (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, Da d, Db d, Dc d, Dd d, De d, De d, Df d)
 
 type Hexadecimal d =
   (D0 d, HexadecimalNoZero d)
@@ -383,6 +417,163 @@ parseF ::
 parseF =
   xF <$ char 'F' <?> "F"
 
+class Da d where
+  da ::
+    Prism'
+      d
+      ()
+  xa ::
+    d
+  xa =
+    da # ()
+
+instance Da () where
+  da =
+    id
+    
+parsea ::
+  (Da d, CharParsing p) =>
+  p d
+parsea =
+  xa <$ char 'a' <?> "a"
+
+class Db d where
+  db ::
+    Prism'
+      d
+      ()
+  xb ::
+    d
+  xb =
+    db # ()
+
+instance Db () where
+  db =
+    id
+    
+parseb ::
+  (Db d, CharParsing p) =>
+  p d
+parseb =
+  xb <$ char 'b' <?> "b"
+
+class Dc d where
+  dc ::
+    Prism'
+      d
+      ()
+  xc ::
+    d
+  xc =
+    dc # ()
+
+instance Dc () where
+  dc =
+    id
+    
+parsec ::
+  (Dc d, CharParsing p) =>
+  p d
+parsec =
+  xc <$ char 'c' <?> "c"
+
+class Dd d where
+  dd ::
+    Prism'
+      d
+      ()
+  xd ::
+    d
+  xd =
+    dd # ()
+
+instance Dd () where
+  dd =
+    id
+    
+parsed ::
+  (Dd d, CharParsing p) =>
+  p d
+parsed =
+  xd <$ char 'd' <?> "d"
+
+class De d where
+  de ::
+    Prism'
+      d
+      ()
+  xe ::
+    d
+  xe =
+    de # ()
+
+instance De () where
+  de =
+    id
+    
+parsee ::
+  (De d, CharParsing p) =>
+  p d
+parsee =
+  xe <$ char 'e' <?> "e"
+
+class Df d where
+  df ::
+    Prism'
+      d
+      ()
+  xf ::
+    d
+  xf =
+    df # ()
+
+instance Df () where
+  df =
+    id
+    
+parsef ::
+  (Df d, CharParsing p) =>
+  p d
+parsef =
+  xf <$ char 'f' <?> "f"
+
+parseAa ::
+  (DA d, Da d, CharParsing p) =>
+  p d
+parseAa =
+  choice [parseA, parsea]
+
+parseBb ::
+  (DB d, Db d, CharParsing p) =>
+  p d
+parseBb =
+  choice [parseB, parseb]
+
+parseCc ::
+  (DC d, Dc d, CharParsing p) =>
+  p d
+parseCc =
+  choice [parseC, parsec]
+
+parseDd ::
+  (DD d, Dd d, CharParsing p) =>
+  p d
+parseDd =
+  choice [parseD, parsed]
+
+parseEe ::
+  (DE d, De d, CharParsing p) =>
+  p d
+parseEe =
+  choice [parseE, parsee]
+
+parseFf ::
+  (DF d, Df d, CharParsing p) =>
+  p d
+parseFf =
+  choice [parseF, parsef]
+
+
 ----
 
 parseDecimal ::
@@ -402,3 +593,48 @@ parseDecimal =
     , parse8
     , parse9
     ] <?> "decimal"
+
+parseHEXADECIMAL ::
+  (HEXADECIMAL d, CharParsing p) =>
+  p d
+parseHEXADECIMAL =
+  choice
+    [
+      parseDecimal
+    , parseA
+    , parseB
+    , parseC
+    , parseD
+    , parseE
+    , parseF
+    ] <?> "parseHEXADECIMAL"
+
+parseHexadecimal ::
+  (Hexadecimal d, CharParsing p) =>
+  p d
+parseHexadecimal =
+  choice
+    [
+      parseDecimal
+    , parsea
+    , parseb
+    , parsec
+    , parsed
+    , parsee
+    , parsef
+    ] <?> "parseHexadecimal"
+
+parseHEXadecimal ::
+  (HEXadecimal d, CharParsing p) =>
+  p d
+parseHEXadecimal =
+  choice
+    [
+      parseDecimal
+    , parseAa
+    , parseBb
+    , parseCc
+    , parseDd
+    , parseEe
+    , parseFf
+    ] <?> "HEXadecimal"
