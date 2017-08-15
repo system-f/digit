@@ -1,3 +1,13 @@
+0.4.0
+
+* Refactor to classy prisms for each digit.
+* Data types for other bases (binary, octal, hexadecimal).
+
+0.3.0
+
+* Refactor decimal type.
+* `Digits` and `Digits1` data types for list of digits.
+
 0.2.9
 
 * Remove redundant type-class constraints.
