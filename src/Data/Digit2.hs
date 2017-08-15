@@ -23,6 +23,22 @@ module Data.Digit2(
 , DD(..)
 , DE(..)
 , DF(..)
+, parse0
+, parse1
+, parse2
+, parse3
+, parse4
+, parse5
+, parse6
+, parse7
+, parse8
+, parse9
+, parseA
+, parseB
+, parseC
+, parseD
+, parseE
+, parseF
 ) where
 
 import Control.Lens
@@ -386,4 +402,3 @@ parseDecimal =
     , parse8
     , parse9
     ] <?> "decimal"
-    
