@@ -5,8 +5,8 @@ module Data.Digit2(
 , Decimal
 , OctalNoZero
 , Octal
-, HEXadecimalNoZero
-, HEXadecimal
+, HeXaDeCiMaLNoZero
+, HeXaDeCiMaL
 , HEXADECIMALNoZero
 , HEXADECIMAL
 , HexadecimalNoZero
@@ -67,23 +67,23 @@ import Control.Lens
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
 
-type DecimalNoZero d =
-  (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d)
-
-type Decimal d =
-  (D0 d, DecimalNoZero d)
-
 type OctalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d)
 
 type Octal d =
   (D0 d, OctalNoZero d)
 
-type HEXadecimalNoZero d =
+type DecimalNoZero d =
+  (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d)
+
+type Decimal d =
+  (D0 d, DecimalNoZero d)
+
+type HeXaDeCiMaLNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, DA d, DB d, DC d, DD d, DE d, DF d, Da d, Db d, Dc d, Dd d, De d, De d, Df d)
 
-type HEXadecimal d =
-  (D0 d, HEXadecimalNoZero d)
+type HeXaDeCiMaL d =
+  (D0 d, HeXaDeCiMaLNoZero d)
 
 type HEXADECIMALNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, DA d, DB d, DC d, DD d, DE d, DF d)
@@ -130,7 +130,7 @@ class D1 d where
 instance D1 () where
   d1 =
     id
-    
+
 parse1 ::
   (D1 d, CharParsing p) =>
   p d
@@ -576,14 +576,38 @@ parseFf =
 
 ----
 
-parseDecimal ::
-  (Decimal d, CharParsing p) =>
+parseOctalNoZero ::
+  (OctalNoZero d, CharParsing p) =>
   p d
-parseDecimal =
+parseOctalNoZero =
+  choice
+    [
+      parse1
+    , parse2
+    , parse3
+    , parse4
+    , parse5
+    , parse6
+    , parse7
+    ] <?> "OctalNoZero"
+
+parseOctal ::
+  (Octal d, CharParsing p) =>
+  p d
+parseOctal =
   choice
     [
       parse0
-    , parse1
+    , parseOctalNoZero
+    ] <?> "Octal"
+
+parseDecimalNoZero ::
+  (DecimalNoZero d, CharParsing p) =>
+  p d
+parseDecimalNoZero =
+  choice
+    [
+      parse1
     , parse2
     , parse3
     , parse4
@@ -592,7 +616,32 @@ parseDecimal =
     , parse7
     , parse8
     , parse9
-    ] <?> "decimal"
+    ] <?> "DecimalNoZero"
+
+parseDecimal ::
+  (Decimal d, CharParsing p) =>
+  p d
+parseDecimal =
+  choice
+    [
+      parse0
+    , parseDecimalNoZero
+    ] <?> "Decimal"
+
+parseHEXADECIMALNoZero ::
+  (HEXADECIMALNoZero d, CharParsing p) =>
+  p d
+parseHEXADECIMALNoZero =
+  choice
+    [
+      parseDecimalNoZero
+    , parseA
+    , parseB
+    , parseC
+    , parseD
+    , parseE
+    , parseF
+    ] <?> "HEXADECIMALNoZero"
 
 parseHEXADECIMAL ::
   (HEXADECIMAL d, CharParsing p) =>
@@ -600,14 +649,24 @@ parseHEXADECIMAL ::
 parseHEXADECIMAL =
   choice
     [
-      parseDecimal
-    , parseA
-    , parseB
-    , parseC
-    , parseD
-    , parseE
-    , parseF
+      parse0
+    , parseHEXADECIMALNoZero
     ] <?> "HEXADECIMAL"
+
+parseHexadecimalNoZero ::
+  (HexadecimalNoZero d, CharParsing p) =>
+  p d
+parseHexadecimalNoZero =
+  choice
+    [
+      parseDecimalNoZero
+    , parsea
+    , parseb
+    , parsec
+    , parsed
+    , parsee
+    , parsef
+    ] <?> "HexadecimalNoZero"
 
 parseHexadecimal ::
   (Hexadecimal d, CharParsing p) =>
@@ -615,26 +674,31 @@ parseHexadecimal ::
 parseHexadecimal =
   choice
     [
-      parseDecimal
-    , parsea
-    , parseb
-    , parsec
-    , parsed
-    , parsee
-    , parsef
+      parse0
+    , parseHexadecimalNoZero
     ] <?> "Hexadecimal"
 
-parseHEXadecimal ::
-  (HEXadecimal d, CharParsing p) =>
+parseHeXaDeCiMaLNoZero ::
+  (HeXaDeCiMaLNoZero d, CharParsing p) =>
   p d
-parseHEXadecimal =
+parseHeXaDeCiMaLNoZero =
   choice
     [
-      parseDecimal
+      parseDecimalNoZero
     , parseAa
     , parseBb
     , parseCc
     , parseDd
     , parseEe
     , parseFf
-    ] <?> "HEXadecimal"
+    ] <?> "HeXaDeCiMaLNoZero"
+
+parseHeXaDeCiMaL ::
+  (HeXaDeCiMaL d, CharParsing p) =>
+  p d
+parseHeXaDeCiMaL =
+  choice
+    [
+      parse0
+    , parseHeXaDeCiMaLNoZero
+    ] <?> "HeXaDeCiMaL"
