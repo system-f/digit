@@ -1,4 +1,9 @@
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Data.Digit2(
   DecimalNoZero
@@ -61,11 +66,33 @@ module Data.Digit2(
 , parseDd
 , parseEe
 , parseFf
+, parseBinaryNoZero
+, parseBinary
+, parseOctalNoZero
+, parseOctal
+, parseDecimalNoZero
+, parseDecimal
+, parseHEXADECIMALNoZero
+, parseHEXADECIMAL
+, parseHexadecimalNoZero
+, parseHexadecimal
+, parseHeXaDeCiMaLNoZero
+, parseHeXaDeCiMaL
 ) where
 
-import Control.Lens
+import Control.Lens hiding ((<.>))
+import Data.Functor.Apply
+import Data.Functor.Bind
+import Data.Semigroup
+import Data.Semigroup.Foldable
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
+
+type BinaryNoZero d =
+  D1 d
+
+type Binary d =
+  (D0 d, BinaryNoZero d)
 
 type OctalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d)
@@ -576,6 +603,22 @@ parseFf =
 
 ----
 
+parseBinaryNoZero ::
+  (BinaryNoZero d, CharParsing p) =>
+  p d
+parseBinaryNoZero =
+  parse1 <?> "BinaryNoZero"
+
+parseBinary ::
+  (Binary d, CharParsing p) =>
+  p d
+parseBinary =
+  choice
+    [
+      parse0
+    , parseBinaryNoZero
+    ] <?> "Binary"
+
 parseOctalNoZero ::
   (OctalNoZero d, CharParsing p) =>
   p d
@@ -702,3 +745,272 @@ parseHeXaDeCiMaL =
       parse0
     , parseHeXaDeCiMaLNoZero
     ] <?> "HeXaDeCiMaL"
+
+----
+
+newtype Digit0 a =
+  Digit0 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D0 a => D0 (Digit0 a) where
+  d0 =
+    _Wrapped . d0
+
+instance Functor Digit0 where
+  fmap f (Digit0 a) =
+    Digit0 (f a)
+    
+instance Apply Digit0 where
+  Digit0 f <.> Digit0 a =
+    Digit0 (f a)
+
+instance Applicative Digit0 where
+  pure =
+    Digit0
+  (<*>) =
+    (<.>)
+
+instance Bind Digit0 where
+  Digit0 a >>- f =
+    f a
+
+instance Monad Digit0 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit0 where
+  foldMap f (Digit0 a) = 
+    f a
+
+instance Foldable1 Digit0 where
+  foldMap1 f (Digit0 a) = 
+    f a
+
+instance Traversable Digit0 where
+  traverse f (Digit0 a) = 
+    Digit0 <$> f a
+
+instance Traversable1 Digit0 where
+  traverse1 f (Digit0 a) = 
+    Digit0 <$> f a
+
+instance Semigroup a => Semigroup (Digit0 a) where
+  Digit0 x <> Digit0 y =
+    Digit0 (x <> y)
+
+instance Monoid a => Monoid (Digit0 a) where
+  Digit0 x `mappend` Digit0 y =
+    Digit0 (x `mappend` y)
+  mempty =
+    Digit0 mempty
+
+instance Field1 (Digit0 a) (Digit0 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit0 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit0 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit0 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit0 a) (Digit0 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit0 a) = 
+  ()
+type instance IxValue (Digit0 a) =
+  a
+instance Ixed (Digit0 a) where
+  ix () f (Digit0 a) =
+    Digit0 <$> f a
+
+makeWrapped ''Digit0
+
+
+newtype Digit1 a =
+  Digit1 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D1 a => D1 (Digit1 a) where
+  d1 =
+    _Wrapped . d1
+
+instance Functor Digit1 where
+  fmap f (Digit1 a) =
+    Digit1 (f a)
+    
+instance Apply Digit1 where
+  Digit1 f <.> Digit1 a =
+    Digit1 (f a)
+
+instance Applicative Digit1 where
+  pure =
+    Digit1
+  (<*>) =
+    (<.>)
+
+instance Bind Digit1 where
+  Digit1 a >>- f =
+    f a
+
+instance Monad Digit1 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit1 where
+  foldMap f (Digit1 a) = 
+    f a
+
+instance Foldable1 Digit1 where
+  foldMap1 f (Digit1 a) = 
+    f a
+
+instance Traversable Digit1 where
+  traverse f (Digit1 a) = 
+    Digit1 <$> f a
+
+instance Traversable1 Digit1 where
+  traverse1 f (Digit1 a) = 
+    Digit1 <$> f a
+
+instance Semigroup a => Semigroup (Digit1 a) where
+  Digit1 x <> Digit1 y =
+    Digit1 (x <> y)
+
+instance Monoid a => Monoid (Digit1 a) where
+  Digit1 x `mappend` Digit1 y =
+    Digit1 (x `mappend` y)
+  mempty =
+    Digit1 mempty
+
+instance Field1 (Digit1 a) (Digit1 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit1 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit1 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit1 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit1 a) (Digit1 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit1 a) = 
+  ()
+type instance IxValue (Digit1 a) =
+  a
+instance Ixed (Digit1 a) where
+  ix () f (Digit1 a) =
+    Digit1 <$> f a
+
+makeWrapped ''Digit1
+
+-- todo: All other digits
+
+instance D0 d => D0 (Either d x) where
+  d0 =
+    _Left . d0
+    
+instance D1 d => D1 (Either d x) where
+  d1 =
+    _Left . d1
+
+instance D2 d => D2 (Either d x) where
+  d2 =
+    _Left . d2
+
+instance D3 d => D3 (Either d x) where
+  d3 =
+    _Left . d3
+
+instance D4 d => D4 (Either d x) where
+  d4 =
+    _Left . d4
+
+instance D5 d => D5 (Either d x) where
+  d5 =
+    _Left . d5
+
+instance D6 d => D6 (Either d x) where
+  d6 =
+    _Left . d6
+
+instance D7 d => D7 (Either d x) where
+  d7 =
+    _Left . d7
+
+instance D8 d => D8 (Either d x) where
+  d8 =
+    _Left . d8
+
+instance D9 d => D9 (Either d x) where
+  d9 =
+    _Left . d9
+
+instance Da d => Da (Either d x) where
+  da =
+    _Left . da
+
+instance Db d => Db (Either d x) where
+  db =
+    _Left . db
+
+instance Dc d => Dc (Either d x) where
+  dc =
+    _Left . dc
+
+instance Dd d => Dd (Either d x) where
+  dd =
+    _Left . dd
+
+instance De d => De (Either d x) where
+  de =
+    _Left . de
+
+instance Df d => Df (Either d x) where
+  df =
+    _Left . df
+
+instance DA d => DA (Either d x) where
+  dA =
+    _Left . dA
+
+instance DB d => DB (Either d x) where
+  dB =
+    _Left . dB
+
+instance DC d => DC (Either d x) where
+  dC =
+    _Left . dC
+
+instance DD d => DD (Either d x) where
+  dD =
+    _Left . dD
+
+instance DE d => DE (Either d x) where
+  dE =
+    _Left . dE
+
+instance DF d => DF (Either d x) where
+  dF =
+    _Left . dF

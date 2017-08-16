@@ -36,6 +36,7 @@ library
                     , semigroups       >= 0.12 && < 1.0
                     , template-haskell >= 2.8 && < 3
                     , papa             >= 0.3 && < 0.4
+                    , semigroupoids
                     
   ghc-options:
                     -Wall

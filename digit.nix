@@ -1,12 +1,13 @@
 { mkDerivation, base, directory, doctest, filepath, lens, papa
-, parsec, parsers, QuickCheck, semigroups, stdenv, template-haskell
+, parsec, parsers, QuickCheck, semigroupoids, semigroups, stdenv
+, template-haskell
 }:
 mkDerivation {
   pname = "digit";
   version = "0.3.0";
   src = ./.;
   libraryHaskellDepends = [
-    base lens papa parsers semigroups template-haskell
+    base lens papa parsers semigroupoids semigroups template-haskell
   ];
   testHaskellDepends = [
     base directory doctest filepath parsec QuickCheck template-haskell
