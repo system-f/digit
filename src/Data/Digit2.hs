@@ -6,7 +6,9 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Data.Digit2(
-  DecimalNoZero
+  BinaryNoZero
+, Binary
+, DecimalNoZero
 , Decimal
 , OctalNoZero
 , Octal
