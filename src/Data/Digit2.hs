@@ -88,6 +88,9 @@ import Data.Semigroup.Foldable
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
 
+-- $setup
+-- >>> import Text.Parsec
+
 type BinaryNoZero d =
   D1 d
 
@@ -836,7 +839,6 @@ instance Ixed (Digit0 a) where
 
 makeWrapped ''Digit0
 
-
 newtype Digit1 a =
   Digit1 a
   deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
@@ -925,7 +927,709 @@ instance Ixed (Digit1 a) where
 
 makeWrapped ''Digit1
 
--- todo: All other digits
+newtype Digit2 a =
+  Digit2 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D2 a => D2 (Digit2 a) where
+  d2 =
+    _Wrapped . d2
+
+instance Functor Digit2 where
+  fmap f (Digit2 a) =
+    Digit2 (f a)
+    
+instance Apply Digit2 where
+  Digit2 f <.> Digit2 a =
+    Digit2 (f a)
+
+instance Applicative Digit2 where
+  pure =
+    Digit2
+  (<*>) =
+    (<.>)
+
+instance Bind Digit2 where
+  Digit2 a >>- f =
+    f a
+
+instance Monad Digit2 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit2 where
+  foldMap f (Digit2 a) = 
+    f a
+
+instance Foldable1 Digit2 where
+  foldMap1 f (Digit2 a) = 
+    f a
+
+instance Traversable Digit2 where
+  traverse f (Digit2 a) = 
+    Digit2 <$> f a
+
+instance Traversable1 Digit2 where
+  traverse1 f (Digit2 a) = 
+    Digit2 <$> f a
+
+instance Semigroup a => Semigroup (Digit2 a) where
+  Digit2 x <> Digit2 y =
+    Digit2 (x <> y)
+
+instance Monoid a => Monoid (Digit2 a) where
+  Digit2 x `mappend` Digit2 y =
+    Digit2 (x `mappend` y)
+  mempty =
+    Digit2 mempty
+
+instance Field1 (Digit2 a) (Digit2 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit2 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit2 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit2 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit2 a) (Digit2 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit2 a) = 
+  ()
+type instance IxValue (Digit2 a) =
+  a
+instance Ixed (Digit2 a) where
+  ix () f (Digit2 a) =
+    Digit2 <$> f a
+
+makeWrapped ''Digit2
+
+newtype Digit3 a =
+  Digit3 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D3 a => D3 (Digit3 a) where
+  d3 =
+    _Wrapped . d3
+
+instance Functor Digit3 where
+  fmap f (Digit3 a) =
+    Digit3 (f a)
+    
+instance Apply Digit3 where
+  Digit3 f <.> Digit3 a =
+    Digit3 (f a)
+
+instance Applicative Digit3 where
+  pure =
+    Digit3
+  (<*>) =
+    (<.>)
+
+instance Bind Digit3 where
+  Digit3 a >>- f =
+    f a
+
+instance Monad Digit3 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit3 where
+  foldMap f (Digit3 a) = 
+    f a
+
+instance Foldable1 Digit3 where
+  foldMap1 f (Digit3 a) = 
+    f a
+
+instance Traversable Digit3 where
+  traverse f (Digit3 a) = 
+    Digit3 <$> f a
+
+instance Traversable1 Digit3 where
+  traverse1 f (Digit3 a) = 
+    Digit3 <$> f a
+
+instance Semigroup a => Semigroup (Digit3 a) where
+  Digit3 x <> Digit3 y =
+    Digit3 (x <> y)
+
+instance Monoid a => Monoid (Digit3 a) where
+  Digit3 x `mappend` Digit3 y =
+    Digit3 (x `mappend` y)
+  mempty =
+    Digit3 mempty
+
+instance Field1 (Digit3 a) (Digit3 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit3 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit3 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit3 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit3 a) (Digit3 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit3 a) = 
+  ()
+type instance IxValue (Digit3 a) =
+  a
+instance Ixed (Digit3 a) where
+  ix () f (Digit3 a) =
+    Digit3 <$> f a
+
+makeWrapped ''Digit3
+
+newtype Digit4 a =
+  Digit4 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D4 a => D4 (Digit4 a) where
+  d4 =
+    _Wrapped . d4
+
+instance Functor Digit4 where
+  fmap f (Digit4 a) =
+    Digit4 (f a)
+    
+instance Apply Digit4 where
+  Digit4 f <.> Digit4 a =
+    Digit4 (f a)
+
+instance Applicative Digit4 where
+  pure =
+    Digit4
+  (<*>) =
+    (<.>)
+
+instance Bind Digit4 where
+  Digit4 a >>- f =
+    f a
+
+instance Monad Digit4 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit4 where
+  foldMap f (Digit4 a) = 
+    f a
+
+instance Foldable1 Digit4 where
+  foldMap1 f (Digit4 a) = 
+    f a
+
+instance Traversable Digit4 where
+  traverse f (Digit4 a) = 
+    Digit4 <$> f a
+
+instance Traversable1 Digit4 where
+  traverse1 f (Digit4 a) = 
+    Digit4 <$> f a
+
+instance Semigroup a => Semigroup (Digit4 a) where
+  Digit4 x <> Digit4 y =
+    Digit4 (x <> y)
+
+instance Monoid a => Monoid (Digit4 a) where
+  Digit4 x `mappend` Digit4 y =
+    Digit4 (x `mappend` y)
+  mempty =
+    Digit4 mempty
+
+instance Field1 (Digit4 a) (Digit4 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit4 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit4 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit4 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit4 a) (Digit4 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit4 a) = 
+  ()
+type instance IxValue (Digit4 a) =
+  a
+instance Ixed (Digit4 a) where
+  ix () f (Digit4 a) =
+    Digit4 <$> f a
+
+makeWrapped ''Digit4
+
+newtype Digit5 a =
+  Digit5 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D5 a => D5 (Digit5 a) where
+  d5 =
+    _Wrapped . d5
+
+instance Functor Digit5 where
+  fmap f (Digit5 a) =
+    Digit5 (f a)
+    
+instance Apply Digit5 where
+  Digit5 f <.> Digit5 a =
+    Digit5 (f a)
+
+instance Applicative Digit5 where
+  pure =
+    Digit5
+  (<*>) =
+    (<.>)
+
+instance Bind Digit5 where
+  Digit5 a >>- f =
+    f a
+
+instance Monad Digit5 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit5 where
+  foldMap f (Digit5 a) = 
+    f a
+
+instance Foldable1 Digit5 where
+  foldMap1 f (Digit5 a) = 
+    f a
+
+instance Traversable Digit5 where
+  traverse f (Digit5 a) = 
+    Digit5 <$> f a
+
+instance Traversable1 Digit5 where
+  traverse1 f (Digit5 a) = 
+    Digit5 <$> f a
+
+instance Semigroup a => Semigroup (Digit5 a) where
+  Digit5 x <> Digit5 y =
+    Digit5 (x <> y)
+
+instance Monoid a => Monoid (Digit5 a) where
+  Digit5 x `mappend` Digit5 y =
+    Digit5 (x `mappend` y)
+  mempty =
+    Digit5 mempty
+
+instance Field1 (Digit5 a) (Digit5 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit5 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit5 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit5 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit5 a) (Digit5 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit5 a) = 
+  ()
+type instance IxValue (Digit5 a) =
+  a
+instance Ixed (Digit5 a) where
+  ix () f (Digit5 a) =
+    Digit5 <$> f a
+
+makeWrapped ''Digit5
+
+newtype Digit6 a =
+  Digit6 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D6 a => D6 (Digit6 a) where
+  d6  =
+    _Wrapped . d6
+
+instance Functor Digit6 where
+  fmap f (Digit6 a) =
+    Digit6 (f a)
+    
+instance Apply Digit6 where
+  Digit6 f <.> Digit6 a =
+    Digit6 (f a)
+
+instance Applicative Digit6 where
+  pure =
+    Digit6
+  (<*>) =
+    (<.>)
+
+instance Bind Digit6 where
+  Digit6 a >>- f =
+    f a
+
+instance Monad Digit6 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit6 where
+  foldMap f (Digit6 a) = 
+    f a
+
+instance Foldable1 Digit6 where
+  foldMap1 f (Digit6 a) = 
+    f a
+
+instance Traversable Digit6 where
+  traverse f (Digit6 a) = 
+    Digit6 <$> f a
+
+instance Traversable1 Digit6 where
+  traverse1 f (Digit6 a) = 
+    Digit6 <$> f a
+
+instance Semigroup a => Semigroup (Digit6 a) where
+  Digit6 x <> Digit6 y =
+    Digit6 (x <> y)
+
+instance Monoid a => Monoid (Digit6 a) where
+  Digit6 x `mappend` Digit6 y =
+    Digit6 (x `mappend` y)
+  mempty =
+    Digit6 mempty
+
+instance Field1 (Digit6 a) (Digit6 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit6 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit6 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit6 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit6 a) (Digit6 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit6 a) = 
+  ()
+type instance IxValue (Digit6 a) =
+  a
+instance Ixed (Digit6 a) where
+  ix () f (Digit6 a) =
+    Digit6 <$> f a
+
+makeWrapped ''Digit6
+
+newtype Digit7 a =
+  Digit7 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D7 a => D7 (Digit7 a) where
+  d7  =
+    _Wrapped . d7
+
+instance Functor Digit7 where
+  fmap f (Digit7 a) =
+    Digit7 (f a)
+    
+instance Apply Digit7 where
+  Digit7 f <.> Digit7 a =
+    Digit7 (f a)
+
+instance Applicative Digit7 where
+  pure =
+    Digit7
+  (<*>) =
+    (<.>)
+
+instance Bind Digit7 where
+  Digit7 a >>- f =
+    f a
+
+instance Monad Digit7 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit7 where
+  foldMap f (Digit7 a) = 
+    f a
+
+instance Foldable1 Digit7 where
+  foldMap1 f (Digit7 a) = 
+    f a
+
+instance Traversable Digit7 where
+  traverse f (Digit7 a) = 
+    Digit7 <$> f a
+
+instance Traversable1 Digit7 where
+  traverse1 f (Digit7 a) = 
+    Digit7 <$> f a
+
+instance Semigroup a => Semigroup (Digit7 a) where
+  Digit7 x <> Digit7 y =
+    Digit7 (x <> y)
+
+instance Monoid a => Monoid (Digit7 a) where
+  Digit7 x `mappend` Digit7 y =
+    Digit7 (x `mappend` y)
+  mempty =
+    Digit7 mempty
+
+instance Field1 (Digit7 a) (Digit7 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit7 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit7 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit7 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit7 a) (Digit7 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit7 a) = 
+  ()
+type instance IxValue (Digit7 a) =
+  a
+instance Ixed (Digit7 a) where
+  ix () f (Digit7 a) =
+    Digit7 <$> f a
+
+makeWrapped ''Digit7
+
+newtype Digit8 a =
+  Digit8 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D8 a => D8 (Digit8 a) where
+  d8  =
+    _Wrapped . d8
+
+instance Functor Digit8 where
+  fmap f (Digit8 a) =
+    Digit8 (f a)
+    
+instance Apply Digit8 where
+  Digit8 f <.> Digit8 a =
+    Digit8 (f a)
+
+instance Applicative Digit8 where
+  pure =
+    Digit8
+  (<*>) =
+    (<.>)
+
+instance Bind Digit8 where
+  Digit8 a >>- f =
+    f a
+
+instance Monad Digit8 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit8 where
+  foldMap f (Digit8 a) = 
+    f a
+
+instance Foldable1 Digit8 where
+  foldMap1 f (Digit8 a) = 
+    f a
+
+instance Traversable Digit8 where
+  traverse f (Digit8 a) = 
+    Digit8 <$> f a
+
+instance Traversable1 Digit8 where
+  traverse1 f (Digit8 a) = 
+    Digit8 <$> f a
+
+instance Semigroup a => Semigroup (Digit8 a) where
+  Digit8 x <> Digit8 y =
+    Digit8 (x <> y)
+
+instance Monoid a => Monoid (Digit8 a) where
+  Digit8 x `mappend` Digit8 y =
+    Digit8 (x `mappend` y)
+  mempty =
+    Digit8 mempty
+
+instance Field1 (Digit8 a) (Digit8 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit8 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit8 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit8 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit8 a) (Digit8 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit8 a) = 
+  ()
+type instance IxValue (Digit8 a) =
+  a
+instance Ixed (Digit8 a) where
+  ix () f (Digit8 a) =
+    Digit8 <$> f a
+
+makeWrapped ''Digit8
+
+newtype Digit9 a =
+  Digit9 a
+  deriving (Eq, Ord, Bounded, Show, Enum, Floating, Fractional, Num, Integral, Real, RealFloat, RealFrac)
+
+instance D9 a => D9 (Digit9 a) where
+  d9  =
+    _Wrapped . d9
+
+instance Functor Digit9 where
+  fmap f (Digit9 a) =
+    Digit9 (f a)
+    
+instance Apply Digit9 where
+  Digit9 f <.> Digit9 a =
+    Digit9 (f a)
+
+instance Applicative Digit9 where
+  pure =
+    Digit9
+  (<*>) =
+    (<.>)
+
+instance Bind Digit9 where
+  Digit9 a >>- f =
+    f a
+
+instance Monad Digit9 where
+  return = 
+    pure
+  (>>=) =
+    (>>-)
+
+instance Foldable Digit9 where
+  foldMap f (Digit9 a) = 
+    f a
+
+instance Foldable1 Digit9 where
+  foldMap1 f (Digit9 a) = 
+    f a
+
+instance Traversable Digit9 where
+  traverse f (Digit9 a) = 
+    Digit9 <$> f a
+
+instance Traversable1 Digit9 where
+  traverse1 f (Digit9 a) = 
+    Digit9 <$> f a
+
+instance Semigroup a => Semigroup (Digit9 a) where
+  Digit9 x <> Digit9 y =
+    Digit9 (x <> y)
+
+instance Monoid a => Monoid (Digit9 a) where
+  Digit9 x `mappend` Digit9 y =
+    Digit9 (x `mappend` y)
+  mempty =
+    Digit9 mempty
+
+instance Field1 (Digit9 a) (Digit9 b) a b where
+  _1 =
+    _Wrapped
+
+instance FunctorWithIndex () Digit9 where
+  imap f =
+    fmap (f ())
+    
+instance FoldableWithIndex () Digit9 where
+  ifoldMap f =
+    foldMap (f ())
+    
+instance TraversableWithIndex () Digit9 where
+  itraverse f =
+    traverse (f ())
+
+instance Each (Digit9 a) (Digit9 b) a b where
+  each =
+    traverse
+
+type instance Index (Digit9 a) = 
+  ()
+type instance IxValue (Digit9 a) =
+  a
+instance Ixed (Digit9 a) where
+  ix () f (Digit9 a) =
+    Digit9 <$> f a
+
+makeWrapped ''Digit9
 
 instance D0 d => D0 (Either d x) where
   d0 =
