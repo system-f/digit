@@ -52,6 +52,65 @@ library
                     Data.Digits
                     Data.Digits1
 
+                    Data.Dxxx
+                    Data.Digit.Binary
+                    Data.Digit.Decimal
+                    Data.Digit.Octal
+                    Data.Digit.Hexadecimal
+                    Data.Digit.HeXaDeCiMaL
+                    Data.Digit.HEXADECIMAL
+                    Data.Digit.D0
+                    Data.Digit.D1
+                    Data.Digit.D2
+                    Data.Digit.D3
+                    Data.Digit.D4
+                    Data.Digit.D5
+                    Data.Digit.D6
+                    Data.Digit.D7
+                    Data.Digit.D8
+                    Data.Digit.D9
+                    Data.Digit.Da
+                    Data.Digit.DA
+                    Data.Digit.Db
+                    Data.Digit.DB
+                    Data.Digit.Dc
+                    Data.Digit.DC
+                    Data.Digit.Dd
+                    Data.Digit.DD
+                    Data.Digit.De
+                    Data.Digit.DE
+                    Data.Digit.Df
+                    Data.Digit.DF
+                    Data.Digit.DAa
+                    Data.Digit.DBb
+                    Data.Digit.DCc
+                    Data.Digit.DDd
+                    Data.Digit.DEe
+                    Data.Digit.DFf
+                    Data.Digit.Digit0
+                    Data.Digit.Digit1
+                    Data.Digit.Digit2
+                    Data.Digit.Digit3
+                    Data.Digit.Digit4
+                    Data.Digit.Digit5
+                    Data.Digit.Digit6
+                    Data.Digit.Digit7
+                    Data.Digit.Digit8
+                    Data.Digit.Digit9
+                    Data.Digit.Digita
+                    Data.Digit.DigitA
+                    Data.Digit.Digitb
+                    Data.Digit.DigitB
+                    Data.Digit.Digitc
+                    Data.Digit.DigitC
+                    Data.Digit.Digitd
+                    Data.Digit.DigitD
+                    Data.Digit.Digite
+                    Data.Digit.DigitE
+                    Data.Digit.Digitf
+                    Data.Digit.DigitF
+
+
 test-suite doctests
   type:
                     exitcode-stdio-1.0
