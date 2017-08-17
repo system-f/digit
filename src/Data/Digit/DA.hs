@@ -1,10 +1,3 @@
-{-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-
 module Data.Digit.DA where
 
 import Control.Lens hiding ((<.>))
