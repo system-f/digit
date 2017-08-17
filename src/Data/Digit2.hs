@@ -1116,6 +1116,8 @@ parseBinary =
 --
 -- >>> isn't _Right (parse parseOctalNoZero "test" "xyz" :: Either ParseError (OctalNoZeroDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "1234567") ==> isn't _Right (parse parseOctalNoZero "test" [c] :: Either ParseError (OctalNoZeroDigit' ()))
 parseOctalNoZero ::
   (OctalNoZero d, CharParsing p) =>
   p d
@@ -1183,6 +1185,8 @@ parseOctalNoZero =
 --
 -- >>> isn't _Right (parse parseOctal "test" "xyz" :: Either ParseError (OctalDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "01234567") ==> isn't _Right (parse parseOctal "test" [c] :: Either ParseError (OctalDigit' ()))
 parseOctal ::
   (Octal d, CharParsing p) =>
   p d
@@ -1251,6 +1255,8 @@ parseOctal =
 --
 -- >>> isn't _Right (parse parseDecimalNoZero "test" "xyz" :: Either ParseError (DecimalNoZeroDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "123456789") ==> isn't _Right (parse parseDecimalNoZero "test" [c] :: Either ParseError (DecimalNoZeroDigit' ()))
 parseDecimalNoZero ::
   (DecimalNoZero d, CharParsing p) =>
   p d
@@ -1333,6 +1339,8 @@ parseDecimalNoZero =
 --
 -- >>> isn't _Right (parse parseDecimal "test" "xyz" :: Either ParseError (DecimalDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "0123456789") ==> isn't _Right (parse parseDecimal "test" [c] :: Either ParseError (DecimalDigit' ()))
 parseDecimal ::
   (Decimal d, CharParsing p) =>
   p d
@@ -1437,6 +1445,8 @@ parseDecimal =
 --
 -- >>> isn't _Right (parse parseHEXADECIMALNoZero "test" "xyz" :: Either ParseError (HEXADECIMALNoZeroDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "123456789ABCDEF") ==> isn't _Right (parse parseHEXADECIMALNoZero "test" [c] :: Either ParseError (HEXADECIMALNoZeroDigit' ()))
 parseHEXADECIMALNoZero ::
   (HEXADECIMALNoZero d, CharParsing p) =>
   p d
@@ -1553,6 +1563,8 @@ parseHEXADECIMALNoZero =
 --
 -- >>> isn't _Right (parse parseHEXADECIMAL "test" "xyz" :: Either ParseError (HEXADECIMALDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "0123456789ABCDEF") ==> isn't _Right (parse parseHEXADECIMAL "test" [c] :: Either ParseError (HEXADECIMALDigit' ()))
 parseHEXADECIMAL ::
   (HEXADECIMAL d, CharParsing p) =>
   p d
@@ -1657,6 +1669,8 @@ parseHEXADECIMAL =
 --
 -- >>> isn't _Right (parse parseHexadecimalNoZero "test" "xyz" :: Either ParseError (HexadecimalNoZeroDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "123456789abcdef") ==> isn't _Right (parse parseHexadecimalNoZero "test" [c] :: Either ParseError (HexadecimalNoZeroDigit' ()))
 parseHexadecimalNoZero ::
   (HexadecimalNoZero d, CharParsing p) =>
   p d
@@ -1772,6 +1786,8 @@ parseHexadecimalNoZero =
 --
 -- >>> isn't _Right (parse parseHexadecimal "test" "xyz" :: Either ParseError (HexadecimalDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "0123456789abcdef") ==> isn't _Right (parse parseHexadecimal "test" [c] :: Either ParseError (HexadecimalDigit' ()))
 parseHexadecimal ::
   (Hexadecimal d, CharParsing p) =>
   p d
@@ -1912,6 +1928,8 @@ parseHexadecimal =
 --
 -- >>> isn't _Right (parse parseHeXaDeCiMaLNoZero "test" "xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "123456789abcdefABCDEF") ==> isn't _Right (parse parseHeXaDeCiMaLNoZero "test" [c] :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ()))
 parseHeXaDeCiMaLNoZero ::
   (HeXaDeCiMaLNoZero d, CharParsing p) =>
   p d
@@ -2057,6 +2075,8 @@ parseHeXaDeCiMaLNoZero =
 --
 -- >>> isn't _Right (parse parseHeXaDeCiMaL "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "0123456789abcdefABCDEF") ==> isn't _Right (parse parseHeXaDeCiMaL "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseHeXaDeCiMaL ::
   (HeXaDeCiMaL d, CharParsing p) =>
   p d
