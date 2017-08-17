@@ -179,6 +179,16 @@ instance D0 () where
   d0 =
     id
 
+-- |
+--
+-- >>> parse (parse0 <* eof) "test" "0" :: Either ParseError (Digit0 ())
+-- Right (Digit0 ())
+--
+-- >>> parse parse0 "test" "0xyz" :: Either ParseError (Digit0 ())
+-- Right (Digit0 ())
+--
+-- >>> isn't _Right (parse parse0 "test" "xyz" :: Either ParseError (Digit0 ()))
+-- True
 parse0 ::
   (D0 d, CharParsing p) =>
   p d
@@ -199,6 +209,16 @@ instance D1 () where
   d1 =
     id
 
+-- |
+--
+-- >>> parse (parse1 <* eof) "test" "1" :: Either ParseError (Digit1 ())
+-- Right (Digit1 ())
+--
+-- >>> parse parse1 "test" "1xyz" :: Either ParseError (Digit1 ())
+-- Right (Digit1 ())
+--
+-- >>> isn't _Right (parse parse1 "test" "xyz" :: Either ParseError (Digit1 ()))
+-- True
 parse1 ::
   (D1 d, CharParsing p) =>
   p d
@@ -219,6 +239,16 @@ instance D2 () where
   d2 =
     id
     
+-- |
+--
+-- >>> parse (parse2 <* eof) "test" "2" :: Either ParseError (Digit2 ())
+-- Right (Digit2 ())
+--
+-- >>> parse parse2 "test" "2xyz" :: Either ParseError (Digit2 ())
+-- Right (Digit2 ())
+--
+-- >>> isn't _Right (parse parse2 "test" "xyz" :: Either ParseError (Digit2 ()))
+-- True
 parse2 ::
   (D2 d, CharParsing p) =>
   p d
@@ -238,7 +268,17 @@ class D3 d where
 instance D3 () where
   d3 =
     id
-    
+
+-- |
+--
+-- >>> parse (parse3 <* eof) "test" "3" :: Either ParseError (Digit3 ())
+-- Right (Digit3 ())
+--
+-- >>> parse parse3 "test" "3xyz" :: Either ParseError (Digit3 ())
+-- Right (Digit3 ())
+--
+-- >>> isn't _Right (parse parse3 "test" "xyz" :: Either ParseError (Digit3 ()))
+-- True  
 parse3 ::
   (D3 d, CharParsing p) =>
   p d
@@ -258,7 +298,17 @@ class D4 d where
 instance D4 () where
   d4 =
     id
-    
+   
+-- |
+--
+-- >>> parse (parse4 <* eof) "test" "4" :: Either ParseError (Digit4 ())
+-- Right (Digit4 ())
+--
+-- >>> parse parse4 "test" "4xyz" :: Either ParseError (Digit4 ())
+-- Right (Digit4 ())
+--
+-- >>> isn't _Right (parse parse4 "test" "xyz" :: Either ParseError (Digit4 ()))
+-- True 
 parse4 ::
   (D4 d, CharParsing p) =>
   p d
@@ -279,6 +329,16 @@ instance D5 () where
   d5 =
     id
     
+-- |
+--
+-- >>> parse (parse5 <* eof) "test" "5" :: Either ParseError (Digit5 ())
+-- Right (Digit5 ())
+--
+-- >>> parse parse5 "test" "5xyz" :: Either ParseError (Digit5 ())
+-- Right (Digit5 ())
+--
+-- >>> isn't _Right (parse parse5 "test" "xyz" :: Either ParseError (Digit5 ()))
+-- True
 parse5 ::
   (D5 d, CharParsing p) =>
   p d
@@ -299,6 +359,16 @@ instance D6 () where
   d6 =
     id
     
+-- |
+--
+-- >>> parse (parse6 <* eof) "test" "6" :: Either ParseError (Digit6 ())
+-- Right (Digit6 ())
+--
+-- >>> parse parse6 "test" "6xyz" :: Either ParseError (Digit6 ())
+-- Right (Digit6 ())
+--
+-- >>> isn't _Right (parse parse6 "test" "xyz" :: Either ParseError (Digit6 ()))
+-- True
 parse6 ::
   (D6 d, CharParsing p) =>
   p d
@@ -319,6 +389,16 @@ instance D7 () where
   d7 =
     id
     
+-- |
+--
+-- >>> parse (parse7 <* eof) "test" "7" :: Either ParseError (Digit7 ())
+-- Right (Digit7 ())
+--
+-- >>> parse parse7 "test" "7xyz" :: Either ParseError (Digit7 ())
+-- Right (Digit7 ())
+--
+-- >>> isn't _Right (parse parse7 "test" "xyz" :: Either ParseError (Digit7 ()))
+-- True
 parse7 ::
   (D7 d, CharParsing p) =>
   p d
@@ -339,6 +419,16 @@ instance D8 () where
   d8 =
     id
     
+-- |
+--
+-- >>> parse (parse8 <* eof) "test" "8" :: Either ParseError (Digit8 ())
+-- Right (Digit8 ())
+--
+-- >>> parse parse8 "test" "8xyz" :: Either ParseError (Digit8 ())
+-- Right (Digit8 ())
+--
+-- >>> isn't _Right (parse parse8 "test" "xyz" :: Either ParseError (Digit8 ()))
+-- True
 parse8 ::
   (D8 d, CharParsing p) =>
   p d
@@ -359,6 +449,16 @@ instance D9 () where
   d9 =
     id
     
+-- |
+--
+-- >>> parse (parse9 <* eof) "test" "9" :: Either ParseError (Digit9 ())
+-- Right (Digit9 ())
+--
+-- >>> parse parse9 "test" "9xyz" :: Either ParseError (Digit9 ())
+-- Right (Digit9 ())
+--
+-- >>> isn't _Right (parse parse9 "test" "xyz" :: Either ParseError (Digit9 ()))
+-- True
 parse9 ::
   (D9 d, CharParsing p) =>
   p d
@@ -378,7 +478,17 @@ class DA d where
 instance DA () where
   dA =
     id
-    
+
+-- |
+--
+-- >>> parse (parseA <* eof) "test" "A" :: Either ParseError (DigitA ())
+-- Right (DigitA ())
+--
+-- >>> parse parseA "test" "Axyz" :: Either ParseError (DigitA ())
+-- Right (DigitA ())
+--
+-- >>> isn't _Right (parse parseA "test" "xyz" :: Either ParseError (DigitA ()))
+-- True
 parseA ::
   (DA d, CharParsing p) =>
   p d
@@ -399,6 +509,16 @@ instance DB () where
   dB =
     id
     
+-- |
+--
+-- >>> parse (parseB <* eof) "test" "B" :: Either ParseError (DigitB ())
+-- Right (DigitB ())
+--
+-- >>> parse parseB "test" "Bxyz" :: Either ParseError (DigitB ())
+-- Right (DigitB ())
+--
+-- >>> isn't _Right (parse parseB "test" "xyz" :: Either ParseError (DigitB ()))
+-- True
 parseB ::
   (DB d, CharParsing p) =>
   p d
@@ -419,6 +539,16 @@ instance DC () where
   dC =
     id
     
+-- |
+--
+-- >>> parse (parseC <* eof) "test" "C" :: Either ParseError (DigitC ())
+-- Right (DigitC ())
+--
+-- >>> parse parseC "test" "Cxyz" :: Either ParseError (DigitC ())
+-- Right (DigitC ())
+--
+-- >>> isn't _Right (parse parseC "test" "xyz" :: Either ParseError (DigitC ()))
+-- True
 parseC ::
   (DC d, CharParsing p) =>
   p d
@@ -439,6 +569,16 @@ instance DD () where
   dD =
     id
     
+-- |
+--
+-- >>> parse (parseD <* eof) "test" "D" :: Either ParseError (DigitD ())
+-- Right (DigitD ())
+--
+-- >>> parse parseD "test" "Dxyz" :: Either ParseError (DigitD ())
+-- Right (DigitD ())
+--
+-- >>> isn't _Right (parse parseD "test" "xyz" :: Either ParseError (DigitD ()))
+-- True
 parseD ::
   (DD d, CharParsing p) =>
   p d
@@ -459,6 +599,16 @@ instance DE () where
   dE =
     id
     
+-- |
+--
+-- >>> parse (parseE <* eof) "test" "E" :: Either ParseError (DigitE ())
+-- Right (DigitE ())
+--
+-- >>> parse parseE "test" "Exyz" :: Either ParseError (DigitE ())
+-- Right (DigitE ())
+--
+-- >>> isn't _Right (parse parseE "test" "xyz" :: Either ParseError (DigitE ()))
+-- True
 parseE ::
   (DE d, CharParsing p) =>
   p d
@@ -479,6 +629,16 @@ instance DF () where
   dF =
     id
     
+-- |
+--
+-- >>> parse (parseF <* eof) "test" "F" :: Either ParseError (DigitF ())
+-- Right (DigitF ())
+--
+-- >>> parse parseF "test" "Fxyz" :: Either ParseError (DigitF ())
+-- Right (DigitF ())
+--
+-- >>> isn't _Right (parse parseF "test" "xyz" :: Either ParseError (DigitF ()))
+-- True
 parseF ::
   (DF d, CharParsing p) =>
   p d
@@ -499,6 +659,16 @@ instance Da () where
   da =
     id
     
+-- |
+--
+-- >>> parse (parsea <* eof) "test" "a" :: Either ParseError (Digita ())
+-- Right (Digita ())
+--
+-- >>> parse parsea "test" "axyz" :: Either ParseError (Digita ())
+-- Right (Digita ())
+--
+-- >>> isn't _Right (parse parsea "test" "xyz" :: Either ParseError (Digita ()))
+-- True
 parsea ::
   (Da d, CharParsing p) =>
   p d
@@ -519,6 +689,16 @@ instance Db () where
   db =
     id
     
+-- |
+--
+-- >>> parse (parseb <* eof) "test" "b" :: Either ParseError (Digitb ())
+-- Right (Digitb ())
+--
+-- >>> parse parseb "test" "bxyz" :: Either ParseError (Digitb ())
+-- Right (Digitb ())
+--
+-- >>> isn't _Right (parse parseb "test" "xyz" :: Either ParseError (Digitb ()))
+-- True
 parseb ::
   (Db d, CharParsing p) =>
   p d
@@ -538,7 +718,17 @@ class Dc d where
 instance Dc () where
   dc =
     id
-    
+   
+-- |
+--
+-- >>> parse (parsec <* eof) "test" "c" :: Either ParseError (Digitc ())
+-- Right (Digitc ())
+--
+-- >>> parse parsec "test" "cxyz" :: Either ParseError (Digitc ())
+-- Right (Digitc ())
+--
+-- >>> isn't _Right (parse parsec "test" "xyz" :: Either ParseError (Digitc ()))
+-- True 
 parsec ::
   (Dc d, CharParsing p) =>
   p d
@@ -559,6 +749,16 @@ instance Dd () where
   dd =
     id
     
+-- |
+--
+-- >>> parse (parsed <* eof) "test" "d" :: Either ParseError (Digitd ())
+-- Right (Digitd ())
+--
+-- >>> parse parsed "test" "dxyz" :: Either ParseError (Digitd ())
+-- Right (Digitd ())
+--
+-- >>> isn't _Right (parse parsed "test" "xyz" :: Either ParseError (Digitd ()))
+-- True
 parsed ::
   (Dd d, CharParsing p) =>
   p d
@@ -579,6 +779,16 @@ instance De () where
   de =
     id
     
+-- |
+--
+-- >>> parse (parsee <* eof) "test" "e" :: Either ParseError (Digite ())
+-- Right (Digite ())
+--
+-- >>> parse parsee "test" "exyz" :: Either ParseError (Digite ())
+-- Right (Digite ())
+--
+-- >>> isn't _Right (parse parsee "test" "xyz" :: Either ParseError (Digite ()))
+-- True
 parsee ::
   (De d, CharParsing p) =>
   p d
@@ -599,6 +809,16 @@ instance Df () where
   df =
     id
     
+-- |
+--
+-- >>> parse (parsef <* eof) "test" "f" :: Either ParseError (Digitf ())
+-- Right (Digitf ())
+--
+-- >>> parse parsef "test" "fxyz" :: Either ParseError (Digitf ())
+-- Right (Digitf ())
+--
+-- >>> isn't _Right (parse parsef "test" "xyz" :: Either ParseError (Digitf ()))
+-- True
 parsef ::
   (Df d, CharParsing p) =>
   p d
