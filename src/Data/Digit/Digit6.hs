@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -6,12 +7,9 @@
 
 module Data.Digit.Digit6 where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
+import Papa
 import Data.Digit.D6
+import Prelude(Bounded, RealFrac)
 
 newtype Digit6 a =
   Digit6 a

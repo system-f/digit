@@ -1,8 +1,9 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DDd where
 
-import Text.Parser.Char
+import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DD
 import Data.Digit.Dd

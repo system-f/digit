@@ -1,7 +1,9 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Data.Digit.D2 where
 
-import Control.Lens hiding ((<.>))
-import Text.Parser.Char
+import Papa
+import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup

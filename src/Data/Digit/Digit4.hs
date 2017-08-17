@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -6,11 +7,9 @@
 
 module Data.Digit.Digit4 where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
+import Papa
 import Data.Digit.D4
+import Prelude(Bounded, RealFrac)
 
 newtype Digit4 a =
   Digit4 a

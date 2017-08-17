@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -7,7 +8,7 @@
 
 module Data.Digit.DAa where
 
-import Text.Parser.Char
+import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DA
 import Data.Digit.Da

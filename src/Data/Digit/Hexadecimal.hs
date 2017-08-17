@@ -1,9 +1,11 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.Hexadecimal where
 
-import Data.Void
-import Text.Parser.Char
+import Papa
+import Data.Void(Void)
+import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.D0
 import Data.Digit.D1
