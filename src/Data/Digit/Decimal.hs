@@ -21,6 +21,11 @@ import Data.Digit.D7
 import Data.Digit.D8  
 import Data.Digit.D9
 
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Control.Lens(isn't, _Right)
+
 type DecimalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d)
 

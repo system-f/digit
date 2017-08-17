@@ -12,6 +12,12 @@ import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DD
 import Data.Digit.Dd
 
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Control.Lens(isn't, _Right)
+-- >>> import Data.Digit.HeXaDeCiMaL
+
 type DDd a =
   (DD a, Dd a)
   

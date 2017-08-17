@@ -10,7 +10,12 @@ module Data.Digit.D1 where
 import Control.Lens hiding ((<.>))
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>))
-  
+
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Data.Digit.Digit1
+
 class D1 d where
   d1 ::
     Prism'

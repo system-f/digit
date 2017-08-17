@@ -13,6 +13,12 @@ import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.D0
 import Data.Digit.D1
 
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Control.Lens(isn't, _Right)
+-- >>> import Data.Digit.Digit1
+
 type BinaryNoZero d =
   D1 d
 

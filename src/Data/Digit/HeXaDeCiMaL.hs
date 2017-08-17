@@ -40,6 +40,11 @@ import Data.Digit.DDd
 import Data.Digit.DEe
 import Data.Digit.DFf
 
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Control.Lens(isn't, _Right)
+
 type HeXaDeCiMaLNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, DA d, DB d, DC d, DD d, DE d, DF d, Da d, Db d, Dc d, Dd d, De d, De d, Df d)
 

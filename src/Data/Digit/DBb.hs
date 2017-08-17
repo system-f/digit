@@ -12,6 +12,12 @@ import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DB
 import Data.Digit.Db
 
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Control.Lens(isn't, _Right)
+-- >>> import Data.Digit.HeXaDeCiMaL
+
 type DBb a =
   (DB a, Db a)
   

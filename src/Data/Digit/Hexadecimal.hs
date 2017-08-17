@@ -28,6 +28,11 @@ import Data.Digit.De
 import Data.Digit.Df
 import Data.Digit.Decimal
 
+-- $setup
+-- >>> import Text.Parsec(parse, ParseError, eof)
+-- >>> import Data.Void(Void)
+-- >>> import Control.Lens(isn't, _Right)
+
 type HexadecimalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, Da d, Db d, Dc d, Dd d, De d, De d, Df d)
 
