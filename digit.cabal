@@ -37,8 +37,6 @@ library
                     , template-haskell >= 2.8 && < 3
                     , papa             >= 0.3 && < 0.4
                     , semigroupoids    >= 5 && < 6
-                    , parsec
-                    , QuickCheck
 
   ghc-options:
                     -Wall

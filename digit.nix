@@ -7,8 +7,7 @@ mkDerivation {
   version = "0.3.0";
   src = ./.;
   libraryHaskellDepends = [
-    base lens papa parsec parsers QuickCheck semigroupoids semigroups
-    template-haskell
+    base lens papa parsers semigroupoids semigroups template-haskell
   ];
   testHaskellDepends = [
     base directory doctest filepath parsec QuickCheck template-haskell
