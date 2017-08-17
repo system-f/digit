@@ -200,6 +200,8 @@ instance D0 () where
 --
 -- >>> isn't _Right (parse parse0 "test" "xyz" :: Either ParseError (Digit0 ()))
 -- True
+--
+-- prop> \c -> c /= '0' ==> isn't _Right (parse parse0 "test" [c] :: Either ParseError (Digit0 ()))
 parse0 ::
   (D0 d, CharParsing p) =>
   p d
@@ -230,6 +232,8 @@ instance D1 () where
 --
 -- >>> isn't _Right (parse parse1 "test" "xyz" :: Either ParseError (Digit1 ()))
 -- True
+--
+-- prop> \c -> c /= '1' ==> isn't _Right (parse parse1 "test" [c] :: Either ParseError (Digit1 ()))
 parse1 ::
   (D1 d, CharParsing p) =>
   p d
@@ -260,6 +264,8 @@ instance D2 () where
 --
 -- >>> isn't _Right (parse parse2 "test" "xyz" :: Either ParseError (Digit2 ()))
 -- True
+--
+-- prop> \c -> c /= '2' ==> isn't _Right (parse parse2 "test" [c] :: Either ParseError (Digit2 ()))
 parse2 ::
   (D2 d, CharParsing p) =>
   p d
@@ -289,7 +295,9 @@ instance D3 () where
 -- Right (Digit3 ())
 --
 -- >>> isn't _Right (parse parse3 "test" "xyz" :: Either ParseError (Digit3 ()))
--- True  
+-- True
+--
+-- prop> \c -> c /= '3' ==> isn't _Right (parse parse3 "test" [c] :: Either ParseError (Digit3 ()))
 parse3 ::
   (D3 d, CharParsing p) =>
   p d
@@ -320,6 +328,8 @@ instance D4 () where
 --
 -- >>> isn't _Right (parse parse4 "test" "xyz" :: Either ParseError (Digit4 ()))
 -- True 
+--
+-- prop> \c -> c /= '4' ==> isn't _Right (parse parse4 "test" [c] :: Either ParseError (Digit4 ()))
 parse4 ::
   (D4 d, CharParsing p) =>
   p d
@@ -350,6 +360,8 @@ instance D5 () where
 --
 -- >>> isn't _Right (parse parse5 "test" "xyz" :: Either ParseError (Digit5 ()))
 -- True
+--
+-- prop> \c -> c /= '5' ==> isn't _Right (parse parse5 "test" [c] :: Either ParseError (Digit5 ()))
 parse5 ::
   (D5 d, CharParsing p) =>
   p d
@@ -380,6 +392,8 @@ instance D6 () where
 --
 -- >>> isn't _Right (parse parse6 "test" "xyz" :: Either ParseError (Digit6 ()))
 -- True
+--
+-- prop> \c -> c /= '6' ==> isn't _Right (parse parse6 "test" [c] :: Either ParseError (Digit6 ()))
 parse6 ::
   (D6 d, CharParsing p) =>
   p d
@@ -410,6 +424,8 @@ instance D7 () where
 --
 -- >>> isn't _Right (parse parse7 "test" "xyz" :: Either ParseError (Digit7 ()))
 -- True
+--
+-- prop> \c -> c /= '7' ==> isn't _Right (parse parse7 "test" [c] :: Either ParseError (Digit7 ()))
 parse7 ::
   (D7 d, CharParsing p) =>
   p d
@@ -440,6 +456,8 @@ instance D8 () where
 --
 -- >>> isn't _Right (parse parse8 "test" "xyz" :: Either ParseError (Digit8 ()))
 -- True
+--
+-- prop> \c -> c /= '8' ==> isn't _Right (parse parse8 "test" [c] :: Either ParseError (Digit8 ()))
 parse8 ::
   (D8 d, CharParsing p) =>
   p d
@@ -470,6 +488,8 @@ instance D9 () where
 --
 -- >>> isn't _Right (parse parse9 "test" "xyz" :: Either ParseError (Digit9 ()))
 -- True
+--
+-- prop> \c -> c /= '9' ==> isn't _Right (parse parse9 "test" [c] :: Either ParseError (Digit9 ()))
 parse9 ::
   (D9 d, CharParsing p) =>
   p d
@@ -500,6 +520,8 @@ instance DA () where
 --
 -- >>> isn't _Right (parse parseA "test" "xyz" :: Either ParseError (DigitA ()))
 -- True
+--
+-- prop> \c -> c /= 'A' ==> isn't _Right (parse parseA "test" [c] :: Either ParseError (DigitA ()))
 parseA ::
   (DA d, CharParsing p) =>
   p d
@@ -530,6 +552,8 @@ instance DB () where
 --
 -- >>> isn't _Right (parse parseB "test" "xyz" :: Either ParseError (DigitB ()))
 -- True
+--
+-- prop> \c -> c /= 'B' ==> isn't _Right (parse parseB "test" [c] :: Either ParseError (DigitB ()))
 parseB ::
   (DB d, CharParsing p) =>
   p d
@@ -560,6 +584,8 @@ instance DC () where
 --
 -- >>> isn't _Right (parse parseC "test" "xyz" :: Either ParseError (DigitC ()))
 -- True
+--
+-- prop> \c -> c /= 'C' ==> isn't _Right (parse parseC "test" [c] :: Either ParseError (DigitC ()))
 parseC ::
   (DC d, CharParsing p) =>
   p d
@@ -590,6 +616,8 @@ instance DD () where
 --
 -- >>> isn't _Right (parse parseD "test" "xyz" :: Either ParseError (DigitD ()))
 -- True
+--
+-- prop> \c -> c /= 'D' ==> isn't _Right (parse parseD "test" [c] :: Either ParseError (DigitD ()))
 parseD ::
   (DD d, CharParsing p) =>
   p d
@@ -620,6 +648,8 @@ instance DE () where
 --
 -- >>> isn't _Right (parse parseE "test" "xyz" :: Either ParseError (DigitE ()))
 -- True
+--
+-- prop> \c -> c /= 'E' ==> isn't _Right (parse parseE "test" [c] :: Either ParseError (DigitE ()))
 parseE ::
   (DE d, CharParsing p) =>
   p d
@@ -650,6 +680,8 @@ instance DF () where
 --
 -- >>> isn't _Right (parse parseF "test" "xyz" :: Either ParseError (DigitF ()))
 -- True
+--
+-- prop> \c -> c /= 'F' ==> isn't _Right (parse parseF "test" [c] :: Either ParseError (DigitF ()))
 parseF ::
   (DF d, CharParsing p) =>
   p d
@@ -680,6 +712,8 @@ instance Da () where
 --
 -- >>> isn't _Right (parse parsea "test" "xyz" :: Either ParseError (Digita ()))
 -- True
+--
+-- prop> \c -> c /= 'a' ==> isn't _Right (parse parsea "test" [c] :: Either ParseError (Digita ()))
 parsea ::
   (Da d, CharParsing p) =>
   p d
@@ -710,6 +744,8 @@ instance Db () where
 --
 -- >>> isn't _Right (parse parseb "test" "xyz" :: Either ParseError (Digitb ()))
 -- True
+--
+-- prop> \c -> c /= 'b' ==> isn't _Right (parse parseb "test" [c] :: Either ParseError (Digitb ()))
 parseb ::
   (Db d, CharParsing p) =>
   p d
@@ -739,7 +775,9 @@ instance Dc () where
 -- Right (Digitc ())
 --
 -- >>> isn't _Right (parse parsec "test" "xyz" :: Either ParseError (Digitc ()))
--- True 
+-- True
+--
+-- prop> \c -> c /= 'c' ==> isn't _Right (parse parsec "test" [c] :: Either ParseError (Digitc ()))
 parsec ::
   (Dc d, CharParsing p) =>
   p d
@@ -770,6 +808,8 @@ instance Dd () where
 --
 -- >>> isn't _Right (parse parsed "test" "xyz" :: Either ParseError (Digitd ()))
 -- True
+--
+-- prop> \c -> c /= 'd' ==> isn't _Right (parse parsed "test" [c] :: Either ParseError (Digitd ()))
 parsed ::
   (Dd d, CharParsing p) =>
   p d
@@ -800,6 +840,8 @@ instance De () where
 --
 -- >>> isn't _Right (parse parsee "test" "xyz" :: Either ParseError (Digite ()))
 -- True
+--
+-- prop> \c -> c /= 'e' ==> isn't _Right (parse parsee "test" [c] :: Either ParseError (Digite ()))
 parsee ::
   (De d, CharParsing p) =>
   p d
@@ -830,6 +872,8 @@ instance Df () where
 --
 -- >>> isn't _Right (parse parsef "test" "xyz" :: Either ParseError (Digitf ()))
 -- True
+--
+-- prop> \c -> c /= 'f' ==> isn't _Right (parse parsef "test" [c] :: Either ParseError (Digitf ()))
 parsef ::
   (Df d, CharParsing p) =>
   p d
@@ -852,6 +896,8 @@ parsef =
 --
 -- >>> isn't _Right (parse parseAa "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "Aa") ==> isn't _Right (parse parseAa "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseAa ::
   (DA d, Da d, CharParsing p) =>
   p d
@@ -874,6 +920,8 @@ parseAa =
 --
 -- >>> isn't _Right (parse parseBb "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "Bb") ==> isn't _Right (parse parseBb "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseBb ::
   (DB d, Db d, CharParsing p) =>
   p d
@@ -896,6 +944,8 @@ parseBb =
 --
 -- >>> isn't _Right (parse parseCc "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "Cc") ==> isn't _Right (parse parseCc "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseCc ::
   (DC d, Dc d, CharParsing p) =>
   p d
@@ -918,6 +968,8 @@ parseCc =
 --
 -- >>> isn't _Right (parse parseDd "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "Dd") ==> isn't _Right (parse parseDd "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseDd ::
   (DD d, Dd d, CharParsing p) =>
   p d
@@ -940,6 +992,8 @@ parseDd =
 --
 -- >>> isn't _Right (parse parseEe "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "Ee") ==> isn't _Right (parse parseEe "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseEe ::
   (DE d, De d, CharParsing p) =>
   p d
@@ -962,6 +1016,8 @@ parseEe =
 --
 -- >>> isn't _Right (parse parseFf "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "Ff") ==> isn't _Right (parse parseFf "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
 parseFf ::
   (DF d, Df d, CharParsing p) =>
   p d
@@ -978,6 +1034,8 @@ parseFf =
 --
 -- >>> isn't _Right (parse parseBinaryNoZero "test" "xyz" :: Either ParseError (Digit1 ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "1") ==> isn't _Right (parse parseBinaryNoZero "test" [c] :: Either ParseError (Digit1 ()))
 parseBinaryNoZero ::
   (BinaryNoZero d, CharParsing p) =>
   p d
@@ -1000,6 +1058,8 @@ parseBinaryNoZero =
 --
 -- >>> isn't _Right (parse parseBinary "test" "xyz" :: Either ParseError (BinaryDigit' ()))
 -- True
+--
+-- prop> \c -> (c `notElem` "01") ==> isn't _Right (parse parseBinary "test" [c] :: Either ParseError (BinaryDigit' ()))
 parseBinary ::
   (Binary d, CharParsing p) =>
   p d
