@@ -1,9 +1,11 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.DFf where
+module Data.Digit.DFf(
+  DFf
+, parseFf
+) where
 
-import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DF(DF, parseF)
@@ -13,6 +15,7 @@ import Data.Digit.Df(Df, parsef)
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 -- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Papa
 
 type DFf a =
   (DF a, Df a)

@@ -5,7 +5,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Data.Digit.DigitB where
+module Data.Digit.DigitB(
+  DigitB(..)
+) where
 
 import Papa
 import Data.Digit.DB(DB(dB))

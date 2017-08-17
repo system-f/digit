@@ -1,7 +1,16 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.Decimal where
+module Data.Digit.Decimal(
+  DecimalNoZero
+, Decimal
+, parseDecimalNoZero
+, parseDecimal
+, DecimalNoZeroDigit
+, DecimalNoZeroDigit'
+, DecimalDigit
+, DecimalDigit'
+) where
 
 import Papa
 import Data.Void(Void)

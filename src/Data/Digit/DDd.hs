@@ -1,9 +1,11 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.DDd where
+module Data.Digit.DDd(
+  DDd
+, parseDd
+) where
 
-import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DD(DD, parseD)
@@ -13,6 +15,7 @@ import Data.Digit.Dd(Dd, parsed)
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 -- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Papa
 
 type DDd a =
   (DD a, Dd a)

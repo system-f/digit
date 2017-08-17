@@ -1,9 +1,11 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.DEe where
+module Data.Digit.DEe(
+  DEe
+, parseEe
+) where
 
-import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DE(DE, parseE)
@@ -13,6 +15,7 @@ import Data.Digit.De(De, parsee)
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 -- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Papa
 
 type DEe a =
   (DE a, De a)

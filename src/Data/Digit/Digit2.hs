@@ -5,7 +5,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Data.Digit.Digit2 where
+module Data.Digit.Digit2(
+  Digit2(..)
+) where
 
 import Papa
 import Data.Digit.D2(D2(d2))

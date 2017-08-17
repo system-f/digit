@@ -1,6 +1,9 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Data.Digit.Dc where
+module Data.Digit.Dc(
+  Dc(..)
+, parsec
+) where
 
 import Papa
 import Text.Parser.Char(CharParsing, char)

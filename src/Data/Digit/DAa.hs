@@ -6,9 +6,11 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Data.Digit.DAa where
+module Data.Digit.DAa(
+  DAa
+, parseAa
+) where
 
-import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DA(DA, parseA)
@@ -18,6 +20,7 @@ import Data.Digit.Da(Da, parsea)
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 -- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Papa
 
 type DAa a =
   (DA a, Da a)

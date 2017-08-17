@@ -1,7 +1,16 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.Octal where
+module Data.Digit.Octal(
+  OctalNoZero
+, Octal
+, parseOctalNoZero
+, parseOctal
+, OctalNoZeroDigit
+, OctalNoZeroDigit'
+, OctalDigit
+, OctalDigit'
+) where
 
 import Papa
 import Data.Void(Void)

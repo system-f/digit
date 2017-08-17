@@ -5,7 +5,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Data.Digit.Digitf where
+module Data.Digit.Digitf(
+  Digitf(..)
+) where
 
 import Papa
 import Data.Digit.Df(Df(df))

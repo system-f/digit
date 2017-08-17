@@ -1,7 +1,15 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.Binary where
+module Data.Digit.Binary(
+  BinaryNoZero
+, Binary
+, parseBinaryNoZero
+, parseBinary
+, BinaryNoZeroDigit
+, BinaryDigit
+, BinaryDigit'  
+) where
 
 import Papa
 import Data.Void(Void)

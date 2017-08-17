@@ -1,6 +1,9 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Data.Digit.DF where
+module Data.Digit.DF(
+  DF(..)
+, parseF
+) where
 
 import Papa
 import Text.Parser.Char(CharParsing, char)

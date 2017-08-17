@@ -1,6 +1,9 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Data.Digit.D3 where
+module Data.Digit.D3(
+  D3(..)
+, parse3
+) where
 
 import Papa
 import Text.Parser.Char(CharParsing, char)

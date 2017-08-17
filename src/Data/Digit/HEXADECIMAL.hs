@@ -1,7 +1,16 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.HEXADECIMAL where
+module Data.Digit.HEXADECIMAL(
+  HEXADECIMALNoZero
+, HEXADECIMAL
+, parseHEXADECIMALNoZero
+, parseHEXADECIMAL
+, HEXADECIMALNoZeroDigit
+, HEXADECIMALNoZeroDigit'
+, HEXADECIMALDigit
+, HEXADECIMALDigit'
+) where
 
 import Papa
 import Data.Void(Void)

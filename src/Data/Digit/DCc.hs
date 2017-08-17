@@ -1,9 +1,11 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
 
-module Data.Digit.DCc where
+module Data.Digit.DCc(
+  DCc
+, parseCc
+) where
 
-import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DC(DC, parseC)
@@ -13,6 +15,7 @@ import Data.Digit.Dc(Dc, parsec)
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 -- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Papa
 
 type DCc a =
   (DC a, Dc a)

@@ -5,7 +5,9 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Data.Digit.Digita where
+module Data.Digit.Digita(
+  Digita(..)
+) where
 
 import Papa
 import Data.Digit.Da(Da(da))

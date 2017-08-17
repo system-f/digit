@@ -1,6 +1,9 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Data.Digit.D7 where
+module Data.Digit.D7(
+  D7(..)
+, parse7
+) where
 
 import Papa
 import Text.Parser.Char(CharParsing, char)
