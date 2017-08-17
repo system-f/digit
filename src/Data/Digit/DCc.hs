@@ -3,6 +3,7 @@
 
 module Data.Digit.DCc where
 
+import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DC(DC, parseC)
@@ -11,7 +12,6 @@ import Data.Digit.Dc(Dc, parsec)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Control.Lens(isn't, _Right)
 -- >>> import Data.Digit.HeXaDeCiMaL
 
 type DCc a =

@@ -13,7 +13,6 @@ import Data.Digit.D1(D1, parse1)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Control.Lens(isn't, _Right)
 -- >>> import Data.Digit.Digit1
 
 type BinaryNoZero d =

@@ -8,6 +8,7 @@
 
 module Data.Digit.DAa where
 
+import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DA(DA, parseA)
@@ -16,7 +17,6 @@ import Data.Digit.Da(Da, parsea)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Control.Lens(isn't, _Right)
 -- >>> import Data.Digit.HeXaDeCiMaL
 
 type DAa a =

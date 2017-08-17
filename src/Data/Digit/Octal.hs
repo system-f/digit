@@ -19,7 +19,6 @@ import Data.Digit.D7(D7, parse7)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Control.Lens(isn't, _Right)
 
 type OctalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d)

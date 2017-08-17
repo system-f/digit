@@ -3,6 +3,7 @@
 
 module Data.Digit.DEe where
 
+import Papa
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DE(DE, parseE)
@@ -11,7 +12,6 @@ import Data.Digit.De(De, parsee)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Control.Lens(isn't, _Right)
 -- >>> import Data.Digit.HeXaDeCiMaL
 
 type DEe a =
