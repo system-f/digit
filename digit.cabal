@@ -47,12 +47,7 @@ library
                     src
 
   exposed-modules:
-                    Data.Digit2
                     Data.Digit
-                    Data.Digits
-                    Data.Digits1
-
-                    Data.Dxxx
                     Data.Digit.Binary
                     Data.Digit.Decimal
                     Data.Digit.Octal
