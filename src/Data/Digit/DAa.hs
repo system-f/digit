@@ -10,8 +10,8 @@ module Data.Digit.DAa where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DA
-import Data.Digit.Da
+import Data.Digit.DA(DA, parseA)
+import Data.Digit.Da(Da, parsea)
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

@@ -7,16 +7,16 @@ import Papa
 import Data.Void(Void)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0  
-import Data.Digit.D1  
-import Data.Digit.D2  
-import Data.Digit.D3  
-import Data.Digit.D4  
-import Data.Digit.D5  
-import Data.Digit.D6  
-import Data.Digit.D7  
-import Data.Digit.D8  
-import Data.Digit.D9
+import Data.Digit.D0(D0, parse0)
+import Data.Digit.D1(D1, parse1)
+import Data.Digit.D2(D2, parse2)
+import Data.Digit.D3(D3, parse3)
+import Data.Digit.D4(D4, parse4)
+import Data.Digit.D5(D5, parse5)
+import Data.Digit.D6(D6, parse6)
+import Data.Digit.D7(D7, parse7)
+import Data.Digit.D8(D8, parse8)
+import Data.Digit.D9(D9, parse9)
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

@@ -8,7 +8,7 @@
 module Data.Digit.DigitE where
 
 import Papa
-import Data.Digit.DE
+import Data.Digit.DE(DE(dE))
 import Prelude(Bounded, RealFrac)
 
 newtype DigitE a =

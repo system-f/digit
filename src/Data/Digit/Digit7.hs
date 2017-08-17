@@ -8,7 +8,7 @@
 module Data.Digit.Digit7 where
 
 import Papa
-import Data.Digit.D7
+import Data.Digit.D7(D7(d7))
 import Prelude(Bounded, RealFrac)
 
 newtype Digit7 a =

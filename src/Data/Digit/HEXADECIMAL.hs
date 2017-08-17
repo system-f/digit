@@ -7,23 +7,23 @@ import Papa
 import Data.Void(Void)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0
-import Data.Digit.D1
-import Data.Digit.D2
-import Data.Digit.D3
-import Data.Digit.D4
-import Data.Digit.D5
-import Data.Digit.D6
-import Data.Digit.D7
-import Data.Digit.D8
-import Data.Digit.D9
-import Data.Digit.DA
-import Data.Digit.DB
-import Data.Digit.DC
-import Data.Digit.DD
-import Data.Digit.DE
-import Data.Digit.DF
-import Data.Digit.Decimal
+import Data.Digit.D0(D0, parse0)
+import Data.Digit.D1(D1)
+import Data.Digit.D2(D2)
+import Data.Digit.D3(D3)
+import Data.Digit.D4(D4)
+import Data.Digit.D5(D5)
+import Data.Digit.D6(D6)
+import Data.Digit.D7(D7)
+import Data.Digit.D8(D8)
+import Data.Digit.D9(D9)
+import Data.Digit.DA(DA, parseA)
+import Data.Digit.DB(DB, parseB)
+import Data.Digit.DC(DC, parseC)
+import Data.Digit.DD(DD, parseD)
+import Data.Digit.DE(DE, parseE)
+import Data.Digit.DF(DF, parseF)
+import Data.Digit.Decimal(parseDecimalNoZero)
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

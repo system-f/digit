@@ -8,7 +8,7 @@
 module Data.Digit.Digitb where
 
 import Papa
-import Data.Digit.Db
+import Data.Digit.Db(Db(db))
 import Prelude(Bounded, RealFrac)
 
 newtype Digitb a =

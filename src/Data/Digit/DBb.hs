@@ -5,8 +5,8 @@ module Data.Digit.DBb where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DB
-import Data.Digit.Db
+import Data.Digit.DB(DB, parseB)
+import Data.Digit.Db(Db, parseb)
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

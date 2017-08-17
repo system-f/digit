@@ -5,8 +5,8 @@ module Data.Digit.DCc where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DC
-import Data.Digit.Dc
+import Data.Digit.DC(DC, parseC)
+import Data.Digit.Dc(Dc, parsec)
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

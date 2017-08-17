@@ -7,8 +7,8 @@ import Papa
 import Data.Void(Void)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0
-import Data.Digit.D1
+import Data.Digit.D0(D0, parse0)
+import Data.Digit.D1(D1, parse1)
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
