@@ -8,16 +8,16 @@
 module Data.Digit2(
   BinaryNoZero
 , Binary
-, DecimalNoZero
-, Decimal
 , OctalNoZero
 , Octal
+, DecimalNoZero
+, Decimal
+, HexadecimalNoZero
+, Hexadecimal
 , HeXaDeCiMaLNoZero
 , HeXaDeCiMaL
 , HEXADECIMALNoZero
 , HEXADECIMAL
-, HexadecimalNoZero
-, Hexadecimal
 , D0(..)
 , D1(..)
 , D2(..)
@@ -80,6 +80,18 @@ module Data.Digit2(
 , parseHexadecimal
 , parseHeXaDeCiMaLNoZero
 , parseHeXaDeCiMaL
+, BinaryNoZeroDigit
+, BinaryDigit
+, OctalNoZeroDigit
+, OctalDigit
+, DecimalNoZeroDigit
+, DecimalDigit
+, HexadecimalNoZeroDigit
+, HexadecimalDigit
+, HeXaDeCiMaLNoZeroDigit
+, HeXaDeCiMaLDigit
+, HEXADECIMALNoZeroDigit
+, HEXADECIMALDigit
 , Digit0(..)
 , Digit1(..)
 , Digit2(..)
@@ -109,11 +121,13 @@ import Data.Functor.Apply
 import Data.Functor.Bind
 import Data.Semigroup
 import Data.Semigroup.Foldable
+import Data.Void
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
 
 -- $setup
 -- >>> import Text.Parsec
+-- >>> import Data.Void
 
 type BinaryNoZero d =
   D1 d
@@ -2710,6 +2724,44 @@ instance Ixed (DigitF a) where
     DigitF <$> f a
 
 makeWrapped ''DigitF
+
+----
+
+type BinaryNoZeroDigit d1 =
+  Either d1 Void
+
+type BinaryDigit d0 d1 =
+  Either d0 (BinaryNoZeroDigit d1)
+
+type OctalNoZeroDigit d1 d2 d3 d4 d5 d6 d7 =
+  Either d1 (Either d2 (Either d3 (Either d4 (Either d5 (Either d5 (Either d6 (Either d7 Void)))))))
+
+type OctalDigit d0 d1 d2 d3 d4 d5 d6 d7 =
+  Either d0 (OctalNoZeroDigit d1 d2 d3 d4 d5 d6 d7)
+
+type DecimalNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 =
+  Either d1 (Either d2 (Either d3 (Either d4 (Either d5 (Either d5 (Either d6 (Either d7 (Either d8 (Either d9 Void)))))))))
+
+type DecimalDigit d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 =
+  Either d0 (DecimalNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9)
+
+type HexadecimalNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df =
+  Either d1 (Either d2 (Either d3 (Either d4 (Either d5 (Either d5 (Either d6 (Either d7 (Either d8 (Either d9 (Either da (Either db (Either dc (Either dd (Either de (Either df Void)))))))))))))))
+
+type HexadecimalDigit d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df =
+  Either d0 (HexadecimalNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df)
+
+type HEXADECIMALNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 dA dB dC dD dE dF =
+  Either d1 (Either d2 (Either d3 (Either d4 (Either d5 (Either d5 (Either d6 (Either d7 (Either d8 (Either d9 (Either dA (Either dB (Either dC (Either dD (Either dE (Either dF Void)))))))))))))))
+
+type HEXADECIMALDigit d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 dA dB dC dD dE dF =
+  Either d0 (HEXADECIMALNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 dA dB dC dD dE dF)
+
+type HeXaDeCiMaLNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df dA dB dC dD dE dF =
+  Either d1 (Either d2 (Either d3 (Either d4 (Either d5 (Either d5 (Either d6 (Either d7 (Either d8 (Either d9 (Either da (Either db (Either dc (Either dd (Either de (Either df (Either dA (Either dB (Either dC (Either dD (Either dE (Either dF Void)))))))))))))))))))))
+
+type HeXaDeCiMaLDigit d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df dA dB dC dD dE dF =
+  Either d0 (HeXaDeCiMaLNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df dA dB dC dD dE dF)
 
 instance D0 d => D0 (Either d x) where
   d0 =
