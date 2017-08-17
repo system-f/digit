@@ -7,12 +7,6 @@
 
 module Data.Digit.DFf where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
-import Data.Void
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DF
@@ -43,4 +37,4 @@ parseFf ::
   (DFf d, CharParsing p) =>
   p d
 parseFf =
-  choice [parseF, parsef]
+  choice [parseF, parsef] <?> "Ff"

@@ -7,12 +7,6 @@
 
 module Data.Digit.DAa where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
-import Data.Void
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DA
@@ -43,4 +37,4 @@ parseAa ::
   (DAa d, CharParsing p) =>
   p d
 parseAa =
-  choice [parseA, parsea]
+  choice [parseA, parsea] <?> "Aa"

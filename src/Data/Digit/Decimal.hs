@@ -7,11 +7,6 @@
 
 module Data.Digit.Decimal where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
 import Data.Void
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
@@ -25,7 +20,7 @@ import Data.Digit.D6
 import Data.Digit.D7  
 import Data.Digit.D8  
 import Data.Digit.D9
-  
+
 type DecimalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d)
 

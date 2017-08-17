@@ -139,15 +139,6 @@ module Data.Digit2 {- (
 , DigitF(..)
 ) -} where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
-import Data.Void
-import Text.Parser.Char
-import Text.Parser.Combinators((<?>), choice)
-
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)

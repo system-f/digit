@@ -7,12 +7,6 @@
 
 module Data.Digit.DDd where
 
-import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
-import Data.Void
 import Text.Parser.Char
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.DD
@@ -43,4 +37,4 @@ parseDd ::
   (DDd d, CharParsing p) =>
   p d
 parseDd =
-  choice [parseD, parsed]
+  choice [parseD, parsed] <?> "Dd"

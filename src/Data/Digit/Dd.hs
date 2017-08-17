@@ -8,13 +8,8 @@
 module Data.Digit.Dd where
 
 import Control.Lens hiding ((<.>))
-import Data.Functor.Apply
-import Data.Functor.Bind
-import Data.Semigroup
-import Data.Semigroup.Foldable
-import Data.Void
 import Text.Parser.Char
-import Text.Parser.Combinators((<?>), choice)
+import Text.Parser.Combinators((<?>))
 
 class Dd d where
   dd ::
