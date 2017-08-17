@@ -825,51 +825,170 @@ parsef ::
 parsef =
   xf <$ char 'f' <?> "f"
 
+-- |
+--
+-- >>> parse (parseAa <* eof) "test" "A" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse (parseAa <* eof) "test" "a" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseAa "test" "Axyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseAa "test" "axyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseAa "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ()))
+-- True
 parseAa ::
   (DA d, Da d, CharParsing p) =>
   p d
 parseAa =
   choice [parseA, parsea]
 
+-- |
+--
+-- >>> parse (parseBb <* eof) "test" "B" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse (parseBb <* eof) "test" "b" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseBb "test" "Bxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseBb "test" "bxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseBb "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ()))
+-- True
 parseBb ::
   (DB d, Db d, CharParsing p) =>
   p d
 parseBb =
   choice [parseB, parseb]
 
+-- |
+--
+-- >>> parse (parseCc <* eof) "test" "C" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse (parseCc <* eof) "test" "c" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseCc "test" "Cxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseCc "test" "cxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseCc "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ()))
+-- True
 parseCc ::
   (DC d, Dc d, CharParsing p) =>
   p d
 parseCc =
   choice [parseC, parsec]
 
+-- |
+--
+-- >>> parse (parseDd <* eof) "test" "D" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse (parseDd <* eof) "test" "d" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseDd "test" "Dxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseDd "test" "dxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseDd "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ()))
+-- True
 parseDd ::
   (DD d, Dd d, CharParsing p) =>
   p d
 parseDd =
   choice [parseD, parsed]
 
+-- |
+--
+-- >>> parse (parseEe <* eof) "test" "E" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse (parseEe <* eof) "test" "e" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseEe "test" "Exyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseEe "test" "exyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseEe "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ()))
+-- True
 parseEe ::
   (DE d, De d, CharParsing p) =>
   p d
 parseEe =
   choice [parseE, parsee]
 
+-- |
+--
+-- >>> parse (parseFf <* eof) "test" "F" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse (parseFf <* eof) "test" "f" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseFf "test" "Fxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> parse parseFf "test" "fxyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseFf "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit () () () () () () () () () () () () () () () () () () () () () ()))
+-- True
 parseFf ::
   (DF d, Df d, CharParsing p) =>
   p d
 parseFf =
   choice [parseF, parsef]
 
-
-----
-
+-- |
+--
+-- >>> parse (parseBinaryNoZero <* eof) "test" "1" :: Either ParseError (Digit1 ())
+-- Right (Digit1 ())
+--
+-- >>> parse parseBinaryNoZero "test" "1xyz" :: Either ParseError (Digit1 ())
+-- Right (Digit1 ())
+--
+-- >>> isn't _Right (parse parseBinaryNoZero "test" "xyz" :: Either ParseError (Digit1 ()))
+-- True
 parseBinaryNoZero ::
   (BinaryNoZero d, CharParsing p) =>
   p d
 parseBinaryNoZero =
   parse1 <?> "BinaryNoZero"
 
+-- |
+--
+-- >>> parse (parseBinary <* eof) "test" "0" :: Either ParseError (BinaryDigit () ())
+-- Right (Left ())
+--
+-- >>> parse parseBinary "test" "0xyz" :: Either ParseError (BinaryDigit () ())
+-- Right (Left ())
+--
+-- >>> parse (parseBinary <* eof) "test" "1" :: Either ParseError (BinaryDigit () ())
+-- Right (Left ())
+--
+-- >>> parse parseBinary "test" "1xyz" :: Either ParseError (BinaryDigit () ())
+-- Right (Left ())
+--
+-- >>> isn't _Right (parse parseBinary "test" "xyz" :: Either ParseError (BinaryDigit () ()))
+-- True
 parseBinary ::
   (Binary d, CharParsing p) =>
   p d
