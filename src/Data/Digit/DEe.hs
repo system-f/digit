@@ -14,7 +14,7 @@ import Data.Digit.De(De, parsee)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Data.Digit.Digit
 -- >>> import Papa
 
 type DEe a =
@@ -22,22 +22,22 @@ type DEe a =
   
 -- |
 --
--- >>> parse (parseEe <* eof) "test" "E" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseEe <* eof) "test" "E" :: Either ParseError Digit
+-- Right E
 --
--- >>> parse (parseEe <* eof) "test" "e" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseEe "test" "Exyz" :: Either ParseError Digit
+-- Right E
 --
--- >>> parse parseEe "test" "Exyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseEe <* eof) "test" "e" :: Either ParseError Digit
+-- Right e
 --
--- >>> parse parseEe "test" "exyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseEe "test" "exyz" :: Either ParseError Digit
+-- Right e
 --
--- >>> isn't _Right (parse parseEe "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- >>> isn't _Right (parse parseEe "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> (c `notElem` "Ee") ==> isn't _Right (parse parseEe "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- prop> \c -> (c `notElem` "Ee") ==> isn't _Right (parse parseEe "test" [c] :: Either ParseError Digit)
 parseEe ::
   (DEe d, CharParsing p) =>
   p d

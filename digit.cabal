@@ -80,28 +80,9 @@ library
                     Data.Digit.DDd
                     Data.Digit.DEe
                     Data.Digit.DFf
-                    Data.Digit.Digit0
-                    Data.Digit.Digit1
-                    Data.Digit.Digit2
-                    Data.Digit.Digit3
-                    Data.Digit.Digit4
-                    Data.Digit.Digit5
-                    Data.Digit.Digit6
-                    Data.Digit.Digit7
-                    Data.Digit.Digit8
-                    Data.Digit.Digit9
-                    Data.Digit.Digita
-                    Data.Digit.DigitA
-                    Data.Digit.Digitb
-                    Data.Digit.DigitB
-                    Data.Digit.Digitc
-                    Data.Digit.DigitC
-                    Data.Digit.Digitd
-                    Data.Digit.DigitD
-                    Data.Digit.Digite
-                    Data.Digit.DigitE
-                    Data.Digit.Digitf
-                    Data.Digit.DigitF
+                    Data.Digit.Digit
+                    Data.Digit.Char
+                    Data.Digit.Integral
 
 
 test-suite doctests

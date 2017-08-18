@@ -5,6 +5,7 @@ module Data.Digit.D9(
 , parse9
 ) where
 
+import Data.Digit.Digit(Digit(Digit9))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -12,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit9
 
 class D9 d where
   d9 ::
@@ -30,22 +30,28 @@ instance D9 () where
     
 -- |
 --
--- >>> parse (parse9 <* eof) "test" "9" :: Either ParseError (Digit9 ())
--- Right (Digit9 ())
+-- >>> parse (parse9 <* eof) "test" "9" :: Either ParseError Digit
+-- Right 9
 --
--- >>> parse parse9 "test" "9xyz" :: Either ParseError (Digit9 ())
--- Right (Digit9 ())
+-- >>> parse parse9 "test" "9xyz" :: Either ParseError Digit
+-- Right 9
 --
--- >>> isn't _Right (parse parse9 "test" "xyz" :: Either ParseError (Digit9 ()))
+-- >>> isn't _Right (parse parse9 "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= '9' ==> isn't _Right (parse parse9 "test" [c] :: Either ParseError (Digit9 ()))
+-- prop> \c -> c /= '9' ==> isn't _Right (parse parse9 "test" [c] :: Either ParseError Digit)
 parse9 ::
   (D9 d, CharParsing p) =>
   p d
 parse9 =
   x9 <$ char '9' <?> "9"
 
-instance D9 d => D9 (Either d x) where
+instance D9 Digit where
   d9 =
-    _Left . d9
+    prism'
+      (\() -> Digit9)
+      (\d ->  case d of
+                Digit9 ->
+                  Just ()
+                _ ->
+                  Nothing)

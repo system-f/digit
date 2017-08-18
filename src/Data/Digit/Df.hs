@@ -5,6 +5,7 @@ module Data.Digit.Df(
 , parsef
 ) where
 
+import Data.Digit.Digit(Digit(Digitf))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -12,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digitf
 
 class Df d where
   df ::
@@ -30,22 +30,28 @@ instance Df () where
     
 -- |
 --
--- >>> parse (parsef <* eof) "test" "f" :: Either ParseError (Digitf ())
--- Right (Digitf ())
+-- >>> parse (parsef <* eof) "test" "f" :: Either ParseError Digit
+-- Right f
 --
--- >>> parse parsef "test" "fxyz" :: Either ParseError (Digitf ())
--- Right (Digitf ())
+-- >>> parse parsef "test" "fxyz" :: Either ParseError Digit
+-- Right f
 --
--- >>> isn't _Right (parse parsef "test" "xyz" :: Either ParseError (Digitf ()))
+-- >>> isn't _Right (parse parsef "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= 'f' ==> isn't _Right (parse parsef "test" [c] :: Either ParseError (Digitf ()))
+-- prop> \c -> c /= 'f' ==> isn't _Right (parse parsef "test" [c] :: Either ParseError Digit)
 parsef ::
   (Df d, CharParsing p) =>
   p d
 parsef =
   xf <$ char 'f' <?> "f"
 
-instance Df d => Df (Either d x) where
+instance Df Digit where
   df =
-    _Left . df
+    prism'
+      (\() -> Digitf)
+      (\d ->  case d of
+                Digitf ->
+                  Just ()
+                _ ->
+                  Nothing)
