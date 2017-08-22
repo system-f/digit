@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Data.Digit.D2(
   D2(..)
@@ -8,6 +9,10 @@ module Data.Digit.D2(
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
+import Data.Digit.D0
+import Data.Digit.D1
+
+import Data.Digit.D3
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
@@ -49,3 +54,4 @@ parse2 =
 instance D2 d => D2 (Either d x) where
   d2 =
     _Left . d2
+
