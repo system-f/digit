@@ -5,6 +5,7 @@ module Data.Digit.D5(
 , parse5
 ) where
 
+import Data.Digit.D4(D4)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parse5 ::
 parse5 =
   x5 <$ char '5' <?> "5"
 
-instance D5 d => D5 (Either d x) where
+instance (D4 x, D5 d) => D5 (Either d x) where
   d5 =
     _Left . d5

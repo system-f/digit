@@ -5,6 +5,7 @@ module Data.Digit.Db(
 , parseb
 ) where
 
+import Data.Digit.Da(Da)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parseb ::
 parseb =
   xb <$ char 'b' <?> "b"
 
-instance Db d => Db (Either d x) where
+instance (Da x, Db d) => Db (Either d x) where
   db =
     _Left . db

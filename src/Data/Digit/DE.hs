@@ -5,6 +5,7 @@ module Data.Digit.DE(
 , parseE
 ) where
 
+import Data.Digit.DD(DD)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parseE ::
 parseE =
   xE <$ char 'E' <?> "E"
 
-instance DE d => DE (Either d x) where
+instance (DD d, DE d) => DE (Either d x) where
   dE =
     _Left . dE

@@ -5,6 +5,7 @@ module Data.Digit.Df(
 , parsef
 ) where
 
+import Data.Digit.De(De)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parsef ::
 parsef =
   xf <$ char 'f' <?> "f"
 
-instance Df d => Df (Either d x) where
+instance (De x, Df d) => Df (Either d x) where
   df =
     _Left . df

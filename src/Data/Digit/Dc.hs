@@ -5,6 +5,7 @@ module Data.Digit.Dc(
 , parsec
 ) where
 
+import Data.Digit.Db(Db)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parsec ::
 parsec =
   xc <$ char 'c' <?> "c"
 
-instance Dc d => Dc (Either d x) where
+instance (Db x, Dc d) => Dc (Either d x) where
   dc =
     _Left . dc

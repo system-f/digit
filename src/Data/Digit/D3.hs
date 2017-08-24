@@ -5,6 +5,7 @@ module Data.Digit.D3(
 , parse3
 ) where
 
+import Data.Digit.D2(D2)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parse3 ::
 parse3 =
   x3 <$ char '3' <?> "3"
 
-instance D3 d => D3 (Either d x) where
+instance (D2 x, D3 d) => D3 (Either d x) where
   d3 =
     _Left . d3

@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Data.Digit.D0(
   D0(..)
@@ -46,6 +47,6 @@ parse0 ::
 parse0 =
   x0 <$ char '0' <?> "0"
 
-instance D0 d => D0 (Either d x) where
+instance D0 d => D0 (Either d Void) where
   d0 =
     _Left . d0

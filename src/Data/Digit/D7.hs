@@ -5,6 +5,7 @@ module Data.Digit.D7(
 , parse7
 ) where
 
+import Data.Digit.D6(D6)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parse7 ::
 parse7 =
   x7 <$ char '7' <?> "7"
 
-instance D7 d => D7 (Either d x) where
+instance (D6 x, D7 d) => D7 (Either d x) where
   d7 =
     _Left . d7

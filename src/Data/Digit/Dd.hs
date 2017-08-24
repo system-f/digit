@@ -5,6 +5,7 @@ module Data.Digit.Dd(
 , parsed
 ) where
 
+import Data.Digit.Dc(Dc)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parsed ::
 parsed =
   xd <$ char 'd' <?> "d"
 
-instance Dd d => Dd (Either d x) where
+instance (Dc x, Dd d) => Dd (Either d x) where
   dd =
     _Left . dd

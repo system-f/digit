@@ -5,6 +5,7 @@ module Data.Digit.DC(
 , parseC
 ) where
 
+import Data.Digit.DB(DB)
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,6 +47,6 @@ parseC ::
 parseC =
   xC <$ char 'C' <?> "C"
 
-instance DC d => DC (Either d x) where
+instance (DB x, DC d) => DC (Either d x) where
   dC =
     _Left . dC
