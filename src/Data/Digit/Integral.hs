@@ -68,7 +68,6 @@ integralBinaryNoZero =
 -- >>> 0 ^? integralBinary :: Maybe Digit
 -- Just 0
 --
---
 -- >>> 1 ^? integralBinary :: Maybe Digit
 -- Just 1
 --
