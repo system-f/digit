@@ -13,6 +13,7 @@ module Data.Digit.Integral(
 , integralHEXADECIMAL
 ) where
 
+import Control.Lens.Extras(is)
 import Data.Digit.Binary as D
 import Data.Digit.Decimal as D
 import Data.Digit.Octal as D
@@ -40,16 +41,17 @@ import Data.Digit.De as D
 import Data.Digit.DE as D
 import Data.Digit.Df as D
 import Data.Digit.DF as D
-
-import Control.Lens.Extras(is)
 import Papa
+
+-- $setup
+-- >>> import Data.Digit.Digit
 
 -- |
 --
 -- >>> 1 ^? integralBinaryNoZero
 -- Just ()
 --
--- >>> integralBinaryNoZero # Left () :: Integer
+-- >>> integralBinaryNoZero # Digit1 :: Integer
 -- 1
 --
 -- prop> \c -> c /= 1 ==> (c ^? integralBinaryNoZero == Nothing)
@@ -63,18 +65,18 @@ integralBinaryNoZero =
   
 -- |
 --
--- >>> 0 ^? integralBinary
--- Just ()
+-- >>> 0 ^? integralBinary :: Maybe Digit
+-- Just 0
 --
 --
--- >>> 1 ^? integralBinary
--- Just ()
+-- >>> 1 ^? integralBinary :: Maybe Digit
+-- Just 1
 --
--- >>> integralBinary # Left () :: Integer
--- 1
---
--- >>> integralBinary # (Right (Left ()) :: Either () (Either () Void)) :: Integer
+-- >>> integralBinary # Digit0 :: Integer
 -- 0
+--
+-- >>> integralBinary # Digit1 :: Integer
+-- 1
 --
 -- prop> \c -> (c `notElem` [0, 1]) ==> (c ^? integralBinary == Nothing)
 integralBinary ::
@@ -87,28 +89,28 @@ integralBinary =
   
 -- |
 --
--- >>> 1 ^? integralOctalNoZero
--- Just ()
+-- >>> 1 ^? integralOctalNoZero :: Maybe Digit
+-- Just 1
 --
--- >>> 2 ^? integralOctalNoZero
--- Just ()
+-- >>> 2 ^? integralOctalNoZero :: Maybe Digit
+-- Just 2
 --
--- >>> 3 ^? integralOctalNoZero
--- Just ()
+-- >>> 3 ^? integralOctalNoZero :: Maybe Digit
+-- Just 3
 --
--- >>> 4 ^? integralOctalNoZero
--- Just ()
+-- >>> 4 ^? integralOctalNoZero :: Maybe Digit
+-- Just 4
 --
--- >>> 5 ^? integralOctalNoZero
--- Just ()
+-- >>> 5 ^? integralOctalNoZero :: Maybe Digit
+-- Just 5
 --
--- >>> 6 ^? integralOctalNoZero
--- Just ()
+-- >>> 6 ^? integralOctalNoZero :: Maybe Digit
+-- Just 6
 --
--- >>> 7 ^? integralOctalNoZero
--- Just ()
+-- >>> 7 ^? integralOctalNoZero :: Maybe Digit
+-- Just 7
 --
--- >>> integralOctalNoZero # Left () :: Integer
+-- >>> integralOctalNoZero # Digit1 :: Integer
 -- 1
 --
 -- prop> \c -> (c `notElem` [0..7]) ==> (c ^? integralOctalNoZero == Nothing)

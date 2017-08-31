@@ -15,6 +15,7 @@ module Data.Digit.Char(
 , charHeXaDeCiMaL
 ) where
 
+import Control.Lens.Extras(is)
 import Data.Digit.Binary as D
 import Data.Digit.Decimal as D
 import Data.Digit.Octal as D
@@ -43,8 +44,6 @@ import Data.Digit.De as D
 import Data.Digit.DE as D
 import Data.Digit.Df as D
 import Data.Digit.DF as D
-
-import Control.Lens.Extras(is)
 import Papa
 
 charBinaryNoZero ::

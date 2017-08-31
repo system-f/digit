@@ -17,6 +17,7 @@ import Data.Digit.D1(D1, parse1)
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 -- >>> import Data.Digit.Digit
+-- >>> import Papa
 
 type BinaryNoZero d =
   D1 d
