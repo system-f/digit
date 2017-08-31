@@ -2,6 +2,8 @@
 
 * Refactor to classy prisms for each digit.
 * Data types for other bases (binary, octal, hexadecimal).
+* Remove the `Digit…` data types.
+* Introduce the `Digit` data type.
 
 0.3.0
 
