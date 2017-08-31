@@ -5,7 +5,7 @@ module Data.Digit.Dd(
 , parsed
 ) where
 
-import Data.Digit.Dc(Dc)
+import Data.Digit.Digit(Digit(Digitd))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -13,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digitd
 
 class Dd d where
   dd ::
@@ -31,22 +30,29 @@ instance Dd () where
     
 -- |
 --
--- >>> parse (parsed <* eof) "test" "d" :: Either ParseError (Digitd ())
--- Right (Digitd ())
+-- >>> parse (parsed <* eof) "test" "d" :: Either ParseError Digit
+-- Right d
 --
--- >>> parse parsed "test" "dxyz" :: Either ParseError (Digitd ())
--- Right (Digitd ())
+-- >>> parse parsed "test" "dxyz" :: Either ParseError Digit
+-- Right d
 --
--- >>> isn't _Right (parse parsed "test" "xyz" :: Either ParseError (Digitd ()))
+-- >>> isn't _Right (parse parsed "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= 'd' ==> isn't _Right (parse parsed "test" [c] :: Either ParseError (Digitd ()))
+-- prop> \c -> c /= 'd' ==> isn't _Right (parse parsed "test" [c] :: Either ParseError Digit)
 parsed ::
   (Dd d, CharParsing p) =>
   p d
 parsed =
   xd <$ char 'd' <?> "d"
 
-instance (Dc x, Dd d) => Dd (Either d x) where
+instance Dd Digit where
   dd =
-    _Left . dd
+    prism'
+      (\() -> Digitd)
+      (\d ->  case d of
+                Digitd ->
+                  Just ()
+                _ ->
+                  Nothing)
+

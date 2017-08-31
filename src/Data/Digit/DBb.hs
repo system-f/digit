@@ -14,7 +14,7 @@ import Data.Digit.Db(Db, parseb)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Data.Digit.Digit
 -- >>> import Papa
 
 type DBb a =
@@ -22,25 +22,24 @@ type DBb a =
   
 -- |
 --
--- >>> parse (parseBb <* eof) "test" "B" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseBb <* eof) "test" "B" :: Either ParseError Digit
+-- Right B
 --
--- >>> parse (parseBb <* eof) "test" "b" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseBb "test" "Bxyz" :: Either ParseError Digit
+-- Right B
 --
--- >>> parse parseBb "test" "Bxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseBb <* eof) "test" "b" :: Either ParseError Digit
+-- Right b
 --
--- >>> parse parseBb "test" "bxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseBb "test" "bxyz" :: Either ParseError Digit
+-- Right b
 --
--- >>> isn't _Right (parse parseBb "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- >>> isn't _Right (parse parseBb "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> (c `notElem` "Bb") ==> isn't _Right (parse parseBb "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- prop> \c -> (c `notElem` "Bb") ==> isn't _Right (parse parseBb "test" [c] :: Either ParseError Digit)
 parseBb ::
   (DBb d, CharParsing p) =>
   p d
 parseBb =
   choice [parseB, parseb] <?> "Bb"
-

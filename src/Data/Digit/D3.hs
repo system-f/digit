@@ -5,7 +5,7 @@ module Data.Digit.D3(
 , parse3
 ) where
 
-import Data.Digit.D2(D2)
+import Data.Digit.Digit(Digit(Digit3))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -13,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit3
 
 class D3 d where
   d3 ::
@@ -31,22 +30,28 @@ instance D3 () where
 
 -- |
 --
--- >>> parse (parse3 <* eof) "test" "3" :: Either ParseError (Digit3 ())
--- Right (Digit3 ())
+-- >>> parse (parse3 <* eof) "test" "3" :: Either ParseError Digit
+-- Right 3
 --
--- >>> parse parse3 "test" "3xyz" :: Either ParseError (Digit3 ())
--- Right (Digit3 ())
+-- >>> parse parse3 "test" "3xyz" :: Either ParseError Digit
+-- Right 3
 --
--- >>> isn't _Right (parse parse3 "test" "xyz" :: Either ParseError (Digit3 ()))
+-- >>> isn't _Right (parse parse3 "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= '3' ==> isn't _Right (parse parse3 "test" [c] :: Either ParseError (Digit3 ()))
+-- prop> \c -> c /= '3' ==> isn't _Right (parse parse3 "test" [c] :: Either ParseError Digit)
 parse3 ::
   (D3 d, CharParsing p) =>
   p d
 parse3 =
   x3 <$ char '3' <?> "3"
 
-instance (D2 x, D3 d) => D3 (Either d x) where
+instance D3 Digit where
   d3 =
-    _Left . d3
+    prism'
+      (\() -> Digit3)
+      (\d ->  case d of
+                Digit3 ->
+                  Just ()
+                _ ->
+                  Nothing)

@@ -14,7 +14,7 @@ import Data.Digit.Dc(Dc, parsec)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.HeXaDeCiMaL
+-- >>> import Data.Digit.Digit
 -- >>> import Papa
 
 type DCc a =
@@ -22,22 +22,22 @@ type DCc a =
   
 -- |
 --
--- >>> parse (parseCc <* eof) "test" "C" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseCc <* eof) "test" "C" :: Either ParseError Digit
+-- Right C
 --
--- >>> parse (parseCc <* eof) "test" "c" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseCc "test" "Cxyz" :: Either ParseError Digit
+-- Right C
 --
--- >>> parse parseCc "test" "Cxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseCc <* eof) "test" "c" :: Either ParseError Digit
+-- Right c
 --
--- >>> parse parseCc "test" "cxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseCc "test" "cxyz" :: Either ParseError Digit
+-- Right c
 --
--- >>> isn't _Right (parse parseCc "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- >>> isn't _Right (parse parseCc "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> (c `notElem` "Cc") ==> isn't _Right (parse parseCc "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- prop> \c -> (c `notElem` "Cc") ==> isn't _Right (parse parseCc "test" [c] :: Either ParseError Digit)
 parseCc ::
   (DCc d, CharParsing p) =>
   p d

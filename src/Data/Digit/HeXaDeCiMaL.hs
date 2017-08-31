@@ -6,14 +6,8 @@ module Data.Digit.HeXaDeCiMaL(
 , HeXaDeCiMaL
 , parseHeXaDeCiMaLNoZero
 , parseHeXaDeCiMaL
-, HeXaDeCiMaLNoZeroDigit
-, HeXaDeCiMaLNoZeroDigit'
-, HeXaDeCiMaLDigit
-, HeXaDeCiMaLDigit'
 ) where
 
-import Papa
-import Data.Void(Void)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.D0(D0, parse0)
@@ -49,142 +43,144 @@ import Data.Digit.DFf(parseFf)
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
+-- >>> import Data.Digit.Digit
+-- >>> import Papa
 
 type HeXaDeCiMaLNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d, DA d, DB d, DC d, DD d, DE d, DF d, Da d, Db d, Dc d, Dd d, De d, De d, Df d)
 
 -- |
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "1" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "1" :: Either ParseError Digit
+-- Right 1
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "1xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "1xyz" :: Either ParseError Digit
+-- Right 1
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "2" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "2" :: Either ParseError Digit
+-- Right 2
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "2xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "2xyz" :: Either ParseError Digit
+-- Right 2
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "3" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "3" :: Either ParseError Digit
+-- Right 3
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "3xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "3xyz" :: Either ParseError Digit
+-- Right 3
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "4" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "4" :: Either ParseError Digit
+-- Right 4
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "4xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "4xyz" :: Either ParseError Digit
+-- Right 4
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "5" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "5" :: Either ParseError Digit
+-- Right 5
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "5xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "5xyz" :: Either ParseError Digit
+-- Right 5
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "6" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "6" :: Either ParseError Digit
+-- Right 6
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "6xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "6xyz" :: Either ParseError Digit
+-- Right 6
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "7" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "7" :: Either ParseError Digit
+-- Right 7
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "7xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "7xyz" :: Either ParseError Digit
+-- Right 7
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "8" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "8" :: Either ParseError Digit
+-- Right 8
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "8xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "8xyz" :: Either ParseError Digit
+-- Right 8
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "9" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "9" :: Either ParseError Digit
+-- Right 9
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "9xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "9xyz" :: Either ParseError Digit
+-- Right 9
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "a" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "a" :: Either ParseError Digit
+-- Right a
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "axyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "axyz" :: Either ParseError Digit
+-- Right a
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "b" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "b" :: Either ParseError Digit
+-- Right b
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "bxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "bxyz" :: Either ParseError Digit
+-- Right b
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "c" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "c" :: Either ParseError Digit
+-- Right c
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "cxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "cxyz" :: Either ParseError Digit
+-- Right c
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "d" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "d" :: Either ParseError Digit
+-- Right d
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "dxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "dxyz" :: Either ParseError Digit
+-- Right d
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "e" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "e" :: Either ParseError Digit
+-- Right e
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "exyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "exyz" :: Either ParseError Digit
+-- Right e
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "f" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "f" :: Either ParseError Digit
+-- Right f
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "fxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "fxyz" :: Either ParseError Digit
+-- Right f
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "A" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "A" :: Either ParseError Digit
+-- Right A
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "Axyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "Axyz" :: Either ParseError Digit
+-- Right A
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "B" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "B" :: Either ParseError Digit
+-- Right B
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "Bxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "Bxyz" :: Either ParseError Digit
+-- Right B
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "C" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "C" :: Either ParseError Digit
+-- Right C
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "Cxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "Cxyz" :: Either ParseError Digit
+-- Right C
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "D" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "D" :: Either ParseError Digit
+-- Right D
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "Dxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "Dxyz" :: Either ParseError Digit
+-- Right D
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "E" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "E" :: Either ParseError Digit
+-- Right E
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "Exyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "Exyz" :: Either ParseError Digit
+-- Right E
 --
--- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "F" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaLNoZero <* eof) "test" "F" :: Either ParseError Digit
+-- Right F
 --
--- >>> parse parseHeXaDeCiMaLNoZero "test" "Fxyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaLNoZero "test" "Fxyz" :: Either ParseError Digit
+-- Right F
 --
--- >>> isn't _Right (parse parseHeXaDeCiMaLNoZero "test" "xyz" :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ()))
+-- >>> isn't _Right (parse parseHeXaDeCiMaLNoZero "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> (c `notElem` "123456789abcdefABCDEF") ==> isn't _Right (parse parseHeXaDeCiMaLNoZero "test" [c] :: Either ParseError (HeXaDeCiMaLNoZeroDigit' ()))
+-- prop> \c -> (c `notElem` "123456789abcdefABCDEF") ==> isn't _Right (parse parseHeXaDeCiMaLNoZero "test" [c] :: Either ParseError Digit)
 parseHeXaDeCiMaLNoZero ::
   (HeXaDeCiMaLNoZero d, CharParsing p) =>
   p d
@@ -200,147 +196,147 @@ parseHeXaDeCiMaLNoZero =
     , parseFf
     ] <?> "HeXaDeCiMaLNoZero"
 
-type HeXaDeCiMaLNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df dA dB dC dD dE dF =
-  Either d1 (Either d2 (Either d3 (Either d4 (Either d5 (Either d5 (Either d6 (Either d7 (Either d8 (Either d9 (Either da (Either db (Either dc (Either dd (Either de (Either df (Either dA (Either dB (Either dC (Either dD (Either dE (Either dF Void)))))))))))))))))))))
-
-type HeXaDeCiMaLNoZeroDigit' d =
-  HeXaDeCiMaLNoZeroDigit d d d d d d d d d d d d d d d d d d d d d
-  
 type HeXaDeCiMaL d =
   (D0 d, HeXaDeCiMaLNoZero d)
 
 -- |
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "1" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "0" :: Either ParseError Digit
+-- Right 0
 --
--- >>> parse parseHeXaDeCiMaL "test" "1xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "0xyz" :: Either ParseError Digit
+-- Right 0
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "2" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "1" :: Either ParseError Digit
+-- Right 1
 --
--- >>> parse parseHeXaDeCiMaL "test" "2xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "1xyz" :: Either ParseError Digit
+-- Right 1
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "3" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "2" :: Either ParseError Digit
+-- Right 2
 --
--- >>> parse parseHeXaDeCiMaL "test" "3xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "2xyz" :: Either ParseError Digit
+-- Right 2
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "4" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "3" :: Either ParseError Digit
+-- Right 3
 --
--- >>> parse parseHeXaDeCiMaL "test" "4xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "3xyz" :: Either ParseError Digit
+-- Right 3
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "5" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "4" :: Either ParseError Digit
+-- Right 4
 --
--- >>> parse parseHeXaDeCiMaL "test" "5xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "4xyz" :: Either ParseError Digit
+-- Right 4
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "6" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "5" :: Either ParseError Digit
+-- Right 5
 --
--- >>> parse parseHeXaDeCiMaL "test" "6xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "5xyz" :: Either ParseError Digit
+-- Right 5
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "7" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "6" :: Either ParseError Digit
+-- Right 6
 --
--- >>> parse parseHeXaDeCiMaL "test" "7xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "6xyz" :: Either ParseError Digit
+-- Right 6
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "8" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "7" :: Either ParseError Digit
+-- Right 7
 --
--- >>> parse parseHeXaDeCiMaL "test" "8xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "7xyz" :: Either ParseError Digit
+-- Right 7
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "9" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "8" :: Either ParseError Digit
+-- Right 8
 --
--- >>> parse parseHeXaDeCiMaL "test" "9xyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "8xyz" :: Either ParseError Digit
+-- Right 8
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "a" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "9" :: Either ParseError Digit
+-- Right 9
 --
--- >>> parse parseHeXaDeCiMaL "test" "axyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "9xyz" :: Either ParseError Digit
+-- Right 9
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "b" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "a" :: Either ParseError Digit
+-- Right a
 --
--- >>> parse parseHeXaDeCiMaL "test" "bxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "axyz" :: Either ParseError Digit
+-- Right a
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "c" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "b" :: Either ParseError Digit
+-- Right b
 --
--- >>> parse parseHeXaDeCiMaL "test" "cxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "bxyz" :: Either ParseError Digit
+-- Right b
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "d" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "c" :: Either ParseError Digit
+-- Right c
 --
--- >>> parse parseHeXaDeCiMaL "test" "dxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "cxyz" :: Either ParseError Digit
+-- Right c
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "e" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "d" :: Either ParseError Digit
+-- Right d
 --
--- >>> parse parseHeXaDeCiMaL "test" "exyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "dxyz" :: Either ParseError Digit
+-- Right d
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "f" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "e" :: Either ParseError Digit
+-- Right e
 --
--- >>> parse parseHeXaDeCiMaL "test" "fxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "exyz" :: Either ParseError Digit
+-- Right e
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "A" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "f" :: Either ParseError Digit
+-- Right f
 --
--- >>> parse parseHeXaDeCiMaL "test" "Axyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "fxyz" :: Either ParseError Digit
+-- Right f
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "B" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "A" :: Either ParseError Digit
+-- Right A
 --
--- >>> parse parseHeXaDeCiMaL "test" "Bxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "Axyz" :: Either ParseError Digit
+-- Right A
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "C" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "B" :: Either ParseError Digit
+-- Right B
 --
--- >>> parse parseHeXaDeCiMaL "test" "Cxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "Bxyz" :: Either ParseError Digit
+-- Right B
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "D" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "C" :: Either ParseError Digit
+-- Right C
 --
--- >>> parse parseHeXaDeCiMaL "test" "Dxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "Cxyz" :: Either ParseError Digit
+-- Right C
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "E" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "D" :: Either ParseError Digit
+-- Right D
 --
--- >>> parse parseHeXaDeCiMaL "test" "Exyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "Dxyz" :: Either ParseError Digit
+-- Right D
 --
--- >>> parse (parseHeXaDeCiMaL <* eof) "test" "F" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "E" :: Either ParseError Digit
+-- Right E
 --
--- >>> parse parseHeXaDeCiMaL "test" "Fxyz" :: Either ParseError (HeXaDeCiMaLDigit' ())
--- Right (Left ())
+-- >>> parse parseHeXaDeCiMaL "test" "Exyz" :: Either ParseError Digit
+-- Right E
 --
--- >>> isn't _Right (parse parseHeXaDeCiMaL "test" "xyz" :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- >>> parse (parseHeXaDeCiMaL <* eof) "test" "F" :: Either ParseError Digit
+-- Right F
+--
+-- >>> parse parseHeXaDeCiMaL "test" "Fxyz" :: Either ParseError Digit
+-- Right F
+--
+-- >>> isn't _Right (parse parseHeXaDeCiMaL "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> (c `notElem` "0123456789abcdefABCDEF") ==> isn't _Right (parse parseHeXaDeCiMaL "test" [c] :: Either ParseError (HeXaDeCiMaLDigit' ()))
+-- prop> \c -> (c `notElem` "0123456789abcdefABCDEF") ==> isn't _Right (parse parseHeXaDeCiMaL "test" [c] :: Either ParseError Digit)
 parseHeXaDeCiMaL ::
   (HeXaDeCiMaL d, CharParsing p) =>
   p d
@@ -350,10 +346,3 @@ parseHeXaDeCiMaL =
       parse0
     , parseHeXaDeCiMaLNoZero
     ] <?> "HeXaDeCiMaL"
-
-type HeXaDeCiMaLDigit d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df dA dB dC dD dE dF =
-  Either d0 (HeXaDeCiMaLNoZeroDigit d1 d2 d3 d4 d5 d6 d7 d8 d9 da db dc dd de df dA dB dC dD dE dF)
-
-type HeXaDeCiMaLDigit' d =
-  HeXaDeCiMaLDigit d d d d d d d d d d d d d d d d d d d d d d
-

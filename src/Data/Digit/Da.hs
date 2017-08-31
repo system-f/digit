@@ -5,7 +5,7 @@ module Data.Digit.Da(
 , parsea
 ) where
 
-import Data.Digit.D9(D9)
+import Data.Digit.Digit(Digit(Digita))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -13,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digita
 
 class Da d where
   da ::
@@ -31,22 +30,28 @@ instance Da () where
     
 -- |
 --
--- >>> parse (parsea <* eof) "test" "a" :: Either ParseError (Digita ())
--- Right (Digita ())
+-- >>> parse (parsea <* eof) "test" "a" :: Either ParseError Digit
+-- Right a
 --
--- >>> parse parsea "test" "axyz" :: Either ParseError (Digita ())
--- Right (Digita ())
+-- >>> parse parsea "test" "axyz" :: Either ParseError Digit
+-- Right a
 --
--- >>> isn't _Right (parse parsea "test" "xyz" :: Either ParseError (Digita ()))
+-- >>> isn't _Right (parse parsea "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= 'a' ==> isn't _Right (parse parsea "test" [c] :: Either ParseError (Digita ()))
+-- prop> \c -> c /= 'a' ==> isn't _Right (parse parsea "test" [c] :: Either ParseError Digit)
 parsea ::
   (Da d, CharParsing p) =>
   p d
 parsea =
   xa <$ char 'a' <?> "a"
 
-instance (D9 x, Da d) => Da (Either d x) where
+instance Da Digit where
   da =
-    _Left . da
+    prism'
+      (\() -> Digita)
+      (\d ->  case d of
+                Digita ->
+                  Just ()
+                _ ->
+                  Nothing)

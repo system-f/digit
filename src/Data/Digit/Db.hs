@@ -5,7 +5,7 @@ module Data.Digit.Db(
 , parseb
 ) where
 
-import Data.Digit.Da(Da)
+import Data.Digit.Digit(Digit(Digitb))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -13,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digitb
 
 class Db d where
   db ::
@@ -31,22 +30,28 @@ instance Db () where
     
 -- |
 --
--- >>> parse (parseb <* eof) "test" "b" :: Either ParseError (Digitb ())
--- Right (Digitb ())
+-- >>> parse (parseb <* eof) "test" "b" :: Either ParseError Digit
+-- Right b
 --
--- >>> parse parseb "test" "bxyz" :: Either ParseError (Digitb ())
--- Right (Digitb ())
+-- >>> parse parseb "test" "bxyz" :: Either ParseError Digit
+-- Right b
 --
--- >>> isn't _Right (parse parseb "test" "xyz" :: Either ParseError (Digitb ()))
+-- >>> isn't _Right (parse parseb "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= 'b' ==> isn't _Right (parse parseb "test" [c] :: Either ParseError (Digitb ()))
+-- prop> \c -> c /= 'b' ==> isn't _Right (parse parseb "test" [c] :: Either ParseError Digit)
 parseb ::
   (Db d, CharParsing p) =>
   p d
 parseb =
   xb <$ char 'b' <?> "b"
 
-instance (Da x, Db d) => Db (Either d x) where
+instance Db Digit where
   db =
-    _Left . db
+    prism'
+      (\() -> Digitb)
+      (\d ->  case d of
+                Digitb ->
+                  Just ()
+                _ ->
+                  Nothing)

@@ -5,7 +5,7 @@ module Data.Digit.D6(
 , parse6
 ) where
 
-import Data.Digit.D5(D5)
+import Data.Digit.Digit(Digit(Digit6))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -13,7 +13,6 @@ import Text.Parser.Combinators((<?>))
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit6
 
 class D6 d where
   d6 ::
@@ -31,22 +30,28 @@ instance D6 () where
     
 -- |
 --
--- >>> parse (parse6 <* eof) "test" "6" :: Either ParseError (Digit6 ())
--- Right (Digit6 ())
+-- >>> parse (parse6 <* eof) "test" "6" :: Either ParseError Digit
+-- Right 6
 --
--- >>> parse parse6 "test" "6xyz" :: Either ParseError (Digit6 ())
--- Right (Digit6 ())
+-- >>> parse parse6 "test" "6xyz" :: Either ParseError Digit
+-- Right 6
 --
--- >>> isn't _Right (parse parse6 "test" "xyz" :: Either ParseError (Digit6 ()))
+-- >>> isn't _Right (parse parse6 "test" "xyz" :: Either ParseError Digit)
 -- True
 --
--- prop> \c -> c /= '6' ==> isn't _Right (parse parse6 "test" [c] :: Either ParseError (Digit6 ()))
+-- prop> \c -> c /= '6' ==> isn't _Right (parse parse6 "test" [c] :: Either ParseError Digit)
 parse6 ::
   (D6 d, CharParsing p) =>
   p d
 parse6 =
   x6 <$ char '6' <?> "6"
 
-instance (D5 x, D6 d) => D6 (Either d x) where
+instance D6 Digit where
   d6 =
-    _Left . d6
+    prism'
+      (\() -> Digit6)
+      (\d ->  case d of
+                Digit6 ->
+                  Just ()
+                _ ->
+                  Nothing)
