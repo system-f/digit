@@ -1,9 +1,12 @@
-0.4.0
+0.5.0
 
-* Refactor to classy prisms for each digit.
 * Data types for other bases (binary, octal, hexadecimal).
 * Remove the `Digit…` data types.
 * Introduce the `Digit` data type.
+
+0.4.0
+
+* Refactor to classy prisms for each digit.
 
 0.3.0
 
