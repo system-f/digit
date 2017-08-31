@@ -10,8 +10,7 @@ mkDerivation {
     base lens papa parsers semigroupoids semigroups template-haskell
   ];
   testHaskellDepends = [
-    base directory doctest filepath lens parsec QuickCheck
-    template-haskell
+    base directory doctest filepath parsec QuickCheck template-haskell
   ];
   homepage = "https://github.com/qfpl/digit";
   description = "A data-type representing digits 0-9 and other combinations";
