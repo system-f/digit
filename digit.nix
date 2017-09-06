@@ -1,6 +1,7 @@
-{ mkDerivation, base, directory, doctest, filepath, lens, papa
-, parsec, parsers, QuickCheck, semigroupoids, semigroups, stdenv
-, template-haskell
+{ mkDerivation, ansi-wl-pprint, base, directory, filepath, hedgehog
+, lens, papa, parsers, pretty, process, semigroupoids, semigroups
+, stdenv, tasty, tasty-hedgehog, tasty-hspec, template-haskell
+, text, transformers
 }:
 mkDerivation {
   pname = "digit";
@@ -10,7 +11,8 @@ mkDerivation {
     base lens papa parsers semigroupoids semigroups template-haskell
   ];
   testHaskellDepends = [
-    base directory doctest filepath parsec QuickCheck template-haskell
+    ansi-wl-pprint base directory filepath hedgehog papa pretty process
+    tasty tasty-hedgehog tasty-hspec text transformers
   ];
   homepage = "https://github.com/qfpl/digit";
   description = "A data-type representing digits 0-9 and other combinations";
