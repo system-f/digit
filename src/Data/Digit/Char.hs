@@ -5,8 +5,8 @@ module Data.Digit.Char(
 , charBinary
 , charOctalNoZero
 , charOctal
-, charDecimal
 , charDecimalNoZero
+, charDecimal
 , charHexadecimalNoZero
 , charHexadecimal
 , charHEXADECIMALNoZero
@@ -52,10 +52,10 @@ import Papa
 
 -- |
 --
--- >>> '1' ^? charBinaryNoZero
--- Just ()
+-- >>> '1' ^? charBinaryNoZero :: Maybe Digit
+-- Just 1
 --
--- >>> charBinaryNoZero # Digit1 :: Char
+-- >>> charBinaryNoZero # Digit1
 -- '1'
 --
 -- prop> \c -> c /= '1' ==> (c ^? charBinaryNoZero == Nothing)
