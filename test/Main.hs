@@ -66,9 +66,9 @@ testParser n p x =
                 ((parse (p <* eof) (n' ++ " test") [c] :: Either ParseError Digit) @?= Right d)
         , let n' = n ++ " parses the correct digit"
           in  testCase
-            n'
-            ((parse p (n' ++ "test") (c:"xyz") :: Either ParseError Digit) @?= Right d)
-        ]
+                n'
+                ((parse p (n' ++ "test") (c:"xyz") :: Either ParseError Digit) @?= Right d)
+            ]
     ) 
 
 integralPrism ::
