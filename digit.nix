@@ -1,6 +1,6 @@
-{ mkDerivation, ansi-wl-pprint, base, hedgehog, lens, papa, parsers
-, pretty, semigroupoids, semigroups, stdenv, tasty, tasty-hedgehog
-, tasty-hspec, tasty-hunit, template-haskell, text
+{ mkDerivation, ansi-wl-pprint, base, hedgehog, lens, papa, parsec
+, parsers, pretty, semigroupoids, semigroups, stdenv, tasty
+, tasty-hedgehog, tasty-hspec, tasty-hunit, template-haskell, text
 }:
 mkDerivation {
   pname = "digit";
@@ -10,7 +10,7 @@ mkDerivation {
     base lens papa parsers semigroupoids semigroups template-haskell
   ];
   testHaskellDepends = [
-    ansi-wl-pprint base hedgehog lens papa parsers pretty tasty
+    ansi-wl-pprint base hedgehog lens papa parsec parsers pretty tasty
     tasty-hedgehog tasty-hspec tasty-hunit text
   ];
   homepage = "https://github.com/qfpl/digit";
