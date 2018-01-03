@@ -3,10 +3,11 @@
 
 # CABAL
 /dist
-/dist-newstyle
 /.cabal-sandbox
-/cabal.project.local
 /cabal.sandbox.config
+
+# nix
+/result
 
 # Haskell Program Coverage
 /.hpc
@@ -17,8 +18,9 @@
 
 # Intellij IDEA
 /.idea
-/*.iml
+*.iml
 
 # ctags
 TAGS
 
+.stack-work
