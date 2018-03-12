@@ -37,11 +37,12 @@ library
                     , template-haskell >= 2.8 && < 3
                     , papa             >= 0.3 && < 0.4
                     , semigroupoids    >= 5 && < 6
+                    , scientific       >= 0.3 && < 0.4
 
   ghc-options:
                     -Wall
-                    
-  default-extensions: 
+
+  default-extensions:
                     NoImplicitPrelude
 
   hs-source-dirs:
@@ -50,6 +51,7 @@ library
   exposed-modules:
                     Data.Digit
                     Data.Digit.Binary
+                    Data.Digit.Natural
                     Data.Digit.Decimal
                     Data.Digit.Octal
                     Data.Digit.Hexadecimal
@@ -118,7 +120,7 @@ test-suite tests
                     -Wall
                     -threaded
 
-  default-extensions: 
+  default-extensions:
                     NoImplicitPrelude
 
   hs-source-dirs:
