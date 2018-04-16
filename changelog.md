@@ -1,3 +1,11 @@
+0.5.2
+
+* Add `Data.Digit.Natural (_NaturalDigits, naturalToDigits, digitsToNatural)`
+
+0.5.1
+
+* Replace doctest with hunit and hedgehog via tasty
+
 0.5.0
 
 * Data types for other bases (binary, octal, hexadecimal).
