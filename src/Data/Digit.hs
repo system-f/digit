@@ -6,6 +6,7 @@ module Data.Digit (
 
 import Data.Digit.Binary as D
 import Data.Digit.Decimal as D
+import Data.Digit.Natural as D
 import Data.Digit.Octal as D
 import Data.Digit.Hexadecimal as D
 import Data.Digit.HeXaDeCiMaL as D
