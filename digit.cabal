@@ -11,7 +11,7 @@ category:           Data
 homepage:           https://github.com/qfpl/digit
 bug-reports:        https://github.com/qfpl/digit/issues
 cabal-version:      >= 1.10
-build-type:         Custom
+build-type:         Simple
 extra-source-files: CONTRIBUTORS, changelog.md
 description:
   <<http://i.imgur.com/uZnp9ke.png>>
