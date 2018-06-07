@@ -12,22 +12,22 @@ let
     papa = pkgs.fetchFromGitHub {
       owner = "qfpl";
       repo = "papa";
-      rev = "97ef00aa45c70213a4f0ce348a2208e3f482a7e3";
-      sha256 = "0qm0ay49wc0frxs6ipc10xyjj654b0wgk0b1hzm79qdlfp2yq0n5";
+      rev = "536b0a9243802347c299e077b5d85beb80d3a4a1";
+      sha256 = "10wx0z5cd8dajr3rdskaq64v42ppa8dbb3rs3jyj872218xjz6nr";
     };
 
     tasty-hedgehog = pkgs.fetchFromGitHub {
       owner = "qfpl";
       repo = "tasty-hedgehog";
-      rev = "0.1.0.1";
-      sha256 = "04pmr9q70gakd327sywpxr7qp8jnl3b0y2sqxxxcj6zj2q45q38m";
+      rev = "9797ca980e547c160b5e9e3f07d7b0d1d5c40fee";
+      sha256 = "039r8hay6cyq762ajn89nj4bfgz50br15x4nkracw3kzdyikn5xh";
     };
   };
 
   modifiedHaskellPackages = haskellPackages.override {
     overrides = self: super: import sources.papa self // {
-      parsers = pkgs.haskell.lib.dontCheck super.parsers;     
-      tasty-hedgehog = import sources.tasty-hedgehog {};   
+      parsers = pkgs.haskell.lib.dontCheck super.parsers;
+      tasty-hedgehog = import sources.tasty-hedgehog {};
     };
   };
 
@@ -36,4 +36,3 @@ let
 in
 
   digit
-
