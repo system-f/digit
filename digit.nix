@@ -1,13 +1,15 @@
 { mkDerivation, ansi-wl-pprint, base, hedgehog, lens, papa, parsec
-, parsers, pretty, semigroupoids, semigroups, stdenv, tasty
-, tasty-hedgehog, tasty-hspec, tasty-hunit, template-haskell, text
+, parsers, pretty, scientific, semigroupoids, semigroups, stdenv
+, tasty, tasty-hedgehog, tasty-hspec, tasty-hunit, template-haskell
+, text
 }:
 mkDerivation {
   pname = "digit";
-  version = "0.5.2";
+  version = "0.5.3";
   src = ./.;
   libraryHaskellDepends = [
-    base lens papa parsers semigroupoids semigroups template-haskell
+    base lens papa parsers scientific semigroupoids semigroups
+    template-haskell
   ];
   testHaskellDepends = [
     ansi-wl-pprint base hedgehog lens papa parsec parsers pretty tasty
