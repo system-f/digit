@@ -13,6 +13,7 @@ bug-reports:        https://github.com/qfpl/digit/issues
 cabal-version:      >= 1.10
 build-type:         Simple
 extra-source-files: CONTRIBUTORS, changelog.md
+tested-with:        GHC == 8.4.1, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 description:
   <<http://i.imgur.com/uZnp9ke.png>>
   .
@@ -98,7 +99,7 @@ test-suite tests
                     Haskell2010
 
   build-depends:
-                    base             >=4.9    && <4.12
+                    base             >=4.8    && <4.12
                     , lens           >=4.0    && <5
                     , ansi-wl-pprint >=0.6    && <0.7
                     , hedgehog       >=0.5    && <0.6
