@@ -1,3 +1,8 @@
+0.5.3
+
+* Bump version of [tasty-hedgehog, hedgehog, papa]
+* Updated default.nix
+
 0.5.2
 
 * Add `Data.Digit.Natural (_NaturalDigits, naturalToDigits, digitsToNatural)`
