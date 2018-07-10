@@ -7,6 +7,7 @@ module Data.Digit (
 , module Data.Digit.Hexadecimal
 , module Data.Digit.HeXaDeCiMaL
 , module Data.Digit.HEXADECIMAL
+-- * Utilities
 , module Data.Digit.Char
 , module Data.Digit.Enum
 , module Data.Digit.Integral
