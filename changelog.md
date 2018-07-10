@@ -7,7 +7,7 @@
   * `DecDigit`
   * `HexDigit`
   * `HeXDigit`
-  * `HeXDigit`
+  * `HEXDigit`
 * Culled most of the doctests, and leaving one or two per function to illustrate
   usage
 * Juggled re-exports to make the library easier to use and to improve documentation
