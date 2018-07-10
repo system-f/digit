@@ -84,6 +84,7 @@ library
                     Data.Digit.DEe
                     Data.Digit.DFf
                     Data.Digit.Char
+                    Data.Digit.Enum
                     Data.Digit.Integral
 
 
