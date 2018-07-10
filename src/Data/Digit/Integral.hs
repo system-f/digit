@@ -1,14 +1,19 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Data.Digit.Integral(
+-- * Binary
   integralBinaryNoZero
 , integralBinary
+-- * Octal
 , integralOctalNoZero
 , integralOctal
+-- * Decimal
 , integralDecimal
 , integralDecimalNoZero
+-- * Hexadecimal
 , integralHexadecimalNoZero
 , integralHexadecimal
+-- * HEXADECIMAL
 , integralHEXADECIMALNoZero
 , integralHEXADECIMAL
 ) where

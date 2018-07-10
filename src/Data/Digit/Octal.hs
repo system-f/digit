@@ -3,15 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Digit.Octal(
-  module Data.Digit.D0
-, module Data.Digit.D1
-, module Data.Digit.D2
-, module Data.Digit.D3
-, module Data.Digit.D4
-, module Data.Digit.D5
-, module Data.Digit.D6
-, module Data.Digit.D7
-, OctDigit(..)
+  OctDigit(..)
 , OctalNoZero
 , Octal
 , parseOctalNoZero
@@ -25,6 +17,15 @@ module Data.Digit.Octal(
 , _OctDigit5
 , _OctDigit6
 , _OctDigit7
+-- * Re-exports
+, module Data.Digit.D0
+, module Data.Digit.D1
+, module Data.Digit.D2
+, module Data.Digit.D3
+, module Data.Digit.D4
+, module Data.Digit.D5
+, module Data.Digit.D6
+, module Data.Digit.D7
 ) where
 
 import Prelude (Eq, Show, Ord)

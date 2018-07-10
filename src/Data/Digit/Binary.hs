@@ -3,9 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Digit.Binary(
-  module Data.Digit.D0
-, module Data.Digit.D1
-, BinDigit(..)
+  BinDigit(..)
 , BinaryNoZero
 , Binary
 , parseBinaryNoZero
@@ -13,6 +11,9 @@ module Data.Digit.Binary(
 -- * Prisms
 , _BinDigit0
 , _BinDigit1
+-- * Re-exports
+, module Data.Digit.D0
+, module Data.Digit.D1
 ) where
 
 import Prelude (Eq, Show, Ord)

@@ -1,16 +1,22 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Data.Digit.Char(
+-- * Binary
   charBinaryNoZero
 , charBinary
+-- * Octal
 , charOctalNoZero
 , charOctal
+-- * Decimal
 , charDecimalNoZero
 , charDecimal
+-- * Hexadecimal
 , charHexadecimalNoZero
 , charHexadecimal
+-- * HEXADECIMAL
 , charHEXADECIMALNoZero
 , charHEXADECIMAL
+-- * HeXaDeCiMaL
 , charHeXaDeCiMaLNoZero
 , charHeXaDeCiMaL
 ) where

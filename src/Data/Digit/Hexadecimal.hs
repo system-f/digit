@@ -3,23 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Digit.Hexadecimal(
-  module Data.Digit.D0
-, module Data.Digit.D1
-, module Data.Digit.D2
-, module Data.Digit.D3
-, module Data.Digit.D4
-, module Data.Digit.D5
-, module Data.Digit.D6
-, module Data.Digit.D7
-, module Data.Digit.D8
-, module Data.Digit.D9
-, module Data.Digit.Da
-, module Data.Digit.Db
-, module Data.Digit.Dc
-, module Data.Digit.Dd
-, module Data.Digit.De
-, module Data.Digit.Df
-, HexDigit(..)
+  HexDigit(..)
 , HexadecimalNoZero
 , Hexadecimal
 , parseHexadecimalNoZero
@@ -41,6 +25,23 @@ module Data.Digit.Hexadecimal(
 , _HexDigitd
 , _HexDigite
 , _HexDigitf
+-- * Re-exports
+, module Data.Digit.D0
+, module Data.Digit.D1
+, module Data.Digit.D2
+, module Data.Digit.D3
+, module Data.Digit.D4
+, module Data.Digit.D5
+, module Data.Digit.D6
+, module Data.Digit.D7
+, module Data.Digit.D8
+, module Data.Digit.D9
+, module Data.Digit.Da
+, module Data.Digit.Db
+, module Data.Digit.Dc
+, module Data.Digit.Dd
+, module Data.Digit.De
+, module Data.Digit.Df
 ) where
 
 import Prelude (Eq, Show, Ord)

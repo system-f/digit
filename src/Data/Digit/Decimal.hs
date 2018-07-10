@@ -3,17 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Digit.Decimal(
-  module Data.Digit.D0
-, module Data.Digit.D1
-, module Data.Digit.D2
-, module Data.Digit.D3
-, module Data.Digit.D4
-, module Data.Digit.D5
-, module Data.Digit.D6
-, module Data.Digit.D7
-, module Data.Digit.D8
-, module Data.Digit.D9
-, DecDigit(..)
+  DecDigit(..)
 , DecimalNoZero
 , Decimal
 , parseDecimalNoZero
@@ -29,6 +19,17 @@ module Data.Digit.Decimal(
 , _DecDigit7
 , _DecDigit8
 , _DecDigit9
+-- * Re-exports
+, module Data.Digit.D0
+, module Data.Digit.D1
+, module Data.Digit.D2
+, module Data.Digit.D3
+, module Data.Digit.D4
+, module Data.Digit.D5
+, module Data.Digit.D6
+, module Data.Digit.D7
+, module Data.Digit.D8
+, module Data.Digit.D9
 ) where
 
 import Prelude (Eq, Show, Ord)

@@ -1,15 +1,23 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Data.Digit (
-  module D
+  module Data.Digit.Binary
+, module Data.Digit.Decimal
+, module Data.Digit.Octal
+, module Data.Digit.Hexadecimal
+, module Data.Digit.HeXaDeCiMaL
+, module Data.Digit.HEXADECIMAL
+, module Data.Digit.Natural
+, module Data.Digit.Integral
+, module Data.Digit.Char
 ) where
 
-import Data.Digit.Binary as D
-import Data.Digit.Decimal as D
-import Data.Digit.Natural as D
-import Data.Digit.Octal as D
-import Data.Digit.Hexadecimal as D
-import Data.Digit.HeXaDeCiMaL as D
-import Data.Digit.HEXADECIMAL as D
-import Data.Digit.Integral as D
-import Data.Digit.Char as D
+import Data.Digit.Binary
+import Data.Digit.Decimal
+import Data.Digit.Octal
+import Data.Digit.Hexadecimal
+import Data.Digit.HeXaDeCiMaL
+import Data.Digit.HEXADECIMAL
+import Data.Digit.Natural
+import Data.Digit.Integral
+import Data.Digit.Char

@@ -32,18 +32,18 @@ import           Data.Scientific     (toDecimalDigits)
 -- |
 --
 -- >>> _NaturalDigits # 0
--- 0 :| []
+-- DecDigit0 :| []
 --
 -- >>> _NaturalDigits # 1
--- 1 :| []
+-- DecDigit1 :| []
 --
--- >>> _NaturalDigits # 9223372036854775807
--- 9 :| [2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7]
+-- >>> _NaturalDigits # 922
+-- DecDigit9 :| [DecDigit2,DecDigit2]
 --
--- >>> (9 :| [2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7]) ^? _NaturalDigits
--- Just 9223372036854775807
+-- >>> (DecDigit9 :| [DecDigit2,DecDigit2]) ^? _NaturalDigits
+-- Just 922
 --
--- >>> (1 :| []) ^? _NaturalDigits
+-- >>> (DecDigit1 :| []) ^? _NaturalDigits
 -- Just 1
 --
 -- prop> \x -> digitsToNatural ( naturalToDigits x ) == Just x
@@ -54,16 +54,13 @@ _NaturalDigits = prism' naturalToDigits digitsToNatural
 -- |
 --
 -- >>> naturalDigits 0
--- 0 :| []
+-- DecDigit0 :| []
 --
 -- >>> naturalDigits 9
--- 9 :| []
+-- DecDigit9 :| []
 --
--- >>> naturalDigits 393564
--- 3 :| [9,3,5,6,4]
---
--- >>> naturalDigits 9223372036854775807
--- 9 :| [2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7]
+-- >>> naturalDigits 393
+-- DecDigit3 :| [DecDigit9,DecDigit3]
 --
 naturalToDigits :: Natural -> NonEmpty DecDigit
 naturalToDigits n =
