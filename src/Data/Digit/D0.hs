@@ -6,7 +6,6 @@ module Data.Digit.D0(
 , parse0
 ) where
   
-import Data.Digit.Digit(Digit(Digit0))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -46,13 +45,3 @@ parse0 ::
   p d
 parse0 =
   x0 <$ char '0' <?> "0"
-
-instance D0 Digit where
-  d0 =
-    prism'
-      (\() -> Digit0)
-      (\d ->  case d of
-                Digit0 ->
-                  Just ()
-                _ ->
-                  Nothing)

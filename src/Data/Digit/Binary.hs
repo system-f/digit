@@ -1,17 +1,36 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Data.Digit.Binary(
-  BinaryNoZero
+  module Data.Digit.D0
+, module Data.Digit.D1
+, BinDigit(..)
+, BinaryNoZero
 , Binary
 , parseBinaryNoZero
 , parseBinary
+-- * Prisms
+, _BinDigit0
+, _BinDigit1
 ) where
 
+import Prelude (Eq, Show, Ord)
+import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0(D0, parse0)
-import Data.Digit.D1(D1, parse1)
+import Data.Digit.D0
+import Data.Digit.D1
+
+data BinDigit
+  = BinDigit0
+  | BinDigit1
+  deriving (Show, Eq, Ord)
+
+makePrisms ''BinDigit
+
+instance D0 BinDigit where; d0 = _BinDigit0
+instance D1 BinDigit where; d1 = _BinDigit1
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

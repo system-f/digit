@@ -2,14 +2,16 @@
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DBb(
-  DBb
+  module Data.Digit.DB
+, module Data.Digit.Db
+, DBb
 , parseBb
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DB(DB, parseB)
-import Data.Digit.Db(Db, parseb)
+import Data.Digit.DB
+import Data.Digit.Db
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

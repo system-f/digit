@@ -5,7 +5,6 @@ module Data.Digit.DF(
 , parseF
 ) where
 
-import Data.Digit.Digit(Digit(DigitF))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parseF ::
   p d
 parseF =
   xF <$ char 'F' <?> "F"
-
-instance DF Digit where
-  dF =
-    prism'
-      (\() -> DigitF)
-      (\d ->  case d of
-                DigitF ->
-                  Just ()
-                _ ->
-                  Nothing)

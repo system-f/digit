@@ -5,7 +5,6 @@ module Data.Digit.DB(
 , parseB
 ) where
 
-import Data.Digit.Digit(Digit(DigitB))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parseB ::
   p d
 parseB =
   xB <$ char 'B' <?> "B"
-
-instance DB Digit where
-  dB =
-    prism'
-      (\() -> DigitB)
-      (\d ->  case d of
-                DigitB ->
-                  Just ()
-                _ ->
-                  Nothing)

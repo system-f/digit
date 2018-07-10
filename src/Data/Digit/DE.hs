@@ -5,7 +5,6 @@ module Data.Digit.DE(
 , parseE
 ) where
 
-import Data.Digit.Digit(Digit(DigitE))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parseE ::
   p d
 parseE =
   xE <$ char 'E' <?> "E"
-
-instance DE Digit where
-  dE =
-    prism'
-      (\() -> DigitE)
-      (\d ->  case d of
-                DigitE ->
-                  Just ()
-                _ ->
-                  Nothing)

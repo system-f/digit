@@ -5,7 +5,6 @@ module Data.Digit.D4(
 , parse4
 ) where
 
-import Data.Digit.Digit(Digit(Digit4))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parse4 ::
   p d
 parse4 =
   x4 <$ char '4' <?> "4"
-
-instance D4 Digit where
-  d4 =
-    prism'
-      (\() -> Digit4)
-      (\d ->  case d of
-                Digit4 ->
-                  Just ()
-                _ ->
-                  Nothing)

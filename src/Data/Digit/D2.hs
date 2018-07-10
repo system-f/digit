@@ -5,7 +5,6 @@ module Data.Digit.D2(
 , parse2
 ) where
 
-import Data.Digit.Digit(Digit(Digit2))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,14 +44,3 @@ parse2 ::
   p d
 parse2 =
   x2 <$ char '2' <?> "2"
-
-instance D2 Digit where
-  d2 =
-    prism'
-      (\() -> Digit2)
-      (\d ->  case d of
-                Digit2 ->
-                  Just ()
-                _ ->
-                  Nothing)
-

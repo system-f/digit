@@ -5,7 +5,6 @@ module Data.Digit.D8(
 , parse8
 ) where
 
-import Data.Digit.Digit(Digit(Digit8))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parse8 ::
   p d
 parse8 =
   x8 <$ char '8' <?> "8"
-
-instance D8 Digit where
-  d8 =
-    prism'
-      (\() -> Digit8)
-      (\d ->  case d of
-                Digit8 ->
-                  Just ()
-                _ ->
-                  Nothing)

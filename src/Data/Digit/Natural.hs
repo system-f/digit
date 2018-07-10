@@ -22,7 +22,7 @@ import qualified Data.List.NonEmpty  as NE
 
 import           Data.Maybe          (Maybe (..))
 
-import           Data.Digit.Digit
+import           Data.Digit.Decimal
 import           Data.Digit.Integral (integralDecimal)
 
 import           Numeric.Natural     (Natural)
@@ -48,7 +48,7 @@ import           Data.Scientific     (toDecimalDigits)
 --
 -- prop> \x -> digitsToNatural ( naturalToDigits x ) == Just x
 --
-_NaturalDigits :: Prism' (NonEmpty Digit) Natural
+_NaturalDigits :: Prism' (NonEmpty DecDigit) Natural
 _NaturalDigits = prism' naturalToDigits digitsToNatural
 
 -- | NonEmpty Digits from a Natural number
@@ -65,7 +65,7 @@ _NaturalDigits = prism' naturalToDigits digitsToNatural
 -- >>> naturalDigits 9223372036854775807
 -- 9 :| [2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7]
 --
-naturalToDigits :: Natural -> NonEmpty Digit
+naturalToDigits :: Natural -> NonEmpty DecDigit
 naturalToDigits n =
   case toDecimalDigits $ fromIntegral n of
     -- toDecimalDigits :: n -> ([n],n)
@@ -77,20 +77,20 @@ naturalToDigits n =
 
   where
     t allDigs eXP =
-      replicate (eXP - length allDigs) Digit0
+      replicate (eXP - length allDigs) (d0 # ())
 
     -- EWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW!
     -- But you can't reach this point unless you have a non-zero absolute integral value. So... I dunno.
-    g 0 = Digit0
-    g 1 = Digit1
-    g 2 = Digit2
-    g 3 = Digit3
-    g 4 = Digit4
-    g 5 = Digit5
-    g 6 = Digit6
-    g 7 = Digit7
-    g 8 = Digit8
-    g 9 = Digit9
+    g 0 = d0 # ()
+    g 1 = d1 # ()
+    g 2 = d2 # ()
+    g 3 = d3 # ()
+    g 4 = d4 # ()
+    g 5 = d5 # ()
+    g 6 = d6 # ()
+    g 7 = d7 # ()
+    g 8 = d8 # ()
+    g 9 = d9 # ()
     g _ = error "The universe now has more than ten digits."
 
 -- | Create a number from a list of digits with the integer bounds of the machine.
@@ -112,10 +112,10 @@ naturalToDigits n =
 -- >>> naturalFromDigits (D.x9 :| [D.x2,D.x2,D.x3,D.x3,D.x7,D.x2,D.x0,D.x3,D.x6,D.x8,D.x5,D.x4,D.x7,D.x7,D.x5,D.x8,D.x0,D.x8])
 -- Nothing
 --
-digitsToNatural :: NonEmpty Digit -> Maybe Natural
+digitsToNatural :: NonEmpty DecDigit -> Maybe Natural
 digitsToNatural = fmap fromIntegral . ifoldrM f 0 . NE.reverse
   where
-    f :: Int -> Digit -> Int -> Maybe Int
+    f :: Int -> DecDigit -> Int -> Maybe Int
     f i d curr =
       let
         next = (integralDecimal # d) * (10 ^ i)

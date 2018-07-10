@@ -1,20 +1,20 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Data.Digit.DAa(
-  DAa
+  module Data.Digit.DA
+, module Data.Digit.Da
+, DAa
 , parseAa
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DA(DA, parseA)
-import Data.Digit.Da(Da, parsea)
+import Data.Digit.DA
+import Data.Digit.Da
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

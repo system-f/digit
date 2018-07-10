@@ -5,7 +5,6 @@ module Data.Digit.Dc(
 , parsec
 ) where
 
-import Data.Digit.Digit(Digit(Digitc))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parsec ::
   p d
 parsec =
   xc <$ char 'c' <?> "c"
-
-instance Dc Digit where
-  dc =
-    prism'
-      (\() -> Digitc)
-      (\d ->  case d of
-                Digitc ->
-                  Just ()
-                _ ->
-                  Nothing)

@@ -5,7 +5,6 @@ module Data.Digit.D5(
 , parse5
 ) where
 
-import Data.Digit.Digit(Digit(Digit5))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parse5 ::
   p d
 parse5 =
   x5 <$ char '5' <?> "5"
-
-instance D5 Digit where
-  d5 =
-    prism'
-      (\() -> Digit5)
-      (\d ->  case d of
-                Digit5 ->
-                  Just ()
-                _ ->
-                  Nothing)

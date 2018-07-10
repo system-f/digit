@@ -83,7 +83,6 @@ library
                     Data.Digit.DDd
                     Data.Digit.DEe
                     Data.Digit.DFf
-                    Data.Digit.Digit
                     Data.Digit.Char
                     Data.Digit.Integral
 

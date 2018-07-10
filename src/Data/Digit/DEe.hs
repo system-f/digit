@@ -2,14 +2,16 @@
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DEe(
-  DEe
+  module Data.Digit.DE
+, module Data.Digit.De
+, DEe
 , parseEe
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DE(DE, parseE)
-import Data.Digit.De(De, parsee)
+import Data.Digit.DE
+import Data.Digit.De
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

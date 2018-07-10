@@ -5,7 +5,6 @@ module Data.Digit.Da(
 , parsea
 ) where
 
-import Data.Digit.Digit(Digit(Digita))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parsea ::
   p d
 parsea =
   xa <$ char 'a' <?> "a"
-
-instance Da Digit where
-  da =
-    prism'
-      (\() -> Digita)
-      (\d ->  case d of
-                Digita ->
-                  Just ()
-                _ ->
-                  Nothing)

@@ -2,14 +2,16 @@
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DCc(
-  DCc
+  module Data.Digit.DC
+, module Data.Digit.Dc
+, DCc
 , parseCc
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DC(DC, parseC)
-import Data.Digit.Dc(Dc, parsec)
+import Data.Digit.DC
+import Data.Digit.Dc
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

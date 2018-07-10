@@ -5,7 +5,6 @@ module Data.Digit.D9(
 , parse9
 ) where
 
-import Data.Digit.Digit(Digit(Digit9))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parse9 ::
   p d
 parse9 =
   x9 <$ char '9' <?> "9"
-
-instance D9 Digit where
-  d9 =
-    prism'
-      (\() -> Digit9)
-      (\d ->  case d of
-                Digit9 ->
-                  Just ()
-                _ ->
-                  Nothing)

@@ -1,23 +1,66 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Data.Digit.Octal(
-  OctalNoZero
+  module Data.Digit.D0
+, module Data.Digit.D1
+, module Data.Digit.D2
+, module Data.Digit.D3
+, module Data.Digit.D4
+, module Data.Digit.D5
+, module Data.Digit.D6
+, module Data.Digit.D7
+, OctDigit(..)
+, OctalNoZero
 , Octal
 , parseOctalNoZero
 , parseOctal
+-- * Prisms
+, _OctDigit0
+, _OctDigit1
+, _OctDigit2
+, _OctDigit3
+, _OctDigit4
+, _OctDigit5
+, _OctDigit6
+, _OctDigit7
 ) where
 
+import Prelude (Eq, Show, Ord)
+import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0(D0, parse0)
-import Data.Digit.D1(D1, parse1)
-import Data.Digit.D2(D2, parse2)
-import Data.Digit.D3(D3, parse3)
-import Data.Digit.D4(D4, parse4)
-import Data.Digit.D5(D5, parse5)
-import Data.Digit.D6(D6, parse6)
-import Data.Digit.D7(D7, parse7)
+import Data.Digit.D0
+import Data.Digit.D1
+import Data.Digit.D2
+import Data.Digit.D3
+import Data.Digit.D4
+import Data.Digit.D5
+import Data.Digit.D6
+import Data.Digit.D7
+
+data OctDigit
+  = OctDigit0
+  | OctDigit1
+  | OctDigit2
+  | OctDigit3
+  | OctDigit4
+  | OctDigit5
+  | OctDigit6
+  | OctDigit7
+  deriving (Show, Eq, Ord)
+
+makePrisms ''OctDigit
+
+instance D0 OctDigit where; d0 = _OctDigit0
+instance D1 OctDigit where; d1 = _OctDigit1
+instance D2 OctDigit where; d2 = _OctDigit2
+instance D3 OctDigit where; d3 = _OctDigit3
+instance D4 OctDigit where; d4 = _OctDigit4
+instance D5 OctDigit where; d5 = _OctDigit5
+instance D6 OctDigit where; d6 = _OctDigit6
+instance D7 OctDigit where; d7 = _OctDigit7
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

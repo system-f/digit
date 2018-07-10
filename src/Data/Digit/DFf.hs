@@ -2,14 +2,16 @@
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DFf(
-  DFf
+  module Data.Digit.DF
+, module Data.Digit.Df
+, DFf
 , parseFf
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DF(DF, parseF)
-import Data.Digit.Df(Df, parsef)
+import Data.Digit.DF
+import Data.Digit.Df
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

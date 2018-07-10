@@ -5,7 +5,6 @@ module Data.Digit.D3(
 , parse3
 ) where
 
-import Data.Digit.Digit(Digit(Digit3))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
@@ -45,13 +44,3 @@ parse3 ::
   p d
 parse3 =
   x3 <$ char '3' <?> "3"
-
-instance D3 Digit where
-  d3 =
-    prism'
-      (\() -> Digit3)
-      (\d ->  case d of
-                Digit3 ->
-                  Just ()
-                _ ->
-                  Nothing)
