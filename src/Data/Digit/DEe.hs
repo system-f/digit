@@ -24,22 +24,20 @@ type DEe a =
   
 -- |
 --
--- >>> parse (parseEe <* eof) "test" "E" :: Either ParseError Digit
--- Right E
+-- >>> parse (parseEe <* eof) "test" "E" :: Either ParseError HeXDigit
+-- Right HeXDigitE
 --
--- >>> parse parseEe "test" "Exyz" :: Either ParseError Digit
--- Right E
+-- >>> parse parseEe "test" "Exyz" :: Either ParseError HeXDigit
+-- Right HeXDigitE
 --
--- >>> parse (parseEe <* eof) "test" "e" :: Either ParseError Digit
--- Right e
+-- >>> parse (parseEe <* eof) "test" "e" :: Either ParseError HeXDigit
+-- Right HeXDigite
 --
--- >>> parse parseEe "test" "exyz" :: Either ParseError Digit
--- Right e
+-- >>> parse parseEe "test" "exyz" :: Either ParseError HeXDigit
+-- Right HeXDigite
 --
--- >>> isn't _Right (parse parseEe "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parseEe "test" "xyz" :: Either ParseError HeXDigit)
 -- True
---
--- prop> \c -> (c `notElem` "Ee") ==> isn't _Right (parse parseEe "test" [c] :: Either ParseError Digit)
 parseEe ::
   (DEe d, CharParsing p) =>
   p d

@@ -51,7 +51,7 @@ import           Data.Scientific     (toDecimalDigits)
 _NaturalDigits :: Prism' (NonEmpty DecDigit) Natural
 _NaturalDigits = prism' naturalToDigits digitsToNatural
 
--- | NonEmpty Digits from a Natural number
+-- |
 --
 -- >>> naturalDigits 0
 -- 0 :| []
@@ -95,23 +95,17 @@ naturalToDigits n =
 
 -- | Create a number from a list of digits with the integer bounds of the machine.
 --
--- >>> naturalFromDigits (D.x3 :| [D.x4])
+-- >>> digitsToNatural (DecDigit3 :| [DecDigit4])
 -- Just 34
 --
--- >>> naturalFromDigits (D.Digit3 :| [D.Digit9,D.Digit3,D.Digit5,D.Digit6,D.Digit4])
--- Just 393564
---
--- >>> naturalFromDigits (D.x0 :| [])
+-- >>> digitsToNatural (DecDigit0 :| [])
 -- Just 0
 --
--- Int maxBound for Int64
--- >>> naturalFromDigits (D.x9 :| [D.x2,D.x2,D.x3,D.x3,D.x7,D.x2,D.x0,D.x3,D.x6,D.x8,D.x5,D.x4,D.x7,D.x7,D.x5,D.x8,D.x0,D.x7])
+-- >>> digitsToNatural (naturalToDigits (maxBound :: Natural))
 -- Just 9223372036854775807
 --
--- Int maxBound + 1 for Int64
--- >>> naturalFromDigits (D.x9 :| [D.x2,D.x2,D.x3,D.x3,D.x7,D.x2,D.x0,D.x3,D.x6,D.x8,D.x5,D.x4,D.x7,D.x7,D.x5,D.x8,D.x0,D.x8])
+-- >>> digitsToNatural (naturalToDigits $ (maxBound :: Natural) + 1)
 -- Nothing
---
 digitsToNatural :: NonEmpty DecDigit -> Maybe Natural
 digitsToNatural = fmap fromIntegral . ifoldrM f 0 . NE.reverse
   where

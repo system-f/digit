@@ -32,27 +32,9 @@ makePrisms ''BinDigit
 instance D0 BinDigit where; d0 = _BinDigit0
 instance D1 BinDigit where; d1 = _BinDigit1
 
--- $setup
--- >>> import Text.Parsec(parse, ParseError, eof)
--- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit
--- >>> import Papa
-
 type BinaryNoZero d =
   D1 d
 
--- |
---
--- >>> parse (parseBinaryNoZero <* eof) "test" "1" :: Either ParseError Digit
--- Right 1
---
--- >>> parse parseBinaryNoZero "test" "1xyz" :: Either ParseError Digit
--- Right 1
---
--- >>> isn't _Right (parse parseBinaryNoZero "test" "xyz" :: Either ParseError Digit)
--- True
---
--- prop> \c -> (c `notElem` "1") ==> isn't _Right (parse parseBinaryNoZero "test" [c] :: Either ParseError Digit)
 parseBinaryNoZero ::
   (BinaryNoZero d, CharParsing p) =>
   p d
@@ -62,24 +44,6 @@ parseBinaryNoZero =
 type Binary d =
   (D0 d, BinaryNoZero d)
 
--- |
---
--- >>> parse (parseBinary <* eof) "test" "0" :: Either ParseError Digit
--- Right 0
---
--- >>> parse parseBinary "test" "0xyz" :: Either ParseError Digit
--- Right 0
---
--- >>> parse (parseBinary <* eof) "test" "1" :: Either ParseError Digit
--- Right 1
---
--- >>> parse parseBinary "test" "1xyz" :: Either ParseError Digit
--- Right 1
---
--- >>> isn't _Right (parse parseBinary "test" "xyz" :: Either ParseError Digit)
--- True
---
--- prop> \c -> (c `notElem` "01") ==> isn't _Right (parse parseBinary "test" [c] :: Either ParseError Digit)
 parseBinary ::
   (Binary d, CharParsing p) =>
   p d

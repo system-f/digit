@@ -16,7 +16,7 @@ import Data.Digit.Dd
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit
+-- >>> import Data.Digit
 -- >>> import Papa
 
 type DDd a =
@@ -24,22 +24,20 @@ type DDd a =
   
 -- |
 --
--- >>> parse (parseDd <* eof) "test" "D" :: Either ParseError Digit
--- Right D
+-- >>> parse (parseDd <* eof) "test" "D" :: Either ParseError HeXDigit
+-- Right HeXDigitD
 --
--- >>> parse parseDd "test" "Dxyz" :: Either ParseError Digit
--- Right D
+-- >>> parse parseDd "test" "Dxyz" :: Either ParseError HeXDigit
+-- Right HeXDigitD
 --
--- >>> parse (parseDd <* eof) "test" "d" :: Either ParseError Digit
--- Right d
+-- >>> parse (parseDd <* eof) "test" "d" :: Either ParseError HeXDigit
+-- Right HeXDigitd
 --
--- >>> parse parseDd "test" "dxyz" :: Either ParseError Digit
--- Right d
+-- >>> parse parseDd "test" "dxyz" :: Either ParseError HeXDigit
+-- Right HeXDigitd
 --
--- >>> isn't _Right (parse parseDd "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parseDd "test" "xyz" :: Either ParseError HeXDigit)
 -- True
---
--- prop> \c -> (c `notElem` "Dd") ==> isn't _Right (parse parseDd "test" [c] :: Either ParseError Digit)
 parseDd ::
   (DDd d, CharParsing p) =>
   p d

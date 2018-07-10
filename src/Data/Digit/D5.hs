@@ -10,6 +10,7 @@ import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
+-- >>> import Data.Digit
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 
@@ -29,16 +30,14 @@ instance D5 () where
     
 -- |
 --
--- >>> parse (parse5 <* eof) "test" "5" :: Either ParseError Digit
--- Right 5
+-- >>> parse (parse5 <* eof) "test" "5" :: Either ParseError DecDigit
+-- Right DecDigit5
 --
--- >>> parse parse5 "test" "5xyz" :: Either ParseError Digit
--- Right 5
+-- >>> parse parse5 "test" "5xyz" :: Either ParseError DecDigit
+-- Right DecDigit5
 --
--- >>> isn't _Right (parse parse5 "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parse5 "test" "xyz" :: Either ParseError DecDigit)
 -- True
---
--- prop> \c -> c /= '5' ==> isn't _Right (parse parse5 "test" [c] :: Either ParseError Digit)
 parse5 ::
   (D5 d, CharParsing p) =>
   p d

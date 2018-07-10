@@ -10,6 +10,7 @@ import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
+-- >>> import Data.Digit
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 
@@ -29,16 +30,14 @@ instance Dc () where
    
 -- |
 --
--- >>> parse (parsec <* eof) "test" "c" :: Either ParseError Digit
--- Right c
+-- >>> parse (parsec <* eof) "test" "c" :: Either ParseError HexDigit
+-- Right HexDigitc
 --
--- >>> parse parsec "test" "cxyz" :: Either ParseError Digit
--- Right c
+-- >>> parse parsec "test" "cxyz" :: Either ParseError HexDigit
+-- Right HexDigitc
 --
--- >>> isn't _Right (parse parsec "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parsec "test" "xyz" :: Either ParseError HexDigit)
 -- True
---
--- prop> \c -> c /= 'c' ==> isn't _Right (parse parsec "test" [c] :: Either ParseError Digit)
 parsec ::
   (Dc d, CharParsing p) =>
   p d
