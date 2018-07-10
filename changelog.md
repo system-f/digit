@@ -1,3 +1,18 @@
+0.6
+
+* Removed the `Digit` datatype
+* Added new datatypes with approach `D*` instances
+  * `BinDigit`
+  * `OctDigit`
+  * `DecDigit`
+  * `HexDigit`
+  * `HeXDigit`
+  * `HeXDigit`
+* Culled most of the doctests, and leaving one or two per function to illustrate
+  usage
+* Juggled re-exports to make the library easier to use and to improve documentation
+* Added `Data.Digit.Enum`, which contains ascending-order enumerations of the new datatypes
+
 0.5.3
 
 * Bump version of [tasty-hedgehog, hedgehog, papa]
