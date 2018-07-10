@@ -28,7 +28,7 @@ module Data.Digit.Octal(
 , module Data.Digit.D7
 ) where
 
-import Prelude (Eq, Show, Ord)
+import Prelude (Eq, Show, Ord, Enum, Bounded)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
@@ -50,7 +50,7 @@ data OctDigit
   | OctDigit5
   | OctDigit6
   | OctDigit7
-  deriving (Show, Eq, Ord)
+  deriving (Show, Eq, Ord, Enum, Bounded)
 
 makePrisms ''OctDigit
 

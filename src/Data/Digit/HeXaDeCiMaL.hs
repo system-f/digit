@@ -50,8 +50,9 @@ module Data.Digit.HeXaDeCiMaL(
 , module Data.Digit.DFf
 ) where
 
-import Prelude (Eq, Show, Ord)
+import Prelude (Eq(..), Show, Ord(..), Int)
 import Control.Lens.TH (makePrisms)
+import Data.Function (on)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.D0
@@ -95,7 +96,66 @@ data HeXDigit
   | HeXDigitD
   | HeXDigitE
   | HeXDigitF
-  deriving (Show, Eq, Ord)
+  deriving Show
+
+{-# inline toInt #-}
+toInt :: HeXDigit -> Int
+toInt d =
+  case d of
+    HeXDigit0 -> 0
+    HeXDigit1 -> 1
+    HeXDigit2 -> 2
+    HeXDigit3 -> 3
+    HeXDigit4 -> 4
+    HeXDigit5 -> 5
+    HeXDigit6 -> 6
+    HeXDigit7 -> 7
+    HeXDigit8 -> 8
+    HeXDigit9 -> 9
+    HeXDigita -> 10
+    HeXDigitb -> 11
+    HeXDigitc -> 12
+    HeXDigitd -> 13
+    HeXDigite -> 14
+    HeXDigitf -> 15
+    HeXDigitA -> 10
+    HeXDigitB -> 11
+    HeXDigitC -> 12
+    HeXDigitD -> 13
+    HeXDigitE -> 14
+    HeXDigitF -> 15
+
+-- |
+-- @
+-- (==) = (==) `on` toInt
+--   where
+--     toInt :: HeXDigit -> Int
+--     toInt d =
+--       case d of
+--         HeXDigit0 -> 0
+--         HeXDigit1 -> 1
+--         ...
+--         HeXDigitf -> 15
+--         HeXDigitF -> 15
+-- @
+instance Eq HeXDigit where
+  (==) = (==) `on` toInt
+
+-- |
+-- @
+-- compare = compare `on` toInt
+--   where
+--     toInt :: HeXDigit -> Int
+--     toInt d =
+--       case d of
+--         HeXDigit0 -> 0
+--         HeXDigit1 -> 1
+--         ...
+--         HeXDigitf -> 15
+--         HeXDigitF -> 15
+-- @
+instance Ord HeXDigit where
+  compare = compare `on` toInt
 
 makePrisms ''HeXDigit
 

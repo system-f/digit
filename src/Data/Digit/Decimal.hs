@@ -32,7 +32,7 @@ module Data.Digit.Decimal(
 , module Data.Digit.D9
 ) where
 
-import Prelude (Eq, Show, Ord)
+import Prelude (Eq, Show, Ord, Enum, Bounded)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
@@ -58,7 +58,7 @@ data DecDigit
   | DecDigit7
   | DecDigit8
   | DecDigit9
-  deriving (Show, Eq, Ord)
+  deriving (Show, Eq, Ord, Enum, Bounded)
 
 makePrisms ''DecDigit
 

@@ -16,7 +16,7 @@ module Data.Digit.Binary(
 , module Data.Digit.D1
 ) where
 
-import Prelude (Eq, Show, Ord)
+import Prelude (Eq, Show, Ord, Enum, Bounded)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
@@ -26,7 +26,7 @@ import Data.Digit.D1
 data BinDigit
   = BinDigit0
   | BinDigit1
-  deriving (Show, Eq, Ord)
+  deriving (Show, Eq, Ord, Enum, Bounded)
 
 makePrisms ''BinDigit
 
