@@ -6,14 +6,14 @@ module Main(
 
 import Data.Digit
 import Numeric.Natural (Natural)
-import Prelude (maxBound)
+import Prelude (minBound, maxBound)
 import Papa hiding (re)
 import Hedgehog(Property, Gen, forAll, property, assert, (===))
 import Test.Tasty(TestTree, defaultMain, testGroup)
 import Test.Tasty.Hedgehog(testProperty)
 import Test.Tasty.HUnit(testCase, (@?=))
-import qualified Hedgehog.Gen as Gen(choice, integral, unicode, hexit, filter)
-import qualified Hedgehog.Range as Range(linear)
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
 import Text.Parsec(parse, ParseError, Parsec, eof)
 
 testPrism ::
@@ -103,12 +103,60 @@ digitNaturalTests = testGroup "digit Natural tests"
   [ testProperty "Natural <-> NonEmpty Digit" prop_natural_digits_roundtrip
   ]
 
+prop_integer_X :: (Integer -> a) -> (a -> Integer) -> Property
+prop_integer_X iToX xToI =
+  property $ do
+    n <- forAll .
+      Gen.integral $
+        Range.constant
+          (fromIntegral (minBound :: Int))
+          (fromIntegral (maxBound :: Int))
+    xToI (iToX n) === n
+
+prop_X_integer
+  :: (Eq a, Show a)
+  => Gen a
+  -> (Integer -> Either (NonEmpty a) (NonEmpty a))
+  -> (Either (NonEmpty a) (NonEmpty a) -> Integer)
+  -> Property
+prop_X_integer genX iToX xToI =
+  property $ do
+    let digits = Gen.nonEmpty (Range.constant 1 50) genX
+    ds <- forAll $ Gen.choice [Left <$> digits, Right <$> digits]
+    xToI (iToX (xToI ds)) === xToI ds
+
+toFromIntegralTests :: TestTree
+toFromIntegralTests =
+  testGroup "To and from integers"
+  [ testProperty "Integer <-> BinDigit" $
+      prop_integer_X integralBinDigits binDigitsIntegral
+  , testProperty "BinDigit <-> Integer" $
+      prop_X_integer (Gen.element enumBinary) integralBinDigits binDigitsIntegral
+  , testProperty "Integer <-> OctDigit" $
+      prop_integer_X integralOctDigits octDigitsIntegral
+  , testProperty "OctDigit <-> Integer" $
+      prop_X_integer (Gen.element enumOctal) integralOctDigits octDigitsIntegral
+  , testProperty "Integer <-> DecDigit" $
+      prop_integer_X integralDecDigits decDigitsIntegral
+  , testProperty "DecDigit <-> Integer" $
+      prop_X_integer (Gen.element enumDecimal) integralDecDigits decDigitsIntegral
+  , testProperty "Integer <-> HexDigit" $
+      prop_integer_X integralHexDigits hexDigitsIntegral
+  , testProperty "HexDigit <-> Integer" $
+      prop_X_integer (Gen.element enumHexadecimal) integralHexDigits hexDigitsIntegral
+  , testProperty "Integer <-> HEXDigit" $
+      prop_integer_X integralHEXDigits _HEXDigitsIntegral
+  , testProperty "HEXDigit <-> Integer" $
+      prop_X_integer (Gen.element enumHEXADECIMAL) integralHEXDigits _HEXDigitsIntegral
+  ]
+
 main ::
   IO ()
 main = defaultMain $
   testGroup "All Digit Tests"
     [ digitBaseTests
     , digitNaturalTests
+    , toFromIntegralTests
     ]
 
 digitBaseTests :: TestTree

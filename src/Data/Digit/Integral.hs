@@ -27,9 +27,12 @@ module Data.Digit.Integral(
 , integralHEXDigits
 , _HEXDigitsIntegral
 -- * HeXaDeCiMaL
+, integralHeXaDeCiMaLNoZero
+, integralHeXaDeCiMaL
 , _HeXDigitsIntegral
 ) where
 
+import Prelude (error)
 import Control.Lens.Extras(is)
 import Data.Digit.Binary
 import Data.Digit.Decimal
@@ -74,24 +77,45 @@ integralBinary =
   associatePrism (0, d0) [(1, d1)]
 
 -- |
--- >>> integralBinDigits (8 :: Int)
--- BinDigit1 :| [BinDigit0, BinDigit0, BinDigit0]
-integralBinDigits :: Integral a => a -> NonEmpty BinDigit
-integralBinDigits n = NonEmpty.fromList $ go n []
+-- >>> integralBinDigits (4 :: Int)
+-- Right (BinDigit1 :| [BinDigit0, BinDigit0])
+--
+-- >>> integralBinDigits (0 :: Int)
+-- Right (BinDigit0 :| [])
+--
+-- >>> integralBinDigits (-1 :: Int)
+-- Left (BinDigit0 :| [])
+--
+-- >>> integralBinDigits (-4 :: Int)
+-- Left (BinDigit1 :| [BinDigit1])
+integralBinDigits :: Integral a => a -> Either (NonEmpty BinDigit) (NonEmpty BinDigit)
+integralBinDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
   where
-    go 0 = id
     go k =
       let
         (q, r) = quotRem k 2
       in
-        go q . ((r ^?! integralBinary) :)
+        (if q == 0 then id else go q) . ((r ^?! integralBinary) :)
 
 -- |
--- >>> binDigitsIntegral (BinDigit1 :| [BinDigit0, BinDigit0, BinDigit0]) :: Int
--- 8
-binDigitsIntegral :: Integral a => NonEmpty BinDigit -> a
-binDigitsIntegral =
-  foldl' (\b a -> (integralBinary # a) + 2 * b) 0
+-- >>> binDigitsIntegral (Right (BinDigit1 :| [BinDigit0, BinDigit0])) :: Int
+-- 4
+--
+-- >>> binDigitsIntegral (Right (BinDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> binDigitsIntegral (Left (BinDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> binDigitsIntegral (Left (BinDigit1 :| [BinDigit1])) :: Int
+-- -4
+binDigitsIntegral :: Integral a => Either (NonEmpty BinDigit) (NonEmpty BinDigit) -> a
+binDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralBinary # a) + 2 * b) 0
 
 -- |
 --
@@ -125,23 +149,44 @@ integralOctal =
 
 -- |
 -- >>> integralOctDigits (64 :: Int)
--- OctDigit1 :| [OctDigit0, Octdigit0]
-integralOctDigits :: Integral a => a -> NonEmpty OctDigit
-integralOctDigits n = NonEmpty.fromList $ go n []
+-- Right (OctDigit1 :| [OctDigit0, OctDigit0])
+--
+-- >>> integralOctDigits (0 :: Int)
+-- Right (OctDigit0 :| [])
+--
+-- >>> integralOctDigits (-1 :: Int)
+-- Left (OctDigit0 :| [])
+--
+-- >>> integralOctDigits (-64 :: Int)
+-- Left (OctDigit7 :| [OctDigit7])
+integralOctDigits :: Integral a => a -> Either (NonEmpty OctDigit) (NonEmpty OctDigit)
+integralOctDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
   where
-    go 0 = id
     go k =
       let
         (q, r) = quotRem k 8
       in
-        go q . ((r ^?! integralOctal) :)
+        (if q == 0 then id else go q) . ((r ^?! integralOctal) :)
 
 -- |
--- >>> octDigitsIntegral (OctDigit1 :| [OctDigit0, OctDigit0]) :: Int
+-- >>> octDigitsIntegral (Right (OctDigit1 :| [OctDigit0, OctDigit0])) :: Int
 -- 64
-octDigitsIntegral :: Integral a => NonEmpty OctDigit -> a
-octDigitsIntegral =
-  foldl' (\b a -> (integralOctal # a) + 8 * b) 0
+--
+-- >>> octDigitsIntegral (Right (OctDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> octDigitsIntegral (Left (OctDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> octDigitsIntegral (Left (OctDigit7 :| [OctDigit7])) :: Int
+-- -64
+octDigitsIntegral :: Integral a => Either (NonEmpty OctDigit) (NonEmpty OctDigit) -> a
+octDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralOctal # a) + 8 * b) 0
 
 -- |
 -- >>> 9 ^? integralDecimalNoZero :: Maybe DecDigit
@@ -173,23 +218,44 @@ integralDecimal =
 
 -- |
 -- >>> integralDecDigits (100 :: Int)
--- DecDigit1 :| [DecDigit0, Decdigit0]
-integralDecDigits :: Integral a => a -> NonEmpty DecDigit
-integralDecDigits n = NonEmpty.fromList $ go n []
+-- Right (DecDigit1 :| [DecDigit0, DecDigit0])
+--
+-- >>> integralDecDigits (0 :: Int)
+-- Right (DecDigit0 :| [])
+--
+-- >>> integralDecDigits (-1 :: Int)
+-- Left (DecDigit0 :| [])
+--
+-- >>> integralDecDigits (-100 :: Int)
+-- Left (DecDigit9 :| [DecDigit9])
+integralDecDigits :: Integral a => a -> Either (NonEmpty DecDigit) (NonEmpty DecDigit)
+integralDecDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
   where
-    go 0 = id
     go k =
       let
         (q, r) = quotRem k 10
       in
-        go q . ((r ^?! integralDecimal) :)
+        (if q == 0 then id else go q) . ((r ^?! integralDecimal) :)
 
 -- |
--- >>> decDigitsIntegral (DecDigit1 :| [DecDigit0, DecDigit0]) :: Int
+-- >>> decDigitsIntegral (Right (DecDigit1 :| [DecDigit0, DecDigit0])) :: Int
 -- 100
-decDigitsIntegral :: Integral a => NonEmpty DecDigit -> a
-decDigitsIntegral =
-  foldl' (\b a -> (integralDecimal # a) + 10 * b) 0
+--
+-- >>> decDigitsIntegral (Right (DecDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> decDigitsIntegral (Left (DecDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> decDigitsIntegral (Left (DecDigit9 :| [DecDigit9])) :: Int
+-- -100
+decDigitsIntegral :: Integral a => Either (NonEmpty DecDigit) (NonEmpty DecDigit) -> a
+decDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralDecimal # a) + 10 * b) 0
 
 -- |
 --
@@ -223,23 +289,44 @@ integralHexadecimal =
 
 -- |
 -- >>> integralHexDigits (256 :: Int)
--- HexDigit1 :| [HexDigit0, Hexdigit0]
-integralHexDigits :: Integral a => a -> NonEmpty HexDigit
-integralHexDigits n = NonEmpty.fromList $ go n []
+-- Right (HexDigit1 :| [HexDigit0, HexDigit0])
+--
+-- >>> integralHexDigits (0 :: Int)
+-- Right (HexDigit0 :| [])
+--
+-- >>> integralHexDigits (-1 :: Int)
+-- Left (HexDigit0 :| [])
+--
+-- >>> integralHexDigits (-256 :: Int)
+-- Left (HexDigitf :| [HexDigitf])
+integralHexDigits :: Integral a => a -> Either (NonEmpty HexDigit) (NonEmpty HexDigit)
+integralHexDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
   where
-    go 0 = id
     go k =
       let
         (q, r) = quotRem k 16
       in
-        go q . ((r ^?! integralHexadecimal) :)
+        (if q == 0 then id else go q) . ((r ^?! integralHexadecimal) :)
 
 -- |
--- >>> hexDigitsIntegral (HexDigit1 :| [HexDigit0, HexDigit0]) :: Int
+-- >>> hexDigitsIntegral (Right (HexDigit1 :| [HexDigit0, HexDigit0])) :: Int
 -- 256
-hexDigitsIntegral :: Integral a => NonEmpty HexDigit -> a
-hexDigitsIntegral =
-  foldl' (\b a -> (integralHexadecimal # a) + 16 * b) 0
+--
+-- >>> hexDigitsIntegral (Right (HexDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> hexDigitsIntegral (Left (HexDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> hexDigitsIntegral (Left (HexDigitf :| [HexDigitf])) :: Int
+-- -256
+hexDigitsIntegral :: Integral a => Either (NonEmpty HexDigit) (NonEmpty HexDigit) -> a
+hexDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralHexadecimal # a) + 16 * b) 0
 
 -- |
 --
@@ -274,30 +361,136 @@ integralHEXADECIMAL =
 
 -- |
 -- >>> integralHEXDigits (256 :: Int)
--- HEXDigit1 :| [HEXDigit0, HEXdigit0]
-integralHEXDigits :: Integral a => a -> NonEmpty HEXDigit
-integralHEXDigits n = NonEmpty.fromList $ go n []
+-- Right (HEXDigit1 :| [HEXDigit0, HEXDigit0])
+--
+-- >>> integralHEXDigits (0 :: Int)
+-- Right (HEXDigit0 :| [])
+--
+-- >>> integralHEXDigits (-1 :: Int)
+-- Left (HEXDigit0 :| [])
+--
+-- >>> integralHEXDigits (-256 :: Int)
+-- Left (HEXDigitF :| [HEXDigitF])
+integralHEXDigits :: Integral a => a -> Either (NonEmpty HEXDigit) (NonEmpty HEXDigit)
+integralHEXDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
   where
-    go 0 = id
     go k =
       let
         (q, r) = quotRem k 16
       in
-        go q . ((r ^?! integralHEXADECIMAL) :)
+        (if q == 0 then id else go q) . ((r ^?! integralHEXADECIMAL) :)
 
 -- |
--- >>> _HEXDigitsIntegral (HEXDigit1 :| [HEXDigit0, HEXDigit0]) :: Int
+-- >>> HEXDigitsIntegral (Right (HEXDigit1 :| [HEXDigit0, HEXDigit0])) :: Int
 -- 256
-_HEXDigitsIntegral :: Integral a => NonEmpty HEXDigit -> a
-_HEXDigitsIntegral =
-  foldl' (\b a -> (integralHEXADECIMAL # a) + 16 * b) 0
+--
+-- >>> HEXDigitsIntegral (Right (HEXDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> HEXDigitsIntegral (Left (HEXDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> HEXDigitsIntegral (Left (HEXDigitF :| [HEXDigitF])) :: Int
+-- -256
+_HEXDigitsIntegral :: Integral a => Either (NonEmpty HEXDigit) (NonEmpty HEXDigit) -> a
+_HEXDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralHEXADECIMAL # a) + 16 * b) 0
 
 -- |
--- >>> _HeXDigitsIntegral (HEXDigit1 :| [HEXDigit0, HEXDigit0]) :: Int
+--
+-- >>> 15 ^? integralHeXaDeCiMaLNoZero :: Maybe HeXDigit
+-- Just HeXDigitF
+--
+-- >>> integralHeXaDeCiMaLNoZero # HeXDigitF :: Integer
+-- 15
+integralHeXaDeCiMaLNoZero ::
+  (Integral a, HeXaDeCiMaLNoZero d) =>
+  Review
+    a
+    d
+integralHeXaDeCiMaLNoZero =
+  unto
+    (outside d1 .~ (\_ -> 1) $
+     outside d2 .~ (\_ -> 2) $
+     outside d3 .~ (\_ -> 3) $
+     outside d4 .~ (\_ -> 4) $
+     outside d5 .~ (\_ -> 5) $
+     outside d6 .~ (\_ -> 6) $
+     outside d7 .~ (\_ -> 7) $
+     outside d8 .~ (\_ -> 8) $
+     outside d9 .~ (\_ -> 9) $
+     outside da .~ (\_ -> 10) $
+     outside dA .~ (\_ -> 10) $
+     outside db .~ (\_ -> 11) $
+     outside dB .~ (\_ -> 11) $
+     outside dc .~ (\_ -> 12) $
+     outside dC .~ (\_ -> 12) $
+     outside dd .~ (\_ -> 13) $
+     outside dD .~ (\_ -> 13) $
+     outside de .~ (\_ -> 14) $
+     outside dE .~ (\_ -> 14) $
+     outside df .~ (\_ -> 15) $
+     outside dF .~ (\_ -> 15) $
+     error "incomplete pattern")
+
+-- |
+--
+-- >>> 15 ^? integralHeXaDeCiMaL :: Maybe HeXDigit
+-- Just HeXDigitF
+--
+-- >>> integralHeXaDeCiMaL # HeXDigitF :: Integer
+-- 15
+integralHeXaDeCiMaL ::
+  (Integral a, HeXaDeCiMaL d) =>
+  Review
+    a
+    d
+integralHeXaDeCiMaL =
+  unto
+    (outside d0 .~ (\_ -> 0) $
+     outside d1 .~ (\_ -> 1) $
+     outside d2 .~ (\_ -> 2) $
+     outside d3 .~ (\_ -> 3) $
+     outside d4 .~ (\_ -> 4) $
+     outside d5 .~ (\_ -> 5) $
+     outside d6 .~ (\_ -> 6) $
+     outside d7 .~ (\_ -> 7) $
+     outside d8 .~ (\_ -> 8) $
+     outside d9 .~ (\_ -> 9) $
+     outside da .~ (\_ -> 10) $
+     outside dA .~ (\_ -> 10) $
+     outside db .~ (\_ -> 11) $
+     outside dB .~ (\_ -> 11) $
+     outside dc .~ (\_ -> 12) $
+     outside dC .~ (\_ -> 12) $
+     outside dd .~ (\_ -> 13) $
+     outside dD .~ (\_ -> 13) $
+     outside de .~ (\_ -> 14) $
+     outside dE .~ (\_ -> 14) $
+     outside df .~ (\_ -> 15) $
+     outside dF .~ (\_ -> 15) $
+     error "incomplete pattern")
+
+-- |
+-- >>> HeXDigitsIntegral (Right (HeXDigit1 :| [HeXDigit0, HeXDigit0])) :: Int
 -- 256
-_HeXDigitsIntegral :: Integral a => NonEmpty HeXDigit -> a
-_HeXDigitsIntegral =
-  foldl' (\b a -> (integralHEXADECIMAL # a) + 16 * b) 0
+--
+-- >>> HeXDigitsIntegral (Right (HeXDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> HeXDigitsIntegral (Left (HeXDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> HeXDigitsIntegral (Left (HeXDigitF :| [HeXDigitF])) :: Int
+-- -256
+_HeXDigitsIntegral :: Integral a => Either (NonEmpty HeXDigit) (NonEmpty HeXDigit) -> a
+_HeXDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralHeXaDeCiMaL # a) + 16 * b) 0
 
 ---- not exported
 associatePrism ::
