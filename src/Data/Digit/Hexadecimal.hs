@@ -44,7 +44,7 @@ module Data.Digit.Hexadecimal(
 , module Data.Digit.Df
 ) where
 
-import Prelude (Eq, Show, Ord, Enum, Bounded)
+import Prelude (Eq, Show, Ord)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
@@ -83,7 +83,7 @@ data HexDigit
   | HexDigitd
   | HexDigite
   | HexDigitf
-  deriving (Show, Eq, Ord, Enum, Bounded)
+  deriving (Show, Eq, Ord)
 
 makePrisms ''HexDigit
 
