@@ -1,7 +1,7 @@
 0.6
 
 * Removed the `Digit` datatype
-* Added new datatypes with approach `D*` instances
+* Added new datatypes with appropriate `D*` instances
   * `BinDigit`
   * `OctDigit`
   * `DecDigit`
