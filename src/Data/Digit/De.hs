@@ -5,12 +5,12 @@ module Data.Digit.De(
 , parsee
 ) where
 
-import Data.Digit.Digit(Digit(Digite))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
+-- >>> import Data.Digit
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 
@@ -30,28 +30,16 @@ instance De () where
     
 -- |
 --
--- >>> parse (parsee <* eof) "test" "e" :: Either ParseError Digit
--- Right e
+-- >>> parse (parsee <* eof) "test" "e" :: Either ParseError HexDigit
+-- Right HexDigite
 --
--- >>> parse parsee "test" "exyz" :: Either ParseError Digit
--- Right e
+-- >>> parse parsee "test" "exyz" :: Either ParseError HexDigit
+-- Right HexDigite
 --
--- >>> isn't _Right (parse parsee "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parsee "test" "xyz" :: Either ParseError HexDigit)
 -- True
---
--- prop> \c -> c /= 'e' ==> isn't _Right (parse parsee "test" [c] :: Either ParseError Digit)
 parsee ::
   (De d, CharParsing p) =>
   p d
 parsee =
   xe <$ char 'e' <?> "e"
-
-instance De Digit where
-  de =
-    prism'
-      (\() -> Digite)
-      (\d ->  case d of
-                Digite ->
-                  Just ()
-                _ ->
-                  Nothing)

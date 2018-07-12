@@ -1,25 +1,25 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Data.Digit.DAa(
-  DAa
+  module Data.Digit.DA
+, module Data.Digit.Da
+, DAa
 , parseAa
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DA(DA, parseA)
-import Data.Digit.Da(Da, parsea)
+import Data.Digit.DA
+import Data.Digit.Da
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit
+-- >>> import Data.Digit
 -- >>> import Papa
 
 type DAa a =
@@ -27,22 +27,20 @@ type DAa a =
   
 -- |
 --
--- >>> parse (parseAa <* eof) "test" "A" :: Either ParseError Digit
--- Right A
+-- >>> parse (parseAa <* eof) "test" "A" :: Either ParseError HeXDigit
+-- Right HeXDigitA
 --
--- >>> parse parseAa "test" "Axyz" :: Either ParseError Digit
--- Right A
+-- >>> parse parseAa "test" "Axyz" :: Either ParseError HeXDigit
+-- Right HeXDigitA
 --
--- >>> parse (parseAa <* eof) "test" "a" :: Either ParseError Digit
--- Right a
+-- >>> parse (parseAa <* eof) "test" "a" :: Either ParseError HeXDigit
+-- Right HeXDigita
 --
--- >>> parse parseAa "test" "axyz" :: Either ParseError Digit
--- Right a
+-- >>> parse parseAa "test" "axyz" :: Either ParseError HeXDigit
+-- Right HeXDigita
 --
--- >>> isn't _Right (parse parseAa "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parseAa "test" "xyz" :: Either ParseError HeXDigit)
 -- True
---
--- prop> \c -> (c `notElem` "Aa") ==> isn't _Right (parse parseAa "test" [c] :: Either ParseError Digit)
 parseAa ::
   (DAa d, CharParsing p) =>
   p d

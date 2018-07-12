@@ -1,5 +1,5 @@
 name:               digit
-version:            0.5.3
+version:            0.6
 license:            BSD3
 license-file:       LICENCE
 author:             Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
@@ -83,8 +83,8 @@ library
                     Data.Digit.DDd
                     Data.Digit.DEe
                     Data.Digit.DFf
-                    Data.Digit.Digit
                     Data.Digit.Char
+                    Data.Digit.Enum
                     Data.Digit.Integral
 
 

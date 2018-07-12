@@ -5,12 +5,12 @@ module Data.Digit.D4(
 , parse4
 ) where
 
-import Data.Digit.Digit(Digit(Digit4))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
+-- >>> import Data.Digit
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 
@@ -30,28 +30,16 @@ instance D4 () where
    
 -- |
 --
--- >>> parse (parse4 <* eof) "test" "4" :: Either ParseError Digit
--- Right 4
+-- >>> parse (parse4 <* eof) "test" "4" :: Either ParseError DecDigit
+-- Right DecDigit4
 --
--- >>> parse parse4 "test" "4xyz" :: Either ParseError Digit
--- Right 4
+-- >>> parse parse4 "test" "4xyz" :: Either ParseError DecDigit
+-- Right DecDigit4
 --
--- >>> isn't _Right (parse parse4 "test" "xyz" :: Either ParseError Digit)
--- True 
---
--- prop> \c -> c /= '4' ==> isn't _Right (parse parse4 "test" [c] :: Either ParseError Digit)
+-- >>> isn't _Right (parse parse4 "test" "xyz" :: Either ParseError DecDigit)
+-- True
 parse4 ::
   (D4 d, CharParsing p) =>
   p d
 parse4 =
   x4 <$ char '4' <?> "4"
-
-instance D4 Digit where
-  d4 =
-    prism'
-      (\() -> Digit4)
-      (\d ->  case d of
-                Digit4 ->
-                  Just ()
-                _ ->
-                  Nothing)

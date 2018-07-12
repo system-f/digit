@@ -5,7 +5,7 @@
 }:
 mkDerivation {
   pname = "digit";
-  version = "0.5.3";
+  version = "0.6";
   src = ./.;
   libraryHaskellDepends = [
     base lens papa parsers scientific semigroupoids semigroups

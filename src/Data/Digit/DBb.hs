@@ -2,19 +2,21 @@
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DBb(
-  DBb
+  module Data.Digit.DB
+, module Data.Digit.Db
+, DBb
 , parseBb
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DB(DB, parseB)
-import Data.Digit.Db(Db, parseb)
+import Data.Digit.DB
+import Data.Digit.Db
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit
+-- >>> import Data.Digit
 -- >>> import Papa
 
 type DBb a =
@@ -22,22 +24,20 @@ type DBb a =
   
 -- |
 --
--- >>> parse (parseBb <* eof) "test" "B" :: Either ParseError Digit
--- Right B
+-- >>> parse (parseBb <* eof) "test" "B" :: Either ParseError HeXDigit
+-- Right HeXDigitB
 --
--- >>> parse parseBb "test" "Bxyz" :: Either ParseError Digit
--- Right B
+-- >>> parse parseBb "test" "Bxyz" :: Either ParseError HeXDigit
+-- Right HeXDigitB
 --
--- >>> parse (parseBb <* eof) "test" "b" :: Either ParseError Digit
--- Right b
+-- >>> parse (parseBb <* eof) "test" "b" :: Either ParseError HeXDigit
+-- Right HeXDigitb
 --
--- >>> parse parseBb "test" "bxyz" :: Either ParseError Digit
--- Right b
+-- >>> parse parseBb "test" "bxyz" :: Either ParseError HeXDigit
+-- Right HeXDigitb
 --
--- >>> isn't _Right (parse parseBb "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parseBb "test" "xyz" :: Either ParseError HeXDigit)
 -- True
---
--- prop> \c -> (c `notElem` "Bb") ==> isn't _Right (parse parseBb "test" [c] :: Either ParseError Digit)
 parseBb ::
   (DBb d, CharParsing p) =>
   p d

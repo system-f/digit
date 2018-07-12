@@ -6,22 +6,22 @@ module Main(
 
 import Data.Digit
 import Numeric.Natural (Natural)
-import Prelude (maxBound)
+import Prelude (minBound, maxBound)
 import Papa hiding (re)
 import Hedgehog(Property, Gen, forAll, property, assert, (===))
 import Test.Tasty(TestTree, defaultMain, testGroup)
 import Test.Tasty.Hedgehog(testProperty)
 import Test.Tasty.HUnit(testCase, (@?=))
-import qualified Hedgehog.Gen as Gen(choice, integral, unicode, hexit, filter)
-import qualified Hedgehog.Range as Range(linear)
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
 import Text.Parsec(parse, ParseError, Parsec, eof)
 
 testPrism ::
   (Show x, Eq x) =>
   Gen x
   -> String
-  -> Prism' x Digit
-  -> [(x, Digit)]
+  -> Prism' x HeXDigit
+  -> [(x, HeXDigit)]
   -> [TestTree]
 testPrism g n p x =
   testProperty
@@ -29,14 +29,14 @@ testPrism g n p x =
     (
       property $
         do  c <- forAll . Gen.filter (`notElem` (map fst x)) $ g
-            (c ^? p :: Maybe Digit) === Nothing
+            (c ^? p :: Maybe HeXDigit) === Nothing
     ) :
     (
       x >>= \(c, d) ->
         [
           testCase
             (n ++ " prism ->")
-            ((c ^? p :: Maybe Digit) @?= Just d)
+            ((c ^? p :: Maybe HeXDigit) @?= Just d)
         , testCase
             (n ++ " prism <-")
             (p # d @?= c)
@@ -45,8 +45,8 @@ testPrism g n p x =
 
 testParser ::
   String
-  -> Parsec String () Digit
-  -> [(Char, Digit)]
+  -> Parsec String () HeXDigit
+  -> [(Char, HeXDigit)]
   -> [TestTree]
 testParser n p x =
     (
@@ -56,7 +56,7 @@ testParser n p x =
             (
               property $
                 do  c <- forAll . Gen.filter (`notElem` (map fst x)) . Gen.choice $ [Gen.hexit, Gen.unicode]
-                    assert (isLeft (parse p (n' ++ " test") [c] :: Either ParseError Digit))
+                    assert (isLeft (parse p (n' ++ " test") [c] :: Either ParseError HeXDigit))
             )
     ) :
     (
@@ -65,27 +65,27 @@ testParser n p x =
           let n' = n ++ " parses exactly one character"
           in  testCase
                 n'
-                ((parse (p <* eof) (n' ++ " test") [c] :: Either ParseError Digit) @?= Right d)
+                ((parse (p <* eof) (n' ++ " test") [c] :: Either ParseError HeXDigit) @?= Right d)
         , let n' = n ++ " parses the correct digit"
           in  testCase
                 n'
-                ((parse p (n' ++ "test") (c:"xyz") :: Either ParseError Digit) @?= Right d)
+                ((parse p (n' ++ "test") (c:"xyz") :: Either ParseError HeXDigit) @?= Right d)
             ]
     )
 
 integralPrism ::
   (Show n, Integral n) =>
   String
-  -> Prism' n Digit
-  -> [(n, Digit)]
+  -> Prism' n HeXDigit
+  -> [(n, HeXDigit)]
   -> [TestTree]
 integralPrism =
   testPrism (Gen.choice [Gen.integral (Range.linear 0 9), Gen.integral (Range.linear 10 99999), Gen.integral (Range.linear (-1) (-99999))])
 
 charPrism ::
   String
-  -> Prism' Char Digit
-  -> [(Char, Digit)]
+  -> Prism' Char HeXDigit
+  -> [(Char, HeXDigit)]
   -> [TestTree]
 charPrism =
   testPrism (Gen.choice [Gen.hexit, Gen.unicode])
@@ -103,83 +103,131 @@ digitNaturalTests = testGroup "digit Natural tests"
   [ testProperty "Natural <-> NonEmpty Digit" prop_natural_digits_roundtrip
   ]
 
+prop_integer_X :: (Integer -> a) -> (a -> Integer) -> Property
+prop_integer_X iToX xToI =
+  property $ do
+    n <- forAll .
+      Gen.integral $
+        Range.constant
+          (fromIntegral (minBound :: Int))
+          (fromIntegral (maxBound :: Int))
+    xToI (iToX n) === n
+
+prop_X_integer
+  :: (Eq a, Show a)
+  => Gen a
+  -> (Integer -> Either (NonEmpty a) (NonEmpty a))
+  -> (Either (NonEmpty a) (NonEmpty a) -> Integer)
+  -> Property
+prop_X_integer genX iToX xToI =
+  property $ do
+    let digits = Gen.nonEmpty (Range.constant 1 50) genX
+    ds <- forAll $ Gen.choice [Left <$> digits, Right <$> digits]
+    xToI (iToX (xToI ds)) === xToI ds
+
+toFromIntegralTests :: TestTree
+toFromIntegralTests =
+  testGroup "To and from integers"
+  [ testProperty "Integer <-> BinDigit" $
+      prop_integer_X integralBinDigits binDigitsIntegral
+  , testProperty "BinDigit <-> Integer" $
+      prop_X_integer (Gen.element enumBinary) integralBinDigits binDigitsIntegral
+  , testProperty "Integer <-> OctDigit" $
+      prop_integer_X integralOctDigits octDigitsIntegral
+  , testProperty "OctDigit <-> Integer" $
+      prop_X_integer (Gen.element enumOctal) integralOctDigits octDigitsIntegral
+  , testProperty "Integer <-> DecDigit" $
+      prop_integer_X integralDecDigits decDigitsIntegral
+  , testProperty "DecDigit <-> Integer" $
+      prop_X_integer (Gen.element enumDecimal) integralDecDigits decDigitsIntegral
+  , testProperty "Integer <-> HexDigit" $
+      prop_integer_X integralHexDigits hexDigitsIntegral
+  , testProperty "HexDigit <-> Integer" $
+      prop_X_integer (Gen.element enumHexadecimal) integralHexDigits hexDigitsIntegral
+  , testProperty "Integer <-> HEXDigit" $
+      prop_integer_X integralHEXDigits _HEXDigitsIntegral
+  , testProperty "HEXDigit <-> Integer" $
+      prop_X_integer (Gen.element enumHEXADECIMAL) integralHEXDigits _HEXDigitsIntegral
+  ]
+
 main ::
   IO ()
 main = defaultMain $
   testGroup "All Digit Tests"
     [ digitBaseTests
     , digitNaturalTests
+    , toFromIntegralTests
     ]
 
 digitBaseTests :: TestTree
 digitBaseTests =
   testGroup "digit parser/prism tests" $
-    let q0  = ('0', Digit0)
-        q1  = ('1', Digit1)
-        q2  = ('2', Digit2)
-        q3  = ('3', Digit3)
-        q4  = ('4', Digit4)
-        q5  = ('5', Digit5)
-        q6  = ('6', Digit6)
-        q7  = ('7', Digit7)
-        q8  = ('8', Digit8)
-        q9  = ('9', Digit9)
-        qa  = ('a', Digita)
-        qb  = ('b', Digitb)
-        qc  = ('c', Digitc)
-        qd  = ('d', Digitd)
-        qe  = ('e', Digite)
-        qf  = ('f', Digitf)
-        qA  = ('A', DigitA)
-        qB  = ('B', DigitB)
-        qC  = ('C', DigitC)
-        qD  = ('D', DigitD)
-        qE  = ('E', DigitE)
-        qF  = ('F', DigitF)
-        r0 :: (Integer, Digit)
-        r0  = (0  , Digit0)
-        r1 :: (Integer, Digit)
-        r1  = (1  , Digit1)
-        r2 :: (Integer, Digit)
-        r2  = (2  , Digit2)
-        r3 :: (Integer, Digit)
-        r3  = (3  , Digit3)
-        r4 :: (Integer, Digit)
-        r4  = (4  , Digit4)
-        r5 :: (Integer, Digit)
-        r5  = (5  , Digit5)
-        r6 :: (Integer, Digit)
-        r6  = (6  , Digit6)
-        r7 :: (Integer, Digit)
-        r7  = (7  , Digit7)
-        r8 :: (Integer, Digit)
-        r8  = (8  , Digit8)
-        r9 :: (Integer, Digit)
-        r9  = (9  , Digit9)
-        ra :: (Integer, Digit)
-        ra =  (10 , Digita)
-        rb :: (Integer, Digit)
-        rb =  (11 , Digitb)
-        rc :: (Integer, Digit)
-        rc =  (12 , Digitc)
-        rd :: (Integer, Digit)
-        rd =  (13 , Digitd)
-        re :: (Integer, Digit)
-        re =  (14 , Digite)
-        rf :: (Integer, Digit)
-        rf =  (15 , Digitf)
-        rA :: (Integer, Digit)
-        rA =  (10 , DigitA)
-        rB :: (Integer, Digit)
-        rB =  (11 , DigitB)
-        rC :: (Integer, Digit)
-        rC =  (12 , DigitC)
-        rD :: (Integer, Digit)
-        rD =  (13 , DigitD)
-        rE :: (Integer, Digit)
-        rE =  (14 , DigitE)
-        rF :: (Integer, Digit)
-        rF =  (15 , DigitF)
+    let q0  = ('0', HeXDigit0)
+        q1  = ('1', HeXDigit1)
+        q2  = ('2', HeXDigit2)
+        q3  = ('3', HeXDigit3)
+        q4  = ('4', HeXDigit4)
+        q5  = ('5', HeXDigit5)
+        q6  = ('6', HeXDigit6)
+        q7  = ('7', HeXDigit7)
+        q8  = ('8', HeXDigit8)
+        q9  = ('9', HeXDigit9)
+        qa  = ('a', HeXDigita)
+        qb  = ('b', HeXDigitb)
+        qc  = ('c', HeXDigitc)
+        qd  = ('d', HeXDigitd)
+        qe  = ('e', HeXDigite)
+        qf  = ('f', HeXDigitf)
+        qA  = ('A', HeXDigitA)
+        qB  = ('B', HeXDigitB)
+        qC  = ('C', HeXDigitC)
+        qD  = ('D', HeXDigitD)
+        qE  = ('E', HeXDigitE)
+        qF  = ('F', HeXDigitF)
+        r0 :: (Integer, HeXDigit)
+        r0  = (0  , HeXDigit0)
+        r1 :: (Integer, HeXDigit)
+        r1  = (1  , HeXDigit1)
+        r2 :: (Integer, HeXDigit)
+        r2  = (2  , HeXDigit2)
+        r3 :: (Integer, HeXDigit)
+        r3  = (3  , HeXDigit3)
+        r4 :: (Integer, HeXDigit)
+        r4  = (4  , HeXDigit4)
+        r5 :: (Integer, HeXDigit)
+        r5  = (5  , HeXDigit5)
+        r6 :: (Integer, HeXDigit)
+        r6  = (6  , HeXDigit6)
+        r7 :: (Integer, HeXDigit)
+        r7  = (7  , HeXDigit7)
+        r8 :: (Integer, HeXDigit)
+        r8  = (8  , HeXDigit8)
+        r9 :: (Integer, HeXDigit)
+        r9  = (9  , HeXDigit9)
+        ra :: (Integer, HeXDigit)
+        ra =  (10 , HeXDigita)
+        rb :: (Integer, HeXDigit)
+        rb =  (11 , HeXDigitb)
+        rc :: (Integer, HeXDigit)
+        rc =  (12 , HeXDigitc)
+        rd :: (Integer, HeXDigit)
+        rd =  (13 , HeXDigitd)
+        re :: (Integer, HeXDigit)
+        re =  (14 , HeXDigite)
+        rf :: (Integer, HeXDigit)
+        rf =  (15 , HeXDigitf)
+        rA :: (Integer, HeXDigit)
+        rA =  (10 , HeXDigitA)
+        rB :: (Integer, HeXDigit)
+        rB =  (11 , HeXDigitB)
+        rC :: (Integer, HeXDigit)
+        rC =  (12 , HeXDigitC)
+        rD :: (Integer, HeXDigit)
+        rD =  (13 , HeXDigitD)
+        rE :: (Integer, HeXDigit)
+        rE =  (14 , HeXDigitE)
+        rF :: (Integer, HeXDigit)
+        rF =  (15 , HeXDigitF)
     in  concat [
           charPrism "charBinaryNoZero" charBinaryNoZero [q1]
         , charPrism "charBinary" charBinary [q0, q1]

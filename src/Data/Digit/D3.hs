@@ -5,12 +5,12 @@ module Data.Digit.D3(
 , parse3
 ) where
 
-import Data.Digit.Digit(Digit(Digit3))
 import Papa
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
+-- >>> import Data.Digit
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 
@@ -30,28 +30,16 @@ instance D3 () where
 
 -- |
 --
--- >>> parse (parse3 <* eof) "test" "3" :: Either ParseError Digit
--- Right 3
+-- >>> parse (parse3 <* eof) "test" "3" :: Either ParseError DecDigit
+-- Right DecDigit3
 --
--- >>> parse parse3 "test" "3xyz" :: Either ParseError Digit
--- Right 3
+-- >>> parse parse3 "test" "3xyz" :: Either ParseError DecDigit
+-- Right DecDigit3
 --
--- >>> isn't _Right (parse parse3 "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parse3 "test" "xyz" :: Either ParseError DecDigit)
 -- True
---
--- prop> \c -> c /= '3' ==> isn't _Right (parse parse3 "test" [c] :: Either ParseError Digit)
 parse3 ::
   (D3 d, CharParsing p) =>
   p d
 parse3 =
   x3 <$ char '3' <?> "3"
-
-instance D3 Digit where
-  d3 =
-    prism'
-      (\() -> Digit3)
-      (\d ->  case d of
-                Digit3 ->
-                  Just ()
-                _ ->
-                  Nothing)

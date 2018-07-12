@@ -2,19 +2,21 @@
 {-# LANGUAGE ConstraintKinds #-}
 
 module Data.Digit.DCc(
-  DCc
+  module Data.Digit.DC
+, module Data.Digit.Dc
+, DCc
 , parseCc
 ) where
 
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.DC(DC, parseC)
-import Data.Digit.Dc(Dc, parsec)
+import Data.Digit.DC
+import Data.Digit.Dc
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
--- >>> import Data.Digit.Digit
+-- >>> import Data.Digit
 -- >>> import Papa
 
 type DCc a =
@@ -22,22 +24,20 @@ type DCc a =
   
 -- |
 --
--- >>> parse (parseCc <* eof) "test" "C" :: Either ParseError Digit
--- Right C
+-- >>> parse (parseCc <* eof) "test" "C" :: Either ParseError HeXDigit
+-- Right HeXDigitC
 --
--- >>> parse parseCc "test" "Cxyz" :: Either ParseError Digit
--- Right C
+-- >>> parse parseCc "test" "Cxyz" :: Either ParseError HeXDigit
+-- Right HeXDigitC
 --
--- >>> parse (parseCc <* eof) "test" "c" :: Either ParseError Digit
--- Right c
+-- >>> parse (parseCc <* eof) "test" "c" :: Either ParseError HeXDigit
+-- Right HeXDigitc
 --
--- >>> parse parseCc "test" "cxyz" :: Either ParseError Digit
--- Right c
+-- >>> parse parseCc "test" "cxyz" :: Either ParseError HeXDigit
+-- Right HeXDigitc
 --
--- >>> isn't _Right (parse parseCc "test" "xyz" :: Either ParseError Digit)
+-- >>> isn't _Right (parse parseCc "test" "xyz" :: Either ParseError HeXDigit)
 -- True
---
--- prop> \c -> (c `notElem` "Cc") ==> isn't _Right (parse parseCc "test" [c] :: Either ParseError Digit)
 parseCc ::
   (DCc d, CharParsing p) =>
   p d

@@ -1,60 +1,58 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Data.Digit.Integral(
+-- * Binary
   integralBinaryNoZero
 , integralBinary
+, integralBinDigits
+, binDigitsIntegral
+-- * Octal
 , integralOctalNoZero
 , integralOctal
+, integralOctDigits
+, octDigitsIntegral
+-- * Decimal
 , integralDecimal
 , integralDecimalNoZero
+, integralDecDigits
+, decDigitsIntegral
+-- * Hexadecimal
 , integralHexadecimalNoZero
 , integralHexadecimal
+, integralHexDigits
+, hexDigitsIntegral
+-- * HEXADECIMAL
 , integralHEXADECIMALNoZero
 , integralHEXADECIMAL
+, integralHEXDigits
+, _HEXDigitsIntegral
+-- * HeXaDeCiMaL
+, integralHeXaDeCiMaLNoZero
+, integralHeXaDeCiMaL
+, _HeXDigitsIntegral
 ) where
 
+import Prelude (error)
 import Control.Lens.Extras(is)
-import Data.Digit.Binary as D
-import Data.Digit.Decimal as D
-import Data.Digit.Octal as D
-import Data.Digit.Hexadecimal as D
-import Data.Digit.HEXADECIMAL as D
-import Data.Digit.D0 as D
-import Data.Digit.D1 as D
-import Data.Digit.D2 as D
-import Data.Digit.D3 as D
-import Data.Digit.D4 as D
-import Data.Digit.D5 as D
-import Data.Digit.D6 as D
-import Data.Digit.D7 as D
-import Data.Digit.D8 as D
-import Data.Digit.D9 as D
-import Data.Digit.Da as D
-import Data.Digit.DA as D
-import Data.Digit.Db as D
-import Data.Digit.DB as D
-import Data.Digit.Dc as D
-import Data.Digit.DC as D
-import Data.Digit.Dd as D
-import Data.Digit.DD as D
-import Data.Digit.De as D
-import Data.Digit.DE as D
-import Data.Digit.Df as D
-import Data.Digit.DF as D
+import Data.Digit.Binary
+import Data.Digit.Decimal
+import Data.Digit.Octal
+import Data.Digit.Hexadecimal
+import Data.Digit.HEXADECIMAL
+import Data.Digit.HeXaDeCiMaL
+import qualified Data.List.NonEmpty as NonEmpty
 import Papa
 
 -- $setup
--- >>> import Data.Digit.Digit
+-- >>> import Data.Digit
 
 -- |
 --
 -- >>> 1 ^? integralBinaryNoZero
--- Just ()
+-- Just BinDigit1
 --
--- >>> integralBinaryNoZero # Digit1 :: Integer
+-- >>> integralBinaryNoZero # BinDigit1 :: Integer
 -- 1
---
--- prop> \c -> c /= 1 ==> (c ^? integralBinaryNoZero == Nothing)
 integralBinaryNoZero ::
   (Integral a, BinaryNoZero d) =>
   Prism'
@@ -65,19 +63,11 @@ integralBinaryNoZero =
   
 -- |
 --
--- >>> 0 ^? integralBinary :: Maybe Digit
--- Just 0
+-- >>> 0 ^? integralBinary :: Maybe BinDigit
+-- Just BinDigit0
 --
--- >>> 1 ^? integralBinary :: Maybe Digit
--- Just 1
---
--- >>> integralBinary # Digit0 :: Integer
+-- >>> integralBinary # BinDigit0 :: Integer
 -- 0
---
--- >>> integralBinary # Digit1 :: Integer
--- 1
---
--- prop> \c -> (c `notElem` [0, 1]) ==> (c ^? integralBinary == Nothing)
 integralBinary ::
   (Integral a, Binary d) =>
   Prism'
@@ -85,52 +75,55 @@ integralBinary ::
     d
 integralBinary =
   associatePrism (0, d0) [(1, d1)]
-  
+
 -- |
+-- >>> integralBinDigits (4 :: Int)
+-- Right (BinDigit1 :| [BinDigit0, BinDigit0])
 --
--- >>> 1 ^? integralOctalNoZero :: Maybe Digit
--- Just 1
+-- >>> integralBinDigits (0 :: Int)
+-- Right (BinDigit0 :| [])
 --
--- >>> 2 ^? integralOctalNoZero :: Maybe Digit
--- Just 2
+-- >>> integralBinDigits (-1 :: Int)
+-- Left (BinDigit0 :| [])
 --
--- >>> 3 ^? integralOctalNoZero :: Maybe Digit
--- Just 3
---
--- >>> 4 ^? integralOctalNoZero :: Maybe Digit
--- Just 4
---
--- >>> 5 ^? integralOctalNoZero :: Maybe Digit
--- Just 5
---
--- >>> 6 ^? integralOctalNoZero :: Maybe Digit
--- Just 6
---
--- >>> 7 ^? integralOctalNoZero :: Maybe Digit
--- Just 7
---
--- >>> integralOctalNoZero # Digit1 :: Integer
--- 1
---
--- >>> integralOctalNoZero # Digit2 :: Integer
--- 2
---
--- >>> integralOctalNoZero # Digit3 :: Integer
--- 3
---
--- >>> integralOctalNoZero # Digit4 :: Integer
+-- >>> integralBinDigits (-4 :: Int)
+-- Left (BinDigit1 :| [BinDigit1])
+integralBinDigits :: Integral a => a -> Either (NonEmpty BinDigit) (NonEmpty BinDigit)
+integralBinDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
+  where
+    go k =
+      let
+        (q, r) = quotRem k 2
+      in
+        (if q == 0 then id else go q) . ((r ^?! integralBinary) :)
+
+-- |
+-- >>> binDigitsIntegral (Right (BinDigit1 :| [BinDigit0, BinDigit0])) :: Int
 -- 4
 --
--- >>> integralOctalNoZero # Digit5 :: Integer
--- 5
+-- >>> binDigitsIntegral (Right (BinDigit0 :| [])) :: Int
+-- 0
 --
--- >>> integralOctalNoZero # Digit6 :: Integer
--- 6
+-- >>> binDigitsIntegral (Left (BinDigit0 :| [])) :: Int
+-- -1
 --
--- >>> integralOctalNoZero # Digit7 :: Integer
+-- >>> binDigitsIntegral (Left (BinDigit1 :| [BinDigit1])) :: Int
+-- -4
+binDigitsIntegral :: Integral a => Either (NonEmpty BinDigit) (NonEmpty BinDigit) -> a
+binDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralBinary # a) + 2 * b) 0
+
+-- |
+--
+-- >>> 7 ^? integralOctalNoZero :: Maybe OctDigit
+-- Just OctDigit7
+--
+-- >>> integralOctalNoZero # OctDigit7 :: Integer
 -- 7
---
--- prop> \c -> (c `notElem` [1..7]) ==> (c ^? integralOctalNoZero == Nothing)
 integralOctalNoZero ::
   (Integral a, OctalNoZero d) =>
   Prism'
@@ -141,55 +134,11 @@ integralOctalNoZero =
 
 -- |
 --
--- >>> 0 ^? integralOctal :: Maybe Digit
--- Just 0
+-- >>> 7 ^? integralOctal :: Maybe OctDigit
+-- Just OctDigit7
 --
--- >>> 1 ^? integralOctal :: Maybe Digit
--- Just 1
---
--- >>> 2 ^? integralOctal :: Maybe Digit
--- Just 2
---
--- >>> 3 ^? integralOctal :: Maybe Digit
--- Just 3
---
--- >>> 4 ^? integralOctal :: Maybe Digit
--- Just 4
---
--- >>> 5 ^? integralOctal :: Maybe Digit
--- Just 5
---
--- >>> 6 ^? integralOctal :: Maybe Digit
--- Just 6
---
--- >>> 7 ^? integralOctal :: Maybe Digit
--- Just 7
---
--- >>> integralOctal # Digit0 :: Integer
--- 0
---
--- >>> integralOctal # Digit1 :: Integer
--- 1
---
--- >>> integralOctal # Digit2 :: Integer
--- 2
---
--- >>> integralOctal # Digit3 :: Integer
--- 3
---
--- >>> integralOctal # Digit4 :: Integer
--- 4
---
--- >>> integralOctal # Digit5 :: Integer
--- 5
---
--- >>> integralOctal # Digit6 :: Integer
--- 6
---
--- >>> integralOctal # Digit7 :: Integer
+-- >>> integralOctal # OctDigit7 :: Integer
 -- 7
---
--- prop> \c -> (c `notElem` [0..7]) ==> (c ^? integralOctal == Nothing)
 integralOctal ::
   (Integral a, Octal d) =>
   Prism'
@@ -197,64 +146,54 @@ integralOctal ::
     d
 integralOctal =
   associatePrism (0, d0) [(1, d1), (2, d2), (3, d3), (4, d4), (5, d5), (6, d6), (7, d7)]
-  
+
 -- |
+-- >>> integralOctDigits (64 :: Int)
+-- Right (OctDigit1 :| [OctDigit0, OctDigit0])
 --
--- >>> 1 ^? integralDecimalNoZero :: Maybe Digit
--- Just 1
+-- >>> integralOctDigits (0 :: Int)
+-- Right (OctDigit0 :| [])
 --
--- >>> 2 ^? integralDecimalNoZero :: Maybe Digit
--- Just 2
+-- >>> integralOctDigits (-1 :: Int)
+-- Left (OctDigit0 :| [])
 --
--- >>> 3 ^? integralDecimalNoZero :: Maybe Digit
--- Just 3
+-- >>> integralOctDigits (-64 :: Int)
+-- Left (OctDigit7 :| [OctDigit7])
+integralOctDigits :: Integral a => a -> Either (NonEmpty OctDigit) (NonEmpty OctDigit)
+integralOctDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
+  where
+    go k =
+      let
+        (q, r) = quotRem k 8
+      in
+        (if q == 0 then id else go q) . ((r ^?! integralOctal) :)
+
+-- |
+-- >>> octDigitsIntegral (Right (OctDigit1 :| [OctDigit0, OctDigit0])) :: Int
+-- 64
 --
--- >>> 4 ^? integralDecimalNoZero :: Maybe Digit
--- Just 4
+-- >>> octDigitsIntegral (Right (OctDigit0 :| [])) :: Int
+-- 0
 --
--- >>> 5 ^? integralDecimalNoZero :: Maybe Digit
--- Just 5
+-- >>> octDigitsIntegral (Left (OctDigit0 :| [])) :: Int
+-- -1
 --
--- >>> 6 ^? integralDecimalNoZero :: Maybe Digit
--- Just 6
+-- >>> octDigitsIntegral (Left (OctDigit7 :| [OctDigit7])) :: Int
+-- -64
+octDigitsIntegral :: Integral a => Either (NonEmpty OctDigit) (NonEmpty OctDigit) -> a
+octDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralOctal # a) + 8 * b) 0
+
+-- |
+-- >>> 9 ^? integralDecimalNoZero :: Maybe DecDigit
+-- Just DecDigit9
 --
--- >>> 7 ^? integralDecimalNoZero :: Maybe Digit
--- Just 7
---
--- >>> 8 ^? integralDecimalNoZero :: Maybe Digit
--- Just 8
---
--- >>> 9 ^? integralDecimalNoZero :: Maybe Digit
--- Just 9
---
--- >>> integralDecimalNoZero # Digit1 :: Integer
--- 1
---
--- >>> integralDecimalNoZero # Digit2 :: Integer
--- 2
---
--- >>> integralDecimalNoZero # Digit3 :: Integer
--- 3
---
--- >>> integralDecimalNoZero # Digit4 :: Integer
--- 4
---
--- >>> integralDecimalNoZero # Digit5 :: Integer
--- 5
---
--- >>> integralDecimalNoZero # Digit6 :: Integer
--- 6
---
--- >>> integralDecimalNoZero # Digit7 :: Integer
--- 7
---
--- >>> integralDecimalNoZero # Digit8 :: Integer
--- 8
---
--- >>> integralDecimalNoZero # Digit9 :: Integer
+-- >>> integralDecimalNoZero # DecDigit9 :: Integer
 -- 9
---
--- prop> \c -> (c `notElem` [1..9]) ==> (c ^? integralDecimalNoZero == Nothing)
 integralDecimalNoZero ::
   (Integral a, DecimalNoZero d) =>
   Prism'
@@ -264,68 +203,11 @@ integralDecimalNoZero =
   associatePrism (1, d1) [(2, d2), (3, d3), (4, d4), (5, d5), (6, d6), (7, d7), (8, d8), (9, d9)]
   
 -- |
+-- >>> 9 ^? integralDecimal :: Maybe DecDigit
+-- Just DecDigit9
 --
--- >>> 0 ^? integralDecimal :: Maybe Digit
--- Just 0
---
--- >>> 1 ^? integralDecimal :: Maybe Digit
--- Just 1
---
--- >>> 2 ^? integralDecimal :: Maybe Digit
--- Just 2
---
--- >>> 3 ^? integralDecimal :: Maybe Digit
--- Just 3
---
--- >>> 4 ^? integralDecimal :: Maybe Digit
--- Just 4
---
--- >>> 5 ^? integralDecimal :: Maybe Digit
--- Just 5
---
--- >>> 6 ^? integralDecimal :: Maybe Digit
--- Just 6
---
--- >>> 7 ^? integralDecimal :: Maybe Digit
--- Just 7
---
--- >>> 8 ^? integralDecimal :: Maybe Digit
--- Just 8
---
--- >>> 9 ^? integralDecimal :: Maybe Digit
--- Just 9
---
--- >>> integralDecimal # Digit0 :: Integer
--- 0
---
--- >>> integralDecimal # Digit1 :: Integer
--- 1
---
--- >>> integralDecimal # Digit2 :: Integer
--- 2
---
--- >>> integralDecimal # Digit3 :: Integer
--- 3
---
--- >>> integralDecimal # Digit4 :: Integer
--- 4
---
--- >>> integralDecimal # Digit5 :: Integer
--- 5
---
--- >>> integralDecimal # Digit6 :: Integer
--- 6
---
--- >>> integralDecimal # Digit7 :: Integer
--- 7
---
--- >>> integralDecimal # Digit8 :: Integer
--- 8
---
--- >>> integralDecimal # Digit9 :: Integer
+-- >>> integralDecimal # DecDigit9 :: Integer
 -- 9
---
--- prop> \c -> (c `notElem` [0..9]) ==> (c ^? integralDecimal == Nothing)
 integralDecimal ::
   (Integral a, Decimal d) =>
   Prism'
@@ -333,100 +215,55 @@ integralDecimal ::
     d
 integralDecimal =
   associatePrism (0, d0) [(1, d1), (2, d2), (3, d3), (4, d4), (5, d5), (6, d6), (7, d7), (8, d8), (9, d9)]
-  
+
+-- |
+-- >>> integralDecDigits (100 :: Int)
+-- Right (DecDigit1 :| [DecDigit0, DecDigit0])
+--
+-- >>> integralDecDigits (0 :: Int)
+-- Right (DecDigit0 :| [])
+--
+-- >>> integralDecDigits (-1 :: Int)
+-- Left (DecDigit0 :| [])
+--
+-- >>> integralDecDigits (-100 :: Int)
+-- Left (DecDigit9 :| [DecDigit9])
+integralDecDigits :: Integral a => a -> Either (NonEmpty DecDigit) (NonEmpty DecDigit)
+integralDecDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
+  where
+    go k =
+      let
+        (q, r) = quotRem k 10
+      in
+        (if q == 0 then id else go q) . ((r ^?! integralDecimal) :)
+
+-- |
+-- >>> decDigitsIntegral (Right (DecDigit1 :| [DecDigit0, DecDigit0])) :: Int
+-- 100
+--
+-- >>> decDigitsIntegral (Right (DecDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> decDigitsIntegral (Left (DecDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> decDigitsIntegral (Left (DecDigit9 :| [DecDigit9])) :: Int
+-- -100
+decDigitsIntegral :: Integral a => Either (NonEmpty DecDigit) (NonEmpty DecDigit) -> a
+decDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralDecimal # a) + 10 * b) 0
+
 -- |
 --
--- >>> 1 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 1
+-- >>> 15 ^? integralHexadecimalNoZero :: Maybe HexDigit
+-- Just HexDigitf
 --
--- >>> 2 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 2
---
--- >>> 3 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 3
---
--- >>> 4 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 4
---
--- >>> 5 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 5
---
--- >>> 6 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 6
---
--- >>> 7 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 7
---
--- >>> 8 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 8
---
--- >>> 9 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just 9
---
--- >>> 10 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just a
---
--- >>> 11 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just b
---
--- >>> 12 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just c
---
--- >>> 13 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just d
---
--- >>> 14 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just e
---
--- >>> 15 ^? integralHexadecimalNoZero :: Maybe Digit
--- Just f
---
--- >>> integralHexadecimalNoZero # Digit1 :: Integer
--- 1
---
--- >>> integralHexadecimalNoZero # Digit2 :: Integer
--- 2
---
--- >>> integralHexadecimalNoZero # Digit3 :: Integer
--- 3
---
--- >>> integralHexadecimalNoZero # Digit4 :: Integer
--- 4
---
--- >>> integralHexadecimalNoZero # Digit5 :: Integer
--- 5
---
--- >>> integralHexadecimalNoZero # Digit6 :: Integer
--- 6
---
--- >>> integralHexadecimalNoZero # Digit7 :: Integer
--- 7
---
--- >>> integralHexadecimalNoZero # Digit8 :: Integer
--- 8
---
--- >>> integralHexadecimalNoZero # Digit9 :: Integer
--- 9
---
--- >>> integralHexadecimalNoZero # Digita :: Integer
--- 10
---
--- >>> integralHexadecimalNoZero # Digitb :: Integer
--- 11
---
--- >>> integralHexadecimalNoZero # Digitc :: Integer
--- 12
---
--- >>> integralHexadecimalNoZero # Digitd :: Integer
--- 13
---
--- >>> integralHexadecimalNoZero # Digite :: Integer
--- 14
---
--- >>> integralHexadecimalNoZero # Digitf :: Integer
+-- >>> integralHexadecimalNoZero # HexDigitf :: Integer
 -- 15
---
--- prop> \c -> (c `notElem` [1..15]) ==> (c ^? integralHexadecimalNoZero == Nothing)
 integralHexadecimalNoZero ::
   (Integral a, HexadecimalNoZero d) =>
   Prism'
@@ -437,103 +274,11 @@ integralHexadecimalNoZero =
   
 -- |
 --
--- >>> 0 ^? integralHexadecimal :: Maybe Digit
--- Just 0
+-- >>> 15 ^? integralHexadecimal :: Maybe HexDigit
+-- Just HexDigitf
 --
--- >>> 1 ^? integralHexadecimal :: Maybe Digit
--- Just 1
---
--- >>> 2 ^? integralHexadecimal :: Maybe Digit
--- Just 2
---
--- >>> 3 ^? integralHexadecimal :: Maybe Digit
--- Just 3
---
--- >>> 4 ^? integralHexadecimal :: Maybe Digit
--- Just 4
---
--- >>> 5 ^? integralHexadecimal :: Maybe Digit
--- Just 5
---
--- >>> 6 ^? integralHexadecimal :: Maybe Digit
--- Just 6
---
--- >>> 7 ^? integralHexadecimal :: Maybe Digit
--- Just 7
---
--- >>> 8 ^? integralHexadecimal :: Maybe Digit
--- Just 8
---
--- >>> 9 ^? integralHexadecimal :: Maybe Digit
--- Just 9
---
--- >>> 10 ^? integralHexadecimal :: Maybe Digit
--- Just a
---
--- >>> 11 ^? integralHexadecimal :: Maybe Digit
--- Just b
---
--- >>> 12 ^? integralHexadecimal :: Maybe Digit
--- Just c
---
--- >>> 13 ^? integralHexadecimal :: Maybe Digit
--- Just d
---
--- >>> 14 ^? integralHexadecimal :: Maybe Digit
--- Just e
---
--- >>> 15 ^? integralHexadecimal :: Maybe Digit
--- Just f
---
--- >>> integralHexadecimal # Digit0 :: Integer
--- 0
---
--- >>> integralHexadecimal # Digit1 :: Integer
--- 1
---
--- >>> integralHexadecimal # Digit2 :: Integer
--- 2
---
--- >>> integralHexadecimal # Digit3 :: Integer
--- 3
---
--- >>> integralHexadecimal # Digit4 :: Integer
--- 4
---
--- >>> integralHexadecimal # Digit5 :: Integer
--- 5
---
--- >>> integralHexadecimal # Digit6 :: Integer
--- 6
---
--- >>> integralHexadecimal # Digit7 :: Integer
--- 7
---
--- >>> integralHexadecimal # Digit8 :: Integer
--- 8
---
--- >>> integralHexadecimal # Digit9 :: Integer
--- 9
---
--- >>> integralHexadecimal # Digita :: Integer
--- 10
---
--- >>> integralHexadecimal # Digitb :: Integer
--- 11
---
--- >>> integralHexadecimal # Digitc :: Integer
--- 12
---
--- >>> integralHexadecimal # Digitd :: Integer
--- 13
---
--- >>> integralHexadecimal # Digite :: Integer
--- 14
---
--- >>> integralHexadecimal # Digitf :: Integer
+-- >>> integralHexadecimal # HexDigitf :: Integer
 -- 15
---
--- prop> \c -> (c `notElem` [0..15]) ==> (c ^? integralHexadecimal == Nothing)
 integralHexadecimal ::
   (Integral a, Hexadecimal d) =>
   Prism'
@@ -543,98 +288,53 @@ integralHexadecimal =
   associatePrism (0, d0) [(1, d1), (2, d2), (3, d3), (4, d4), (5, d5), (6, d6), (7, d7), (8, d8), (9, d9), (10, da), (11, db), (12, dc), (13, dd), (14, de), (15, df)]
 
 -- |
+-- >>> integralHexDigits (256 :: Int)
+-- Right (HexDigit1 :| [HexDigit0, HexDigit0])
 --
--- >>> 1 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 1
+-- >>> integralHexDigits (0 :: Int)
+-- Right (HexDigit0 :| [])
 --
--- >>> 2 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 2
+-- >>> integralHexDigits (-1 :: Int)
+-- Left (HexDigit0 :| [])
 --
--- >>> 3 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 3
+-- >>> integralHexDigits (-256 :: Int)
+-- Left (HexDigitf :| [HexDigitf])
+integralHexDigits :: Integral a => a -> Either (NonEmpty HexDigit) (NonEmpty HexDigit)
+integralHexDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
+  where
+    go k =
+      let
+        (q, r) = quotRem k 16
+      in
+        (if q == 0 then id else go q) . ((r ^?! integralHexadecimal) :)
+
+-- |
+-- >>> hexDigitsIntegral (Right (HexDigit1 :| [HexDigit0, HexDigit0])) :: Int
+-- 256
 --
--- >>> 4 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 4
+-- >>> hexDigitsIntegral (Right (HexDigit0 :| [])) :: Int
+-- 0
 --
--- >>> 5 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 5
+-- >>> hexDigitsIntegral (Left (HexDigit0 :| [])) :: Int
+-- -1
 --
--- >>> 6 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 6
+-- >>> hexDigitsIntegral (Left (HexDigitf :| [HexDigitf])) :: Int
+-- -256
+hexDigitsIntegral :: Integral a => Either (NonEmpty HexDigit) (NonEmpty HexDigit) -> a
+hexDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralHexadecimal # a) + 16 * b) 0
+
+-- |
 --
--- >>> 7 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 7
+-- >>> 15 ^? integralHEXADECIMALNoZero :: Maybe HEXDigit
+-- Just HEXDigitF
 --
--- >>> 8 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 8
---
--- >>> 9 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just 9
---
--- >>> 10 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just A
---
--- >>> 11 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just B
---
--- >>> 12 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just C
---
--- >>> 13 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just D
---
--- >>> 14 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just E
---
--- >>> 15 ^? integralHEXADECIMALNoZero :: Maybe Digit
--- Just F
---
--- >>> integralHEXADECIMALNoZero # Digit1 :: Integer
--- 1
---
--- >>> integralHEXADECIMALNoZero # Digit2 :: Integer
--- 2
---
--- >>> integralHEXADECIMALNoZero # Digit3 :: Integer
--- 3
---
--- >>> integralHEXADECIMALNoZero # Digit4 :: Integer
--- 4
---
--- >>> integralHEXADECIMALNoZero # Digit5 :: Integer
--- 5
---
--- >>> integralHEXADECIMALNoZero # Digit6 :: Integer
--- 6
---
--- >>> integralHEXADECIMALNoZero # Digit7 :: Integer
--- 7
---
--- >>> integralHEXADECIMALNoZero # Digit8 :: Integer
--- 8
---
--- >>> integralHEXADECIMALNoZero # Digit9 :: Integer
--- 9
---
--- >>> integralHEXADECIMALNoZero # DigitA :: Integer
--- 10
---
--- >>> integralHEXADECIMALNoZero # DigitB :: Integer
--- 11
---
--- >>> integralHEXADECIMALNoZero # DigitC :: Integer
--- 12
---
--- >>> integralHEXADECIMALNoZero # DigitD :: Integer
--- 13
---
--- >>> integralHEXADECIMALNoZero # DigitE :: Integer
--- 14
---
--- >>> integralHEXADECIMALNoZero # DigitF :: Integer
+-- >>> integralHEXADECIMALNoZero # HEXDigitF :: Integer
 -- 15
---
--- prop> \c -> (c `notElem` [1..15]) ==> (c ^? integralHEXADECIMALNoZero == Nothing)
 integralHEXADECIMALNoZero ::
   (Integral a, HEXADECIMALNoZero d) =>
   Prism'
@@ -646,103 +346,11 @@ integralHEXADECIMALNoZero =
 
 -- |
 --
--- >>> 0 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 0
+-- >>> 15 ^? integralHEXADECIMAL :: Maybe HEXDigit
+-- Just HEXDigitF
 --
--- >>> 1 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 1
---
--- >>> 2 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 2
---
--- >>> 3 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 3
---
--- >>> 4 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 4
---
--- >>> 5 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 5
---
--- >>> 6 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 6
---
--- >>> 7 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 7
---
--- >>> 8 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 8
---
--- >>> 9 ^? integralHEXADECIMAL :: Maybe Digit
--- Just 9
---
--- >>> 10 ^? integralHEXADECIMAL :: Maybe Digit
--- Just A
---
--- >>> 11 ^? integralHEXADECIMAL :: Maybe Digit
--- Just B
---
--- >>> 12 ^? integralHEXADECIMAL :: Maybe Digit
--- Just C
---
--- >>> 13 ^? integralHEXADECIMAL :: Maybe Digit
--- Just D
---
--- >>> 14 ^? integralHEXADECIMAL :: Maybe Digit
--- Just E
---
--- >>> 15 ^? integralHEXADECIMAL :: Maybe Digit
--- Just F
---
--- >>> integralHEXADECIMAL # Digit0 :: Integer
--- 0
---
--- >>> integralHEXADECIMAL # Digit1 :: Integer
--- 1
---
--- >>> integralHEXADECIMAL # Digit2 :: Integer
--- 2
---
--- >>> integralHEXADECIMAL # Digit3 :: Integer
--- 3
---
--- >>> integralHEXADECIMAL # Digit4 :: Integer
--- 4
---
--- >>> integralHEXADECIMAL # Digit5 :: Integer
--- 5
---
--- >>> integralHEXADECIMAL # Digit6 :: Integer
--- 6
---
--- >>> integralHEXADECIMAL # Digit7 :: Integer
--- 7
---
--- >>> integralHEXADECIMAL # Digit8 :: Integer
--- 8
---
--- >>> integralHEXADECIMAL # Digit9 :: Integer
--- 9
---
--- >>> integralHEXADECIMAL # DigitA :: Integer
--- 10
---
--- >>> integralHEXADECIMAL # DigitB :: Integer
--- 11
---
--- >>> integralHEXADECIMAL # DigitC :: Integer
--- 12
---
--- >>> integralHEXADECIMAL # DigitD :: Integer
--- 13
---
--- >>> integralHEXADECIMAL # DigitE :: Integer
--- 14
---
--- >>> integralHEXADECIMAL # DigitF :: Integer
+-- >>> integralHEXADECIMAL # HEXDigitF :: Integer
 -- 15
---
--- prop> \c -> (c `notElem` [0..15]) ==> (c ^? integralHEXADECIMAL == Nothing)
 integralHEXADECIMAL ::
   (Integral a, HEXADECIMAL d) =>
   Prism'
@@ -750,6 +358,139 @@ integralHEXADECIMAL ::
     d
 integralHEXADECIMAL =
   associatePrism (0, d0) [(1, d1), (2, d2), (3, d3), (4, d4), (5, d5), (6, d6), (7, d7), (8, d8), (9, d9), (10, dA), (11, dB), (12, dC), (13, dD), (14, dE), (15, dF)]
+
+-- |
+-- >>> integralHEXDigits (256 :: Int)
+-- Right (HEXDigit1 :| [HEXDigit0, HEXDigit0])
+--
+-- >>> integralHEXDigits (0 :: Int)
+-- Right (HEXDigit0 :| [])
+--
+-- >>> integralHEXDigits (-1 :: Int)
+-- Left (HEXDigit0 :| [])
+--
+-- >>> integralHEXDigits (-256 :: Int)
+-- Left (HEXDigitF :| [HEXDigitF])
+integralHEXDigits :: Integral a => a -> Either (NonEmpty HEXDigit) (NonEmpty HEXDigit)
+integralHEXDigits n =
+  if n >= 0
+  then Right . NonEmpty.fromList $ go n []
+  else Left . NonEmpty.fromList $ go (-n - 1) []
+  where
+    go k =
+      let
+        (q, r) = quotRem k 16
+      in
+        (if q == 0 then id else go q) . ((r ^?! integralHEXADECIMAL) :)
+
+-- |
+-- >>> HEXDigitsIntegral (Right (HEXDigit1 :| [HEXDigit0, HEXDigit0])) :: Int
+-- 256
+--
+-- >>> HEXDigitsIntegral (Right (HEXDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> HEXDigitsIntegral (Left (HEXDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> HEXDigitsIntegral (Left (HEXDigitF :| [HEXDigitF])) :: Int
+-- -256
+_HEXDigitsIntegral :: Integral a => Either (NonEmpty HEXDigit) (NonEmpty HEXDigit) -> a
+_HEXDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralHEXADECIMAL # a) + 16 * b) 0
+
+-- |
+--
+-- >>> 15 ^? integralHeXaDeCiMaLNoZero :: Maybe HeXDigit
+-- Just HeXDigitF
+--
+-- >>> integralHeXaDeCiMaLNoZero # HeXDigitF :: Integer
+-- 15
+integralHeXaDeCiMaLNoZero ::
+  (Integral a, HeXaDeCiMaLNoZero d) =>
+  Review
+    a
+    d
+integralHeXaDeCiMaLNoZero =
+  unto
+    (outside d1 .~ (\_ -> 1) $
+     outside d2 .~ (\_ -> 2) $
+     outside d3 .~ (\_ -> 3) $
+     outside d4 .~ (\_ -> 4) $
+     outside d5 .~ (\_ -> 5) $
+     outside d6 .~ (\_ -> 6) $
+     outside d7 .~ (\_ -> 7) $
+     outside d8 .~ (\_ -> 8) $
+     outside d9 .~ (\_ -> 9) $
+     outside da .~ (\_ -> 10) $
+     outside dA .~ (\_ -> 10) $
+     outside db .~ (\_ -> 11) $
+     outside dB .~ (\_ -> 11) $
+     outside dc .~ (\_ -> 12) $
+     outside dC .~ (\_ -> 12) $
+     outside dd .~ (\_ -> 13) $
+     outside dD .~ (\_ -> 13) $
+     outside de .~ (\_ -> 14) $
+     outside dE .~ (\_ -> 14) $
+     outside df .~ (\_ -> 15) $
+     outside dF .~ (\_ -> 15) $
+     error "incomplete pattern")
+
+-- |
+--
+-- >>> 15 ^? integralHeXaDeCiMaL :: Maybe HeXDigit
+-- Just HeXDigitF
+--
+-- >>> integralHeXaDeCiMaL # HeXDigitF :: Integer
+-- 15
+integralHeXaDeCiMaL ::
+  (Integral a, HeXaDeCiMaL d) =>
+  Review
+    a
+    d
+integralHeXaDeCiMaL =
+  unto
+    (outside d0 .~ (\_ -> 0) $
+     outside d1 .~ (\_ -> 1) $
+     outside d2 .~ (\_ -> 2) $
+     outside d3 .~ (\_ -> 3) $
+     outside d4 .~ (\_ -> 4) $
+     outside d5 .~ (\_ -> 5) $
+     outside d6 .~ (\_ -> 6) $
+     outside d7 .~ (\_ -> 7) $
+     outside d8 .~ (\_ -> 8) $
+     outside d9 .~ (\_ -> 9) $
+     outside da .~ (\_ -> 10) $
+     outside dA .~ (\_ -> 10) $
+     outside db .~ (\_ -> 11) $
+     outside dB .~ (\_ -> 11) $
+     outside dc .~ (\_ -> 12) $
+     outside dC .~ (\_ -> 12) $
+     outside dd .~ (\_ -> 13) $
+     outside dD .~ (\_ -> 13) $
+     outside de .~ (\_ -> 14) $
+     outside dE .~ (\_ -> 14) $
+     outside df .~ (\_ -> 15) $
+     outside dF .~ (\_ -> 15) $
+     error "incomplete pattern")
+
+-- |
+-- >>> HeXDigitsIntegral (Right (HeXDigit1 :| [HeXDigit0, HeXDigit0])) :: Int
+-- 256
+--
+-- >>> HeXDigitsIntegral (Right (HeXDigit0 :| [])) :: Int
+-- 0
+--
+-- >>> HeXDigitsIntegral (Left (HeXDigit0 :| [])) :: Int
+-- -1
+--
+-- >>> HeXDigitsIntegral (Left (HeXDigitF :| [HeXDigitF])) :: Int
+-- -256
+_HeXDigitsIntegral :: Integral a => Either (NonEmpty HeXDigit) (NonEmpty HeXDigit) -> a
+_HeXDigitsIntegral = either (\n -> -(go n) - 1) go
+  where
+    go = foldl' (\b a -> (integralHeXaDeCiMaL # a) + 16 * b) 0
 
 ---- not exported
 associatePrism ::
