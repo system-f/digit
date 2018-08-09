@@ -35,7 +35,7 @@ let
     overrides = self: super: import sources.papa self // {
       parsers = pkgs.haskell.lib.dontCheck super.parsers;
       hedgehog = super.callCabal2nix "hedgehog" "${sources.hedgehog}/hedgehog" {};
-      tasty-hedgehog = import sources.tasty-hedgehog {};
+      tasty-hedgehog = super.callCabal2nix "tasty-hedgehog" "${sources.tasty-hedgehog}" {};
     };
   };
 
