@@ -16,6 +16,13 @@ let
       sha256 = "10wx0z5cd8dajr3rdskaq64v42ppa8dbb3rs3jyj872218xjz6nr";
     };
 
+    hedgehog = pkgs.fetchFromGitHub {
+      owner  = "hedgehogqa";
+      repo   = "haskell-hedgehog";
+      rev    = "0.6";
+      sha256 = "101bxgnxdmjg6x5jdjgbzayb747lxv8yv28bjg0kr6xw4kqi8kpw";
+    };
+
     tasty-hedgehog = pkgs.fetchFromGitHub {
       owner = "qfpl";
       repo = "tasty-hedgehog";
@@ -27,6 +34,7 @@ let
   modifiedHaskellPackages = haskellPackages.override {
     overrides = self: super: import sources.papa self // {
       parsers = pkgs.haskell.lib.dontCheck super.parsers;
+      hedgehog = super.callCabal2nix "hedgehog" "${sources.hedgehog}/hedgehog" {};
       tasty-hedgehog = import sources.tasty-hedgehog {};
     };
   };
