@@ -5,7 +5,11 @@ module Data.Digit.D1(
 , parse1
 ) where
 
-import Papa
+import Control.Category (id)
+import Control.Lens (Prism', (#))
+
+import Data.Functor ((<$))
+
 import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 

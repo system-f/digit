@@ -1,14 +1,28 @@
 {-# LANGUAGE RankNTypes #-}
-
+{-# LANGUAGE NoImplicitPrelude #-}
 module Main(
   main
 ) where
 
 import Data.Digit
 import Numeric.Natural (Natural)
-import Prelude (minBound, maxBound)
-import Papa hiding (re)
+import Prelude (Char, Integral, Int, String, Eq, Show, IO, Integer, minBound, maxBound, fromIntegral,fst,notElem)
+
+import Control.Category ((.))
+import Control.Monad ((>>=))
+import Control.Applicative ((<*))
+import Control.Lens (Prism', (^?), (#))
+
+import Data.Semigroup ((<>))
+import Data.Monoid (mconcat)
+import Data.Functor ((<$>),fmap)
+import Data.Function (($))
+import Data.Maybe (Maybe (..))
+import Data.Either (Either (..),isLeft)
+import Data.List.NonEmpty (NonEmpty)
+
 import Hedgehog(Property, Gen, forAll, property, assert, (===))
+
 import Test.Tasty(TestTree, defaultMain, testGroup)
 import Test.Tasty.Hedgehog(testProperty)
 import Test.Tasty.HUnit(testCase, (@?=))
@@ -25,20 +39,20 @@ testPrism ::
   -> [TestTree]
 testPrism g n p x =
   testProperty
-    (n ++ " prism invalid values")
+    (n <> " prism invalid values")
     (
       property $
-        do  c <- forAll . Gen.filter (`notElem` (map fst x)) $ g
+        do  c <- forAll . Gen.filter (`notElem` (fmap fst x)) $ g
             (c ^? p :: Maybe HeXDigit) === Nothing
     ) :
     (
       x >>= \(c, d) ->
         [
           testCase
-            (n ++ " prism ->")
+            (n <> " prism ->")
             ((c ^? p :: Maybe HeXDigit) @?= Just d)
         , testCase
-            (n ++ " prism <-")
+            (n <> " prism <-")
             (p # d @?= c)
         ]
     )
@@ -50,26 +64,26 @@ testParser ::
   -> [TestTree]
 testParser n p x =
     (
-      let n' = n ++ " parser invalid values"
+      let n' = n <> " parser invalid values"
       in  testProperty
             n'
             (
               property $
-                do  c <- forAll . Gen.filter (`notElem` (map fst x)) . Gen.choice $ [Gen.hexit, Gen.unicode]
-                    assert (isLeft (parse p (n' ++ " test") [c] :: Either ParseError HeXDigit))
+                do  c <- forAll . Gen.filter (`notElem` (fmap fst x)) . Gen.choice $ [Gen.hexit, Gen.unicode]
+                    assert (isLeft (parse p (n' <> " test") [c] :: Either ParseError HeXDigit))
             )
     ) :
     (
       x >>= \(c, d) ->
         [
-          let n' = n ++ " parses exactly one character"
+          let n' = n <> " parses exactly one character"
           in  testCase
                 n'
-                ((parse (p <* eof) (n' ++ " test") [c] :: Either ParseError HeXDigit) @?= Right d)
-        , let n' = n ++ " parses the correct digit"
+                ((parse (p <* eof) (n' <> " test") [c] :: Either ParseError HeXDigit) @?= Right d)
+        , let n' = n <> " parses the correct digit"
           in  testCase
                 n'
-                ((parse p (n' ++ "test") (c:"xyz") :: Either ParseError HeXDigit) @?= Right d)
+                ((parse p (n' <> "test") (c:"xyz") :: Either ParseError HeXDigit) @?= Right d)
             ]
     )
 
@@ -228,7 +242,7 @@ digitBaseTests =
         rE =  (14 , HeXDigitE)
         rF :: (Integer, HeXDigit)
         rF =  (15 , HeXDigitF)
-    in  concat [
+    in  mconcat [
           charPrism "charBinaryNoZero" charBinaryNoZero [q1]
         , charPrism "charBinary" charBinary [q0, q1]
         , charPrism "charOctalNoZero" charOctalNoZero [q1, q2, q3, q4, q5, q6, q7]

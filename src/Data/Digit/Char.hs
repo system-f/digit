@@ -21,15 +21,23 @@ module Data.Digit.Char(
 , charHeXaDeCiMaL
 ) where
 
-import Control.Lens.Extras(is)
-import Data.Digit.Binary as D
-import Data.Digit.Decimal as D
-import Data.Digit.Octal as D
-import Data.Digit.Hexadecimal as D
-import Data.Digit.HeXaDeCiMaL as D
-import Data.Digit.HEXADECIMAL as D
-import Papa
+import           Prelude                (Char, Eq, fst, lookup)
 
+import           Control.Applicative    (Applicative)
+import           Control.Lens           (APrism, Choice, Prism', clonePrism,
+                                         prism', ( # ))
+import           Control.Lens.Extras    (is)
+
+import           Data.Foldable          (find)
+import           Data.Functor           ((<$>))
+import           Data.Maybe             (fromMaybe)
+
+import           Data.Digit.Binary      as D
+import           Data.Digit.Decimal     as D
+import           Data.Digit.Hexadecimal as D
+import           Data.Digit.HeXaDeCiMaL as D
+import           Data.Digit.HEXADECIMAL as D
+import           Data.Digit.Octal       as D
 
 -- $setup
 -- >>> import Data.Digit
@@ -48,7 +56,7 @@ charBinaryNoZero ::
     d
 charBinaryNoZero =
   associatePrism ('1', d1) []
-  
+
 -- |
 --
 -- >>> '0' ^? charBinary :: Maybe BinDigit
@@ -63,7 +71,7 @@ charBinary ::
     d
 charBinary =
   associatePrism ('0', d0) [('1', d1)]
-  
+
 -- |
 --
 -- >>> '6' ^? charOctalNoZero :: Maybe OctDigit
@@ -78,7 +86,7 @@ charOctalNoZero ::
     d
 charOctalNoZero =
   associatePrism ('1', d1) [('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7)]
-  
+
 -- |
 -- >>> '7' ^? charOctal :: Maybe OctDigit
 -- Just OctDigit7
@@ -92,7 +100,7 @@ charOctal ::
     d
 charOctal =
   associatePrism ('0', d0) [('1', d1), ('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7)]
-  
+
 -- |
 -- >>> '9' ^? charDecimalNoZero :: Maybe DecDigit
 -- Just DecDigit9
@@ -106,7 +114,7 @@ charDecimalNoZero ::
     d
 charDecimalNoZero =
   associatePrism ('1', d1) [('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9)]
-  
+
 -- |
 -- >>> '9' ^? charDecimal :: Maybe DecDigit
 -- Just DecDigit9
@@ -120,7 +128,7 @@ charDecimal ::
     d
 charDecimal =
   associatePrism ('0', d0) [('1', d1), ('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9)]
-  
+
 -- |
 -- >>> 'f' ^? charHexadecimalNoZero :: Maybe HexDigit
 -- Just HexDigitf
@@ -134,7 +142,7 @@ charHexadecimalNoZero ::
     d
 charHexadecimalNoZero =
   associatePrism ('1', d1) [('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9), ('a', da), ('b', db), ('c', dc), ('d', dd), ('e', de), ('f', df)]
-  
+
 -- |
 -- >>> 'f' ^? charHexadecimal :: Maybe HexDigit
 -- Just HexDigitf
@@ -148,7 +156,7 @@ charHexadecimal ::
     d
 charHexadecimal =
   associatePrism ('0', d0) [('1', d1), ('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9), ('a', da), ('b', db), ('c', dc), ('d', dd), ('e', de), ('f', df)]
-  
+
 -- |
 -- >>> 'F' ^? charHEXADECIMALNoZero :: Maybe HEXDigit
 -- Just HEXDigitF
@@ -162,7 +170,7 @@ charHEXADECIMALNoZero ::
     d
 charHEXADECIMALNoZero =
   associatePrism ('1', d1) [('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9), ('A', dA), ('B', dB), ('C', dC), ('D', dD), ('E', dE), ('F', dF)]
-  
+
 -- |
 -- >>> 'F' ^? charHEXADECIMAL :: Maybe HEXDigit
 -- Just HEXDigitF
@@ -176,7 +184,7 @@ charHEXADECIMAL ::
     d
 charHEXADECIMAL =
   associatePrism ('0', d0) [('1', d1), ('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9), ('A', dA), ('B', dB), ('C', dC), ('D', dD), ('E', dE), ('F', dF)]
-  
+
 -- |
 -- >>> 'f' ^? charHeXaDeCiMaLNoZero :: Maybe HeXDigit
 -- Just HeXDigitf
@@ -196,7 +204,7 @@ charHeXaDeCiMaLNoZero ::
     d
 charHeXaDeCiMaLNoZero =
   associatePrism ('1', d1) [('2', d2), ('3', d3), ('4', d4), ('5', d5), ('6', d6), ('7', d7), ('8', d8), ('9', d9), ('a', da), ('b', db), ('c', dc), ('d', dd), ('e', de), ('f', df), ('A', dA), ('B', dB), ('C', dC), ('D', dD), ('E', dE), ('F', dF)]
-  
+
 
 -- |
 -- >>> 'f' ^? charHeXaDeCiMaL :: Maybe HeXDigit
