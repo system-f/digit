@@ -18,5 +18,4 @@ let
   drv = modifiedHaskellPackages.callPackage ./digit.nix {};
 
 in
-  drv
-  # if pkgs.lib.inNixShell then drv.env else drv
+  if pkgs.lib.inNixShell then drv.env else drv
