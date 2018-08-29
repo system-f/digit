@@ -12,8 +12,8 @@ mkDerivation {
     template-haskell
   ];
   testHaskellDepends = [
-    ansi-wl-pprint base hedgehog lens parsec parsers pretty tasty
-    tasty-hedgehog tasty-hspec tasty-hunit text
+    ansi-wl-pprint base hedgehog lens parsec parsers pretty semigroups
+    tasty tasty-hedgehog tasty-hspec tasty-hunit text
   ];
   homepage = "https://github.com/qfpl/digit";
   description = "A data-type representing digits 0-9 and other combinations";
