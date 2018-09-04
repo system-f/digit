@@ -40,7 +40,7 @@ matrix:
     - compiler: "ghc-8.4.1"
     # env: TEST=--disable-tests BENCH=--disable-benchmarks
       addons: {apt: {packages: [ghc-ppa-tools,cabal-install-head,ghc-8.4.1], sources: [hvr-ghc]}}
-    - compiler: "ghc-8.4.1"
+    - compiler: "ghc"
     # env: TEST=--disable-tests BENCH=--disable-benchmarks
       # addons: {apt: {packages: [ghc-ppa-tools,cabal-install-head,ghc-8.4.1], sources: [hvr-ghc]}}
       os: osx
@@ -54,6 +54,12 @@ before_install:
   - "PATH=/opt/ghc/bin:/opt/ghc-ppa-tools/bin:$HOME/local/bin:$PATH"
   - HCNUMVER=$(( $(${HC} --numeric-version|sed -E 's/([0-9]+)\.([0-9]+)\.([0-9]+).*/\1 * 10000 + \2 * 100 + \3/') ))
   - echo $HCNUMVER
+  - if [ `uname` = "Darwin" ]
+    then
+      brew install ghc cabal-install
+    fi
+  - echo $(ghc --version)
+  - echo $(cabal --version)
 
 install:
   - cabal --version
