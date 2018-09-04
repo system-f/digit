@@ -51,37 +51,26 @@ library
                     Data.Digit.Natural
                     Data.Digit.Decimal
                     Data.Digit.Octal
+
                     Data.Digit.Hexadecimal.LowerCase
                     Data.Digit.Hexadecimal.UpperCase
                     Data.Digit.Hexadecimal.MixedCase
-                    Data.Digit.D0
-                    Data.Digit.D1
-                    Data.Digit.D2
-                    Data.Digit.D3
-                    Data.Digit.D4
-                    Data.Digit.D5
-                    Data.Digit.D6
-                    Data.Digit.D7
-                    Data.Digit.D8
-                    Data.Digit.D9
-                    Data.Digit.Da
-                    Data.Digit.DA
-                    Data.Digit.Db
-                    Data.Digit.DB
-                    Data.Digit.Dc
-                    Data.Digit.DC
-                    Data.Digit.Dd
-                    Data.Digit.DD
-                    Data.Digit.De
-                    Data.Digit.DE
-                    Data.Digit.Df
-                    Data.Digit.DF
-                    Data.Digit.DAa
-                    Data.Digit.DBb
-                    Data.Digit.DCc
-                    Data.Digit.DDd
-                    Data.Digit.DEe
-                    Data.Digit.DFf
+
+                    Data.Digit.Class.D0
+                    Data.Digit.Class.D1
+                    Data.Digit.Class.D2
+                    Data.Digit.Class.D3
+                    Data.Digit.Class.D4
+                    Data.Digit.Class.D5
+                    Data.Digit.Class.D6
+                    Data.Digit.Class.D7
+                    Data.Digit.Class.D8
+                    Data.Digit.Class.D9
+
+                    Data.Digit.Class.Lower
+                    Data.Digit.Class.Mixed
+                    Data.Digit.Class.Upper
+
                     Data.Digit.Char
                     Data.Digit.Enum
                     Data.Digit.Integral
