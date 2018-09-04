@@ -2,7 +2,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Data.Digit.Hexadecimal(
+module Data.Digit.Hexadecimal.LowerCase(
   HexDigit(..)
 , HexadecimalNoZero
 , Hexadecimal

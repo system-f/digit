@@ -20,8 +20,8 @@ where
 import Control.Lens.Review ((#))
 import Data.Digit.Binary
 import Data.Digit.Decimal
-import Data.Digit.Hexadecimal
-import Data.Digit.HEXADECIMAL
+import Data.Digit.Hexadecimal.LowerCase
+import Data.Digit.Hexadecimal.UpperCase
 import Data.Digit.Octal
 
 -- | @[1]@

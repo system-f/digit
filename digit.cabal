@@ -1,5 +1,5 @@
 name:               digit
-version:            0.6.1
+version:            0.7
 license:            BSD3
 license-file:       LICENCE
 author:             Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
@@ -51,9 +51,9 @@ library
                     Data.Digit.Natural
                     Data.Digit.Decimal
                     Data.Digit.Octal
-                    Data.Digit.Hexadecimal
-                    Data.Digit.HeXaDeCiMaL
-                    Data.Digit.HEXADECIMAL
+                    Data.Digit.Hexadecimal.LowerCase
+                    Data.Digit.Hexadecimal.UpperCase
+                    Data.Digit.Hexadecimal.MixedCase
                     Data.Digit.D0
                     Data.Digit.D1
                     Data.Digit.D2

@@ -5,7 +5,7 @@
 }:
 mkDerivation {
   pname = "digit";
-  version = "0.6.1";
+  version = "0.7";
   src = ./.;
   libraryHaskellDepends = [
     base lens parsers scientific semigroupoids semigroups

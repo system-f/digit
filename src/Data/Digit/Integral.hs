@@ -44,16 +44,16 @@ import           Control.Lens.Extras    (is)
 
 import           Data.Either            (Either (..), either)
 import           Data.Foldable          (find, foldl')
-import           Data.Function          (($))
+import           Data.Function          (($),const)
 import           Data.Functor           ((<$>))
 import           Data.List.NonEmpty     (NonEmpty)
 import           Data.Maybe             (fromMaybe)
 
 import           Data.Digit.Binary
 import           Data.Digit.Decimal
-import           Data.Digit.Hexadecimal
-import           Data.Digit.HEXADECIMAL
-import           Data.Digit.HeXaDeCiMaL
+import           Data.Digit.Hexadecimal.LowerCase
+import           Data.Digit.Hexadecimal.UpperCase
+import           Data.Digit.Hexadecimal.MixedCase
 import           Data.Digit.Octal
 import qualified Data.List.NonEmpty     as NonEmpty
 
@@ -428,27 +428,27 @@ integralHeXaDeCiMaLNoZero ::
     d
 integralHeXaDeCiMaLNoZero =
   unto
-    (outside d1 .~ (\_ -> 1) $
-     outside d2 .~ (\_ -> 2) $
-     outside d3 .~ (\_ -> 3) $
-     outside d4 .~ (\_ -> 4) $
-     outside d5 .~ (\_ -> 5) $
-     outside d6 .~ (\_ -> 6) $
-     outside d7 .~ (\_ -> 7) $
-     outside d8 .~ (\_ -> 8) $
-     outside d9 .~ (\_ -> 9) $
-     outside da .~ (\_ -> 10) $
-     outside dA .~ (\_ -> 10) $
-     outside db .~ (\_ -> 11) $
-     outside dB .~ (\_ -> 11) $
-     outside dc .~ (\_ -> 12) $
-     outside dC .~ (\_ -> 12) $
-     outside dd .~ (\_ -> 13) $
-     outside dD .~ (\_ -> 13) $
-     outside de .~ (\_ -> 14) $
-     outside dE .~ (\_ -> 14) $
-     outside df .~ (\_ -> 15) $
-     outside dF .~ (\_ -> 15) $
+    (outside d1 .~ const 1 $
+     outside d2 .~ const 2 $
+     outside d3 .~ const 3 $
+     outside d4 .~ const 4 $
+     outside d5 .~ const 5 $
+     outside d6 .~ const 6 $
+     outside d7 .~ const 7 $
+     outside d8 .~ const 8 $
+     outside d9 .~ const 9 $
+     outside da .~ const 10 $
+     outside dA .~ const 10 $
+     outside db .~ const 11 $
+     outside dB .~ const 11 $
+     outside dc .~ const 12 $
+     outside dC .~ const 12 $
+     outside dd .~ const 13 $
+     outside dD .~ const 13 $
+     outside de .~ const 14 $
+     outside dE .~ const 14 $
+     outside df .~ const 15 $
+     outside dF .~ const 15 $
      error "incomplete pattern")
 
 -- |
@@ -465,28 +465,28 @@ integralHeXaDeCiMaL ::
     d
 integralHeXaDeCiMaL =
   unto
-    (outside d0 .~ (\_ -> 0) $
-     outside d1 .~ (\_ -> 1) $
-     outside d2 .~ (\_ -> 2) $
-     outside d3 .~ (\_ -> 3) $
-     outside d4 .~ (\_ -> 4) $
-     outside d5 .~ (\_ -> 5) $
-     outside d6 .~ (\_ -> 6) $
-     outside d7 .~ (\_ -> 7) $
-     outside d8 .~ (\_ -> 8) $
-     outside d9 .~ (\_ -> 9) $
-     outside da .~ (\_ -> 10) $
-     outside dA .~ (\_ -> 10) $
-     outside db .~ (\_ -> 11) $
-     outside dB .~ (\_ -> 11) $
-     outside dc .~ (\_ -> 12) $
-     outside dC .~ (\_ -> 12) $
-     outside dd .~ (\_ -> 13) $
-     outside dD .~ (\_ -> 13) $
-     outside de .~ (\_ -> 14) $
-     outside dE .~ (\_ -> 14) $
-     outside df .~ (\_ -> 15) $
-     outside dF .~ (\_ -> 15) $
+    (outside d0 .~ const 0 $
+     outside d1 .~ const 1 $
+     outside d2 .~ const 2 $
+     outside d3 .~ const 3 $
+     outside d4 .~ const 4 $
+     outside d5 .~ const 5 $
+     outside d6 .~ const 6 $
+     outside d7 .~ const 7 $
+     outside d8 .~ const 8 $
+     outside d9 .~ const 9 $
+     outside da .~ const 10 $
+     outside dA .~ const 10 $
+     outside db .~ const 11 $
+     outside dB .~ const 11 $
+     outside dc .~ const 12 $
+     outside dC .~ const 12 $
+     outside dd .~ const 13 $
+     outside dD .~ const 13 $
+     outside de .~ const 14 $
+     outside dE .~ const 14 $
+     outside df .~ const 15 $
+     outside dF .~ const 15 $
      error "incomplete pattern")
 
 -- |
