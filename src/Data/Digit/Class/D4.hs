@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Data.Digit.D4(
+module Data.Digit.Class.D4(
   D4(..)
 , parse4
 ) where
@@ -14,7 +14,7 @@ import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
--- >>> import Data.Digit
+-- >>> import Data.Digit.Class
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 

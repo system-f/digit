@@ -18,28 +18,28 @@ module Data.Digit.Octal(
 , _OctDigit6
 , _OctDigit7
 -- * Re-exports
-, module Data.Digit.D0
-, module Data.Digit.D1
-, module Data.Digit.D2
-, module Data.Digit.D3
-, module Data.Digit.D4
-, module Data.Digit.D5
-, module Data.Digit.D6
-, module Data.Digit.D7
+, module Data.Digit.Class.D0
+, module Data.Digit.Class.D1
+, module Data.Digit.Class.D2
+, module Data.Digit.Class.D3
+, module Data.Digit.Class.D4
+, module Data.Digit.Class.D5
+, module Data.Digit.Class.D6
+, module Data.Digit.Class.D7
 ) where
 
 import Prelude (Eq, Show, Ord, Enum, Bounded)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0
-import Data.Digit.D1
-import Data.Digit.D2
-import Data.Digit.D3
-import Data.Digit.D4
-import Data.Digit.D5
-import Data.Digit.D6
-import Data.Digit.D7
+import Data.Digit.Class.D0
+import Data.Digit.Class.D1
+import Data.Digit.Class.D2
+import Data.Digit.Class.D3
+import Data.Digit.Class.D4
+import Data.Digit.Class.D5
+import Data.Digit.Class.D6
+import Data.Digit.Class.D7
 
 data OctDigit
   = OctDigit0

@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE FlexibleInstances #-}
 
-module Data.Digit.D0(
+module Data.Digit.Class.D0(
   D0(..)
 , parse0
 ) where
@@ -15,7 +15,7 @@ import Text.Parser.Char(CharParsing, char)
 import Text.Parser.Combinators((<?>))
 
 -- $setup
--- >>> import Data.Digit
+-- >>> import Data.Digit.Class
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 

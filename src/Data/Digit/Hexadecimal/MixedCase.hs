@@ -2,7 +2,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Data.Digit.HeXaDeCiMaL(
+module Data.Digit.Hexadecimal.MixedCase(
   HeXDigit(..)
 , HeXaDeCiMaLNoZero
 , HeXaDeCiMaL
@@ -32,45 +32,35 @@ module Data.Digit.HeXaDeCiMaL(
 , _HeXDigitE
 , _HeXDigitF
 -- * Re-exports
-, module Data.Digit.D0
-, module Data.Digit.D1
-, module Data.Digit.D2
-, module Data.Digit.D3
-, module Data.Digit.D4
-, module Data.Digit.D5
-, module Data.Digit.D6
-, module Data.Digit.D7
-, module Data.Digit.D8
-, module Data.Digit.D9
-, module Data.Digit.DAa
-, module Data.Digit.DBb
-, module Data.Digit.DCc
-, module Data.Digit.DDd
-, module Data.Digit.DEe
-, module Data.Digit.DFf
+, module Data.Digit.Class.D0
+, module Data.Digit.Class.D1
+, module Data.Digit.Class.D2
+, module Data.Digit.Class.D3
+, module Data.Digit.Class.D4
+, module Data.Digit.Class.D5
+, module Data.Digit.Class.D6
+, module Data.Digit.Class.D7
+, module Data.Digit.Class.D8
+, module Data.Digit.Class.D9
+, module Data.Digit.Class.MixedCase
 ) where
 
 import Prelude (Eq, Show, Ord)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0
-import Data.Digit.D1
-import Data.Digit.D2
-import Data.Digit.D3
-import Data.Digit.D4
-import Data.Digit.D5
-import Data.Digit.D6
-import Data.Digit.D7
-import Data.Digit.D8
-import Data.Digit.D9
+import Data.Digit.Class.D0
+import Data.Digit.Class.D1
+import Data.Digit.Class.D2
+import Data.Digit.Class.D3
+import Data.Digit.Class.D4
+import Data.Digit.Class.D5
+import Data.Digit.Class.D6
+import Data.Digit.Class.D7
+import Data.Digit.Class.D8
+import Data.Digit.Class.D9
+import Data.Digit.Class.MixedCase
 import Data.Digit.Decimal(parseDecimalNoZero)
-import Data.Digit.DAa
-import Data.Digit.DBb
-import Data.Digit.DCc
-import Data.Digit.DDd
-import Data.Digit.DEe
-import Data.Digit.DFf
 
 data HeXDigit
   = HeXDigit0

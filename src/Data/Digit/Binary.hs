@@ -12,16 +12,17 @@ module Data.Digit.Binary(
 , _BinDigit0
 , _BinDigit1
 -- * Re-exports
-, module Data.Digit.D0
-, module Data.Digit.D1
+, module Data.Digit.Class.D0
+, module Data.Digit.Class.D1
 ) where
 
 import Prelude (Eq, Show, Ord)
 import Control.Lens.TH (makePrisms)
 import Text.Parser.Char(CharParsing)
 import Text.Parser.Combinators((<?>), choice)
-import Data.Digit.D0
-import Data.Digit.D1
+
+import Data.Digit.Class.D0
+import Data.Digit.Class.D1
 
 data BinDigit
   = BinDigit0
