@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Data.Digit.Class.Lower (
+module Data.Digit.Class.LowerCase (
 
   -- * Classes
     Da(..)

@@ -3,7 +3,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE NoImplicitPrelude     #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Data.Digit.Class.Mixed
+
+module Data.Digit.Class.MixedCase
   (
     -- * Types
     DAa
@@ -21,16 +22,17 @@ module Data.Digit.Class.Mixed
   , parseEe
   , parseFf
 
-  , module Data.Digit.Class.Upper
-  , module Data.Digit.Class.Lower
+    -- * Re-exports
+  , module Data.Digit.Class.UpperCase
+  , module Data.Digit.Class.LowerCase
 
   ) where
 
 import           Text.Parser.Char        (CharParsing)
 import           Text.Parser.Combinators (choice, (<?>))
 
-import           Data.Digit.Class.Lower
-import           Data.Digit.Class.Upper
+import           Data.Digit.Class.LowerCase
+import           Data.Digit.Class.UpperCase
 
 -- $setup
 -- >>> import Text.Parsec(parse, ParseError, eof)

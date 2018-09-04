@@ -37,7 +37,7 @@ module Data.Digit.Hexadecimal.LowerCase(
 , module Data.Digit.Class.D8
 , module Data.Digit.Class.D9
 
-, module Data.Digit.Class.Lower
+, module Data.Digit.Class.LowerCase
 ) where
 
 import Prelude (Eq, Show, Ord)
@@ -55,7 +55,7 @@ import Data.Digit.Class.D6
 import Data.Digit.Class.D7
 import Data.Digit.Class.D8
 import Data.Digit.Class.D9
-import Data.Digit.Class.Lower
+import Data.Digit.Class.LowerCase
 
 import Data.Digit.Decimal(parseDecimalNoZero)
 

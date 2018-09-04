@@ -67,9 +67,9 @@ library
                     Data.Digit.Class.D8
                     Data.Digit.Class.D9
 
-                    Data.Digit.Class.Lower
-                    Data.Digit.Class.Mixed
-                    Data.Digit.Class.Upper
+                    Data.Digit.Class.LowerCase
+                    Data.Digit.Class.MixedCase
+                    Data.Digit.Class.UpperCase
 
                     Data.Digit.Char
                     Data.Digit.Enum
