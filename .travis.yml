@@ -57,7 +57,10 @@ before_install:
   - |
     if [ `uname` = "Darwin" ]
     then
-      brew install gcc@4.9 ghc@8.4 cabal-install
+      brew install ghc@8.4 cabal-install
+      HC=ghc
+      HCPKG=${HC/ghc/ghc-pkg}
+      HCNUMVER=$(( $(${HC} --numeric-version|sed -E 's/([0-9]+)\.([0-9]+)\.([0-9]+).*/\1 * 10000 + \2 * 100 + \3/') ))
     fi
   - echo $(ghc --version)
   - echo $(cabal --version)
