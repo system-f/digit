@@ -13,7 +13,7 @@ bug-reports:        https://github.com/qfpl/digit/issues
 cabal-version:      >= 1.10
 build-type:         Simple
 extra-source-files: CONTRIBUTORS, changelog.md
-tested-with:        GHC == 8.4.1, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
+tested-with:        GHC == 8.6.1, GHC == 8.4.3, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 description:
   <<http://i.imgur.com/uZnp9ke.png>>
   .
