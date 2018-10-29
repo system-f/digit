@@ -2,6 +2,16 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 
+{-|
+Module      : Data.Digit.Hexadecimal.LowerCase
+Copyright   : (C) 2010-2016 NICTA Limited
+              (C) 2017-2018 CSIRO
+License     : BSD3
+Maintainer  : Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
+Stability   : experimental
+Portability : non-portable
+-}
+
 module Data.Digit.Hexadecimal.LowerCase(
   HexDigit(..)
 , HexadecimalNoZero
