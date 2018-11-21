@@ -12,9 +12,7 @@ let
     overrides = self: super: {
       hedgehog       = self.callHackage "hedgehog" "0.6" {};
       tasty-hedgehog = self.callHackage "tasty-hedgehog" "0.2.0.0" {};
-      concurrent-output = pkgs.haskell.lib.doJailbreak super.concurrent-output;
       polyparse = self.callHackage "polyparse" "1.12.1" {};
-      unliftio-core = pkgs.haskell.lib.doJailbreak super.unliftio-core;
     };
   };
 
