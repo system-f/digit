@@ -1,5 +1,5 @@
 { supportedSystems ? ["x86_64-linux"]
-, supportedCompilers ? [ "ghc802" "ghc822" "ghc844" ] 
+, supportedCompilers ? [ "ghc802" "ghc822" "ghc843" ] 
 }:
 
 with (import <nixpkgs/pkgs/top-level/release-lib.nix> { inherit supportedSystems; });
