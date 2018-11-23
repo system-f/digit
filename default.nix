@@ -19,7 +19,7 @@ let
 
   modifiedHaskellPackages = haskellPackages.override {
     overrides = self: super: {
-      tasty-hspec = import sources.tasty-hspec { inherit nixpkgs compiler; };
+      tasty-hspec = self.callCabal2nix "tasty-hspec" sources.tasty-hspec { };
       hedgehog       = self.callHackage "hedgehog" "0.6" {};
       tasty-hedgehog = self.callHackage "tasty-hedgehog" "0.2.0.0" {};
       polyparse = self.callHackage "polyparse" "1.12.1" {};
