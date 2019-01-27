@@ -2,6 +2,16 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE TemplateHaskell #-}
 
+{-|
+Module      : Data.Digit.Binary
+Copyright   : (C) 2010-2016 NICTA Limited
+              (C) 2017-2018 CSIRO
+License     : BSD3
+Maintainer  : Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
+Stability   : experimental
+Portability : non-portable
+-}
+
 module Data.Digit.Binary(
   BinDigit(..)
 , BinaryNoZero
@@ -24,6 +34,7 @@ import Text.Parser.Combinators((<?>), choice)
 import Data.Digit.Class.D0
 import Data.Digit.Class.D1
 
+-- | A single bit. Either zero or one.
 data BinDigit
   = BinDigit0
   | BinDigit1
@@ -34,8 +45,8 @@ makePrisms ''BinDigit
 instance D0 BinDigit where; d0 = _BinDigit0
 instance D1 BinDigit where; d1 = _BinDigit1
 
-type BinaryNoZero d =
-  D1 d
+type BinaryNoZero =
+  D1
 
 parseBinaryNoZero ::
   (BinaryNoZero d, CharParsing p) =>
@@ -43,6 +54,7 @@ parseBinaryNoZero ::
 parseBinaryNoZero =
   parse1 <?> "BinaryNoZero"
 
+-- | A constraint for bits
 type Binary d =
   (D0 d, BinaryNoZero d)
 

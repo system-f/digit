@@ -1,5 +1,15 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
+{-|
+Module      : Data.Digit.Class.D2
+Copyright   : (C) 2010-2016 NICTA Limited
+              (C) 2017-2018 CSIRO
+License     : BSD3
+Maintainer  : Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
+Stability   : experimental
+Portability : non-portable
+-}
+
 module Data.Digit.Class.D2(
   D2(..)
 , parse2
@@ -18,6 +28,7 @@ import Text.Parser.Combinators((<?>))
 -- >>> import Text.Parsec(parse, ParseError, eof)
 -- >>> import Data.Void(Void)
 
+-- | Classy prism for the digit 2
 class D2 d where
   d2 ::
     Prism'
