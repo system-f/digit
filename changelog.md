@@ -1,3 +1,7 @@
+0.8
+
+* Add decimal arithmetic
+
 0.6
 
 * Removed the `Digit` datatype

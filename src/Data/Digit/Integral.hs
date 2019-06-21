@@ -30,24 +30,30 @@ module Data.Digit.Integral(
 , integralHeXaDeCiMaLNoZero
 , integralHeXaDeCiMaL
 , _HeXDigitsIntegral
+, mod10
+, addDecDigit
+, addDecDigit'
 ) where
 
 import           Prelude                (Eq, Integral, error, fst, lookup,
-                                         quotRem, (*), (+), (-), (==), (>=))
+                                         quotRem, (*), (+), (-), (==), (>=), mod, divMod)
 
 import           Control.Applicative    (Applicative)
 import           Control.Category       (id, (.))
 import           Control.Lens           (APrism, Choice, Prism', Review,
-                                         clonePrism, outside, prism', unto,
-                                         ( # ), (.~), (^?!))
+                                         clonePrism, outside, prism', unto, over, _1,
+                                         ( # ), (.~), (^?!), (^?))
 import           Control.Lens.Extras    (is)
 
+import           Data.Bool              (Bool, bool)
 import           Data.Either            (Either (..), either)
 import           Data.Foldable          (find, foldl')
 import           Data.Function          (($),const)
 import           Data.Functor           ((<$>))
+import           Data.Int               (Int)
 import           Data.List.NonEmpty     (NonEmpty)
 import           Data.Maybe             (fromMaybe)
+import           Data.Ord               ((>))
 
 import           Data.Digit.Binary
 import           Data.Digit.Decimal
@@ -505,6 +511,30 @@ _HeXDigitsIntegral :: Integral a => Either (NonEmpty HeXDigit) (NonEmpty HeXDigi
 _HeXDigitsIntegral = either (\n -> -(go n) - 1) go
   where
     go = foldl' (\b a -> (integralHeXaDeCiMaL # a) + 16 * b) 0
+
+mod10 ::
+  Integral a =>
+  a
+  -> DecDigit
+mod10 n =
+  let r = n `mod` 10
+  in fromMaybe (mod10 r) (r ^? integralDecimal)
+
+addDecDigit ::
+  DecDigit
+  -> DecDigit
+  -> (Bool, DecDigit)
+addDecDigit a b =
+  let (x, r) =
+        (integralDecimal # a + integralDecimal # b) `divMod` 10
+  in  (x > 0, mod10 (r :: Int))
+
+addDecDigit' ::
+  DecDigit
+  -> DecDigit
+  -> (DecDigit, DecDigit)
+addDecDigit' a b =
+  over _1 (bool x0 x1) (addDecDigit a b)
 
 ---- not exported
 associatePrism ::
