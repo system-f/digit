@@ -1,3 +1,7 @@
+0.9
+
+* Update base version.
+
 0.8
 
 * Add decimal arithmetic
