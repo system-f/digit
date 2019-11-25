@@ -15,7 +15,7 @@ build-type:         Simple
 extra-source-files: CONTRIBUTORS, changelog.md
 tested-with:        GHC == 8.6.1, GHC == 8.4.3, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 description:
-  <<http://i.imgur.com/uZnp9ke.png>>
+  <<https://raw.githubusercontent.com/qfpl/assets/master/data61-transparent-bg.png>>
   .
   @Digit@ is a data-type that represents the digits 0-9 and other combinations.
 
