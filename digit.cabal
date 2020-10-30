@@ -6,7 +6,7 @@ author:             System F <nɐ˙ɯoɔ˙ɟɯǝʇsʎs@ǝpoɔ>
 maintainer:         System F <nɐ˙ɯoɔ˙ɟɯǝʇsʎs@ǝpoɔ>
 copyright:          Copyright (c) 2010-2016 NICTA Limited
                     Copyright (c) 2017-2018, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
-                    Copyright (c) 2019-2020
+                    Copyright (c) System F (System F Aerial Operations) 2019-2020
 synopsis:           A data-type representing digits 0-9 and other combinations
 category:           Data
 homepage:           https://github.com/system-f/digit
