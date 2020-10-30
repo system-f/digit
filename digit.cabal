@@ -2,26 +2,27 @@ name:               digit
 version:            0.9
 license:            BSD3
 license-file:       LICENCE
-author:             Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
-maintainer:         Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
-copyright:          Copyright (C) 2010-2016 NICTA Limited
-                    Copyright (c) 2017, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
+author:             System F <nɐ˙ɯoɔ˙ɟɯǝʇsʎs@ǝpoɔ>
+maintainer:         System F <nɐ˙ɯoɔ˙ɟɯǝʇsʎs@ǝpoɔ>
+copyright:          Copyright (c) 2010-2016 NICTA Limited
+                    Copyright (c) 2017-2018, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
+                    Copyright (c) 2019-2020
 synopsis:           A data-type representing digits 0-9 and other combinations
 category:           Data
-homepage:           https://github.com/qfpl/digit
-bug-reports:        https://github.com/qfpl/digit/issues
+homepage:           https://github.com/system-f/digit
+bug-reports:        https://github.com/system-f/digit/issues
 cabal-version:      >= 1.10
 build-type:         Simple
 extra-source-files: CONTRIBUTORS, changelog.md
 tested-with:        GHC == 8.6.1, GHC == 8.4.3, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 description:
-  <<https://raw.githubusercontent.com/qfpl/assets/master/data61-transparent-bg.png>>
+  <<https://system-f.gitlab.io/logo/systemf-450x450.jpg>>
   .
   @Digit@ is a data-type that represents the digits 0-9 and other combinations.
 
 source-repository   head
   type:             git
-  location:         git@github.com:qfpl/digit.git
+  location:         git@github.com:system-f/digit.git
 
 library
   default-language:

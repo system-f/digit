@@ -15,7 +15,7 @@ mkDerivation {
     ansi-wl-pprint base hedgehog lens parsec parsers pretty semigroups
     tasty tasty-hedgehog tasty-hspec tasty-hunit text
   ];
-  homepage = "https://github.com/qfpl/digit";
+  homepage = "https://github.com/system-f/digit";
   description = "A data-type representing digits 0-9 and other combinations";
   license = stdenv.lib.licenses.bsd3;
 }
