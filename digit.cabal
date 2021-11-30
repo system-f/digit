@@ -1,5 +1,5 @@
 name:               digit
-version:            0.10
+version:            0.11
 license:            BSD3
 license-file:       LICENCE
 author:             System F <nɐ˙ɯoɔ˙ɟɯǝʇsʎs@ǝpoɔ>
@@ -30,7 +30,7 @@ library
 
   build-depends:
                     base               >= 4.8 && < 5
-                    , lens             >= 4.0 && < 5
+                    , lens             >= 4.0 && < 5.2
                     , parsers          >= 0.12.3 && < 0.13
                     , semigroups       >= 0.12 && < 1.0
                     , template-haskell >= 2.8 && < 3
@@ -89,7 +89,7 @@ test-suite tests
 
   build-depends:
                     base             >=4.8    && <4.13
-                    , lens           >=4.0    && <5
+                    , lens           >=4.0    && <5.2
                     , ansi-wl-pprint >=0.6    && <0.7
                     , hedgehog       >=0.5    && <1.1
                     , tasty          >=0.11   && <1.3

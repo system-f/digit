@@ -1,3 +1,7 @@
+0.11
+
+* Update `lens` to support `< 5.2`
+
 0.9
 
 * Update base version.
