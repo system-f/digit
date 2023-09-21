@@ -128,12 +128,12 @@ integralBinDigits n =
 -- 0
 --
 -- >>> binDigitsIntegral (Left (BinDigit0 :| [])) :: Int
--- -1
+-- 0
 --
 -- >>> binDigitsIntegral (Left (BinDigit1 :| [BinDigit1])) :: Int
--- -4
+-- -3
 binDigitsIntegral :: Integral a => Either (NonEmpty BinDigit) (NonEmpty BinDigit) -> a
-binDigitsIntegral = either (\n -> -(go n) - 1) go
+binDigitsIntegral = either (\n -> -(go n)) go
   where
     go = foldl' (\b a -> (integralBinary # a) + 2 * b) 0
 
@@ -199,12 +199,12 @@ integralOctDigits n =
 -- 0
 --
 -- >>> octDigitsIntegral (Left (OctDigit0 :| [])) :: Int
--- -1
+-- 0
 --
 -- >>> octDigitsIntegral (Left (OctDigit7 :| [OctDigit7])) :: Int
--- -64
+-- -63
 octDigitsIntegral :: Integral a => Either (NonEmpty OctDigit) (NonEmpty OctDigit) -> a
-octDigitsIntegral = either (\n -> -(go n) - 1) go
+octDigitsIntegral = either (\n -> -(go n)) go
   where
     go = foldl' (\b a -> (integralOctal # a) + 8 * b) 0
 
@@ -268,12 +268,12 @@ integralDecDigits n =
 -- 0
 --
 -- >>> decDigitsIntegral (Left (DecDigit0 :| [])) :: Int
--- -1
+-- 0
 --
 -- >>> decDigitsIntegral (Left (DecDigit9 :| [DecDigit9])) :: Int
--- -100
+-- -9
 decDigitsIntegral :: Integral a => Either (NonEmpty DecDigit) (NonEmpty DecDigit) -> a
-decDigitsIntegral = either (\n -> -(go n) - 1) go
+decDigitsIntegral = either (\n -> -(go n)) go
   where
     go = foldl' (\b a -> (integralDecimal # a) + 10 * b) 0
 
@@ -339,12 +339,12 @@ integralHexDigits n =
 -- 0
 --
 -- >>> hexDigitsIntegral (Left (HexDigit0 :| [])) :: Int
--- -1
+-- 0
 --
 -- >>> hexDigitsIntegral (Left (HexDigitf :| [HexDigitf])) :: Int
--- -256
+-- -255
 hexDigitsIntegral :: Integral a => Either (NonEmpty HexDigit) (NonEmpty HexDigit) -> a
-hexDigitsIntegral = either (\n -> -(go n) - 1) go
+hexDigitsIntegral = either (\n -> -(go n)) go
   where
     go = foldl' (\b a -> (integralHexadecimal # a) + 16 * b) 0
 
@@ -404,19 +404,19 @@ integralHEXDigits n =
         (if q == 0 then id else go q) . ((r ^?! integralHEXADECIMAL) :)
 
 -- |
--- >>> HEXDigitsIntegral (Right (HEXDigit1 :| [HEXDigit0, HEXDigit0])) :: Int
+-- >>> _HEXDigitsIntegral (Right (HEXDigit1 :| [HEXDigit0, HEXDigit0])) :: Int
 -- 256
 --
--- >>> HEXDigitsIntegral (Right (HEXDigit0 :| [])) :: Int
+-- >>> _HEXDigitsIntegral (Right (HEXDigit0 :| [])) :: Int
 -- 0
 --
--- >>> HEXDigitsIntegral (Left (HEXDigit0 :| [])) :: Int
--- -1
+-- >>> _HEXDigitsIntegral (Left (HEXDigit0 :| [])) :: Int
+-- 0
 --
--- >>> HEXDigitsIntegral (Left (HEXDigitF :| [HEXDigitF])) :: Int
--- -256
+-- >>> _HEXDigitsIntegral (Left (HEXDigitF :| [HEXDigitF])) :: Int
+-- -255
 _HEXDigitsIntegral :: Integral a => Either (NonEmpty HEXDigit) (NonEmpty HEXDigit) -> a
-_HEXDigitsIntegral = either (\n -> -(go n) - 1) go
+_HEXDigitsIntegral = either (\n -> -(go n)) go
   where
     go = foldl' (\b a -> (integralHEXADECIMAL # a) + 16 * b) 0
 
@@ -496,19 +496,19 @@ integralHeXaDeCiMaL =
      error "incomplete pattern")
 
 -- |
--- >>> HeXDigitsIntegral (Right (HeXDigit1 :| [HeXDigit0, HeXDigit0])) :: Int
+-- >>> _HeXDigitsIntegral (Right (HeXDigit1 :| [HeXDigit0, HeXDigit0])) :: Int
 -- 256
 --
--- >>> HeXDigitsIntegral (Right (HeXDigit0 :| [])) :: Int
+-- >>> _HeXDigitsIntegral (Right (HeXDigit0 :| [])) :: Int
 -- 0
 --
--- >>> HeXDigitsIntegral (Left (HeXDigit0 :| [])) :: Int
--- -1
+-- >>> _HeXDigitsIntegral (Left (HeXDigit0 :| [])) :: Int
+-- 0
 --
--- >>> HeXDigitsIntegral (Left (HeXDigitF :| [HeXDigitF])) :: Int
--- -256
+-- >>> _HeXDigitsIntegral (Left (HeXDigitF :| [HeXDigitF])) :: Int
+-- -255
 _HeXDigitsIntegral :: Integral a => Either (NonEmpty HeXDigit) (NonEmpty HeXDigit) -> a
-_HeXDigitsIntegral = either (\n -> -(go n) - 1) go
+_HeXDigitsIntegral = either (\n -> -(go n)) go
   where
     go = foldl' (\b a -> (integralHeXaDeCiMaL # a) + 16 * b) 0
 

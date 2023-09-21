@@ -1,3 +1,7 @@
+0.12
+
+* Fix bug in functions that produce Integral values.
+
 0.11
 
 * Update `lens` to support `< 5.2`
