@@ -1,3 +1,7 @@
+0.13
+
+* Make `DecDigitNoZero` data type.
+
 0.12
 
 * Fix bug in functions that produce Integral values.

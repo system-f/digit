@@ -4,6 +4,7 @@
 
 module Data.Digit.Decimal(
   DecDigit(..)
+, DecDigitNoZero
 , DecimalNoZero
 , Decimal
 , parseDecimalNoZero
@@ -73,6 +74,30 @@ instance D6 DecDigit where; d6 = _DecDigit6
 instance D7 DecDigit where; d7 = _DecDigit7
 instance D8 DecDigit where; d8 = _DecDigit8
 instance D9 DecDigit where; d9 = _DecDigit9
+
+data DecDigitNoZero =
+  DecDigitNoZero1
+  | DecDigitNoZero2
+  | DecDigitNoZero3
+  | DecDigitNoZero4
+  | DecDigitNoZero5
+  | DecDigitNoZero6
+  | DecDigitNoZero7
+  | DecDigitNoZero8
+  | DecDigitNoZero9
+  deriving (Show, Eq, Ord, Enum, Bounded)
+
+makePrisms ''DecDigitNoZero
+
+instance D1 DecDigitNoZero where; d1 = _DecDigitNoZero1
+instance D2 DecDigitNoZero where; d2 = _DecDigitNoZero2
+instance D3 DecDigitNoZero where; d3 = _DecDigitNoZero3
+instance D4 DecDigitNoZero where; d4 = _DecDigitNoZero4
+instance D5 DecDigitNoZero where; d5 = _DecDigitNoZero5
+instance D6 DecDigitNoZero where; d6 = _DecDigitNoZero6
+instance D7 DecDigitNoZero where; d7 = _DecDigitNoZero7
+instance D8 DecDigitNoZero where; d8 = _DecDigitNoZero8
+instance D9 DecDigitNoZero where; d9 = _DecDigitNoZero9
 
 type DecimalNoZero d =
   (D1 d, D2 d, D3 d, D4 d, D5 d, D6 d, D7 d, D8 d, D9 d)
