@@ -14,7 +14,7 @@ bug-reports:        https://github.com/system-f/digit/issues
 cabal-version:      >= 1.10
 build-type:         Simple
 extra-source-files: CONTRIBUTORS, changelog.md
-tested-with:        GHC == 8.6.1, GHC == 8.4.3, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
+tested-with:        GHC == 9.8.1, GHC == 9.6.3, GHC == 9.4.7, GHC == 9.0.2, GHC == 8.6.1, GHC == 8.4.3, GHC == 8.2.2, GHC == 8.0.2, GHC == 7.10.3
 description:
   <<https://system-f.gitlab.io/logo/systemf-450x450.jpg>>
   .
@@ -29,13 +29,13 @@ library
                     Haskell2010
 
   build-depends:
-                    base               >= 4.8 && < 5
-                    , lens             >= 4.0 && < 5.2
-                    , parsers          >= 0.12.3 && < 0.13
+                    base               >= 4.8 && < 6
+                    , lens             >= 4.0 && < 6
+                    , parsers          >= 0.12.3 && < 1
                     , semigroups       >= 0.12 && < 1.0
                     , template-haskell >= 2.8 && < 3
-                    , semigroupoids    >= 5 && < 6
-                    , scientific       >= 0.3 && < 0.4
+                    , semigroupoids    >= 5 && < 7
+                    , scientific       >= 0.3 && < 1
 
   ghc-options:
                     -Wall
