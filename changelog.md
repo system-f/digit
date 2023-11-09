@@ -1,3 +1,7 @@
+0.14
+
+* Fix export for `DecDigitNoZero`.
+
 0.13
 
 * Make `DecDigitNoZero` data type.
