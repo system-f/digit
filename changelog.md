@@ -1,3 +1,7 @@
+0.15
+
+* Widen version bounds.
+
 0.14
 
 * Fix export for `DecDigitNoZero`.
